@@ -224,6 +224,17 @@
     outline: none;
   }
 
+  #stage0 select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+    background: white;
+    color: #333;
+  }
+
   #stage0 label {
     color: white;
     font-size: 13px;
@@ -287,6 +298,12 @@
   <input type="text" id="toName" placeholder="Jaise: Sandeep" maxlength="20">
   <label>Aapka naam (sender)</label>
   <input type="text" id="fromName" placeholder="Jaise: Rahul" maxlength="20">
+  <label>Theme chuno</label>
+  <select id="themeSelect">
+    <option value="classic">🎈 Classic Balloon</option>
+    <option value="fireworks">🎆 Fireworks Party</option>
+    <option value="cake">🎂 Cake Celebration</option>
+  </select>
   <button id="createBtn">Link Banao 🎁</button>
 
   <div id="linkResult"></div>
@@ -309,25 +326,40 @@
     <button class="btn-share">📲 Share Karo</button>
     <button class="btn-thanks">🙏 Thank You Bhejo</button>
   </div>
+  <button id="muteBtn" style="margin-top:14px; background:transparent; border:1px solid rgba(255,255,255,0.5); color:white; padding:8px 16px; border-radius:20px; font-size:12px;">🔊 Music Off</button>
 </div>
 
-<audio id="popSound" src="" preload="auto"></audio>
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8e70c5393.mp3?filename=happy-birthday-115763.mp3" type="audio/mpeg">
+</audio>
+<audio id="popSound" preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_88447e769f.mp3?filename=balloon-pop-1-6997.mp3" type="audio/mpeg">
+</audio>
 
 <script>
   // ---------- Step A: Check URL for ?to=Name&from=Name ----------
   const params = new URLSearchParams(window.location.search);
   const toName = params.get('to');
   const fromName = params.get('from');
+  const theme = params.get('theme') || 'classic';
+
+  const THEMES = {
+    classic: { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', emoji: '🎈' },
+    fireworks: { bg: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)', emoji: '🎆' },
+    cake: { bg: 'linear-gradient(135deg, #ff9a8b 0%, #ff6a88 50%, #ff99ac 100%)', emoji: '🎂' }
+  };
 
   const stage0 = document.getElementById('stage0');
   const stage1El = document.getElementById('stage1');
+  const bgMusic = document.getElementById('bgMusic');
 
   if (toName) {
     // Someone opened a wish link -> skip the form, go straight to balloon
     stage0.style.display = 'none';
     stage1El.style.display = 'flex';
+    document.body.style.background = THEMES[theme].bg;
     document.getElementById('holdInstruction').textContent =
-      `🎈 ${toName}, gubbara phulane ke liye button dabaye rakho`;
+      `${THEMES[theme].emoji} ${toName}, gubbara phulane ke liye button dabaye rakho`;
     document.getElementById('wishTitle').textContent = `Happy Birthday ${toName}! 🎉`;
     if (fromName) {
       document.getElementById('wishMsg').textContent =
@@ -338,10 +370,11 @@
     document.getElementById('createBtn').addEventListener('click', () => {
       const to = document.getElementById('toName').value.trim();
       const from = document.getElementById('fromName').value.trim();
+      const chosenTheme = document.getElementById('themeSelect').value;
       if (!to) { alert('Kripya naam daalein'); return; }
 
       const baseUrl = window.location.origin + window.location.pathname;
-      const link = `${baseUrl}?to=${encodeURIComponent(to)}${from ? '&from=' + encodeURIComponent(from) : ''}`;
+      const link = `${baseUrl}?to=${encodeURIComponent(to)}${from ? '&from=' + encodeURIComponent(from) : ''}&theme=${chosenTheme}`;
 
       const resultBox = document.getElementById('linkResult');
       resultBox.style.display = 'block';
@@ -426,6 +459,11 @@
     popped = true;
     holding = false;
 
+    // play pop sound
+    const popSound = document.getElementById('popSound');
+    popSound.currentTime = 0;
+    popSound.play().catch(() => {});
+
     // flash
     flash.style.transition = 'opacity 0.08s';
     flash.style.opacity = '1';
@@ -442,6 +480,10 @@
 
     // confetti burst
     launchConfetti();
+
+    // start background birthday music
+    bgMusic.volume = 0.5;
+    bgMusic.play().catch(() => {});
 
     // reveal stage 2 after short delay
     setTimeout(() => {
@@ -467,6 +509,16 @@
       setTimeout(() => c.remove(), 3200);
     }
   }
+
+  document.getElementById('muteBtn').addEventListener('click', (e) => {
+    if (bgMusic.muted) {
+      bgMusic.muted = false;
+      e.target.textContent = '🔊 Music Off';
+    } else {
+      bgMusic.muted = true;
+      e.target.textContent = '🔇 Music On';
+    }
+  });
 
   document.querySelector('.btn-thanks').addEventListener('click', () => {
     const baseUrl = window.location.origin + window.location.pathname;
