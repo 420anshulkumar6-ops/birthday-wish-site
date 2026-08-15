@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gubbara Phulao - Birthday Wish</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    user-select: none;
+  }
+
+  #stage1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    position: absolute;
+    transition: opacity 0.4s ease;
+  }
+
+  .balloon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+  }
+
+  .balloon {
+    width: 90px;
+    height: 110px;
+    background: radial-gradient(circle at 35% 30%, #ff8fa3, #e63950);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+    transform-origin: bottom center;
+    transition: transform 0.08s ease-out;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.15);
+  }
+
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 60px;
+    background: #ccc;
+  }
+
+  .balloon.wobble {
+    animation: wobble 1.6s ease-in-out infinite;
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+
+  .instruction {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    padding: 0 20px;
+    font-weight: 500;
+  }
+
+  .progress-text {
+    color: #ffe066;
+    font-size: 16px;
+    font-weight: 700;
+    height: 20px;
+  }
+
+  #holdBtn {
+    background: #ffe066;
+    color: #333;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-size: 17px;
+    font-weight: 700;
+    box-shadow: 0 6px 0 #d4a900, 0 8px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.05s;
+  }
+
+  #holdBtn:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #d4a900;
+  }
+
+  /* Confetti */
+  .confetti {
+    position: fixed;
+    top: -10px;
+    width: 8px;
+    height: 14px;
+    opacity: 0.9;
+    animation: fall linear forwards;
+    z-index: 5;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
+  }
+
+  /* Pop flash */
+  .flash {
+    position: fixed;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Stage 2: Reveal */
+  #stage2 {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+    padding: 30px;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  #stage2.show {
+    display: flex;
+    opacity: 1;
+  }
+
+  .cake-emoji {
+    font-size: 70px;
+    animation: pop-in 0.5s cubic-bezier(.17,.89,.32,1.49);
+  }
+
+  @keyframes pop-in {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+
+  .wish-title {
+    color: white;
+    font-size: 28px;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .wish-msg {
+    color: #fff;
+    font-size: 16px;
+    max-width: 320px;
+    line-height: 1.6;
+    opacity: 0.95;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .actions button {
+    padding: 12px 24px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .btn-share { background: #25D366; color: white; }
+  .btn-thanks { background: white; color: #764ba2; }
+
+  .shake {
+    animation: shakeAnim 0.4s;
+  }
+  @keyframes shakeAnim {
+    0%, 100% { transform: translate(0,0); }
+    25% { transform: translate(-8px, 4px); }
+    50% { transform: translate(8px, -4px); }
+    75% { transform: translate(-4px, 6px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="flash" id="flash"></div>
+
+<div id="stage1">
+  <div class="balloon-wrap">
+    <div class="balloon wobble" id="balloon"></div>
+  </div>
+  <div class="progress-text" id="progressText"></div>
+  <div class="instruction">🎈 Gubbara phulane ke liye button dabaye rakho</div>
+  <button id="holdBtn">Press &amp; Hold</button>
+</div>
+
+<div id="stage2">
+  <div class="cake-emoji">🎂</div>
+  <div class="wish-title">Happy Birthday Sandeep! 🎉</div>
+  <div class="wish-msg">Aapki zindagi khushiyon, hasi aur pyaar se bhari rahe. Ye saal aapke liye naye sapno aur unki poorti ka saal ho. 🎈✨</div>
+  <div class="actions">
+    <button class="btn-share">📲 Share Karo</button>
+    <button class="btn-thanks">🙏 Thank You Bhejo</button>
+  </div>
+</div>
+
+<audio id="popSound" src="" preload="auto"></audio>
+
+<script>
+  const balloon = document.getElementById('balloon');
+  const holdBtn = document.getElementById('holdBtn');
+  const progressText = document.getElementById('progressText');
+  const stage1 = document.getElementById('stage1');
+  const stage2 = document.getElementById('stage2');
+  const flash = document.getElementById('flash');
+  const body = document.body;
+
+  let scale = 1;
+  let holding = false;
+  let popped = false;
+  let interval = null;
+
+  const MAX_SCALE = 3.4;   // pop threshold
+  const GROW_RATE = 0.045; // per tick
+  const SHRINK_RATE = 0.02;
+
+  function updateBalloon() {
+    balloon.style.transform = `scale(${scale})`;
+    const pct = Math.min(100, Math.round(((scale - 1) / (MAX_SCALE - 1)) * 100));
+    progressText.textContent = pct > 0 ? pct + '%' : '';
+
+    // color shifts redder as it grows
+    const redness = Math.min(255, 200 + pct);
+    balloon.style.background = `radial-gradient(circle at 35% 30%, #ff8fa3, rgb(${redness},${Math.max(30,57-pct*0.4)},${Math.max(50,80-pct*0.6)}))`;
+
+    if (scale >= MAX_SCALE && !popped) {
+      pop();
+    }
+  }
+
+  function tick() {
+    if (holding && !popped) {
+      scale += GROW_RATE;
+    } else if (!holding && scale > 1 && !popped) {
+      scale = Math.max(1, scale - SHRINK_RATE);
+    }
+    updateBalloon();
+  }
+
+  function startHold(e) {
+    e.preventDefault();
+    holding = true;
+    balloon.classList.remove('wobble');
+  }
+
+  function endHold(e) {
+    holding = false;
+  }
+
+  holdBtn.addEventListener('mousedown', startHold);
+  holdBtn.addEventListener('touchstart', startHold);
+  holdBtn.addEventListener('mouseup', endHold);
+  holdBtn.addEventListener('mouseleave', endHold);
+  holdBtn.addEventListener('touchend', endHold);
+
+  interval = setInterval(tick, 60);
+
+  function pop() {
+    popped = true;
+    holding = false;
+
+    // flash
+    flash.style.transition = 'opacity 0.08s';
+    flash.style.opacity = '1';
+    setTimeout(() => { flash.style.opacity = '0'; }, 120);
+
+    // screen shake
+    body.classList.add('shake');
+    setTimeout(() => body.classList.remove('shake'), 400);
+
+    // hide balloon
+    balloon.style.transition = 'transform 0.15s, opacity 0.15s';
+    balloon.style.transform = 'scale(0)';
+    balloon.style.opacity = '0';
+
+    // confetti burst
+    launchConfetti();
+
+    // reveal stage 2 after short delay
+    setTimeout(() => {
+      stage1.style.opacity = '0';
+      setTimeout(() => {
+        stage1.style.display = 'none';
+        stage2.classList.add('show');
+      }, 400);
+    }, 500);
+  }
+
+  function launchConfetti() {
+    const colors = ['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93','#ffe066'];
+    for (let i = 0; i < 60; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+      c.style.width = (Math.random() * 5 + 5) + 'px';
+      c.style.height = (Math.random() * 10 + 8) + 'px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3200);
+    }
+  }
+
+  document.querySelector('.btn-thanks').addEventListener('click', () => {
+    alert('Yahan "Thank You Sandeep" wala mini-wish generate hoga jo wapas share ho sakega!');
+  });
+  document.querySelector('.btn-share').addEventListener('click', () => {
+    const text = encodeURIComponent('🎂 Sandeep ke liye ek surprise wish! Dekho: [aapka-link-yahan]');
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  });
+</script>
+
+</body>
+</html>
