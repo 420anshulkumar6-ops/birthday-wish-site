@@ -196,25 +196,115 @@
     50% { transform: translate(8px, -4px); }
     75% { transform: translate(-4px, 6px); }
   }
+
+  /* Stage 0: Create form */
+  #stage0 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 30px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  #stage0 h1 {
+    color: white;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  #stage0 input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+  }
+
+  #stage0 label {
+    color: white;
+    font-size: 13px;
+    align-self: flex-start;
+    opacity: 0.85;
+    margin-bottom: -8px;
+  }
+
+  #createBtn {
+    background: #ffe066;
+    color: #333;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 6px 0 #d4a900;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  #linkResult {
+    display: none;
+    width: 100%;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px;
+    color: white;
+    font-size: 13px;
+    word-break: break-all;
+    text-align: center;
+  }
+
+  #copyBtn, #waSendBtn {
+    background: white;
+    color: #764ba2;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  #waSendBtn {
+    background: #25D366;
+    color: white;
+    margin-left: 8px;
+  }
 </style>
 </head>
 <body>
 
 <div class="flash" id="flash"></div>
 
-<div id="stage1">
+<!-- Stage 0: Create wish form -->
+<div id="stage0">
+  <h1>🎈 Birthday Wish Banao</h1>
+  <label>Jiska birthday hai uska naam</label>
+  <input type="text" id="toName" placeholder="Jaise: Sandeep" maxlength="20">
+  <label>Aapka naam (sender)</label>
+  <input type="text" id="fromName" placeholder="Jaise: Rahul" maxlength="20">
+  <button id="createBtn">Link Banao 🎁</button>
+
+  <div id="linkResult"></div>
+</div>
+
+<div id="stage1" style="display:none;">
   <div class="balloon-wrap">
     <div class="balloon wobble" id="balloon"></div>
   </div>
   <div class="progress-text" id="progressText"></div>
-  <div class="instruction">🎈 Gubbara phulane ke liye button dabaye rakho</div>
+  <div class="instruction" id="holdInstruction">🎈 Gubbara phulane ke liye button dabaye rakho</div>
   <button id="holdBtn">Press &amp; Hold</button>
 </div>
 
 <div id="stage2">
   <div class="cake-emoji">🎂</div>
-  <div class="wish-title">Happy Birthday Sandeep! 🎉</div>
-  <div class="wish-msg">Aapki zindagi khushiyon, hasi aur pyaar se bhari rahe. Ye saal aapke liye naye sapno aur unki poorti ka saal ho. 🎈✨</div>
+  <div class="wish-title" id="wishTitle">Happy Birthday! 🎉</div>
+  <div class="wish-msg" id="wishMsg">Aapki zindagi khushiyon, hasi aur pyaar se bhari rahe. Ye saal aapke liye naye sapno aur unki poorti ka saal ho. 🎈✨</div>
   <div class="actions">
     <button class="btn-share">📲 Share Karo</button>
     <button class="btn-thanks">🙏 Thank You Bhejo</button>
@@ -224,6 +314,56 @@
 <audio id="popSound" src="" preload="auto"></audio>
 
 <script>
+  // ---------- Step A: Check URL for ?to=Name&from=Name ----------
+  const params = new URLSearchParams(window.location.search);
+  const toName = params.get('to');
+  const fromName = params.get('from');
+
+  const stage0 = document.getElementById('stage0');
+  const stage1El = document.getElementById('stage1');
+
+  if (toName) {
+    // Someone opened a wish link -> skip the form, go straight to balloon
+    stage0.style.display = 'none';
+    stage1El.style.display = 'flex';
+    document.getElementById('holdInstruction').textContent =
+      `🎈 ${toName}, gubbara phulane ke liye button dabaye rakho`;
+    document.getElementById('wishTitle').textContent = `Happy Birthday ${toName}! 🎉`;
+    if (fromName) {
+      document.getElementById('wishMsg').textContent =
+        `${fromName} ki taraf se: Aapki zindagi khushiyon, hasi aur pyaar se bhari rahe. Ye saal naye sapno aur unki poorti ka saal ho. 🎈✨`;
+    }
+  } else {
+    // No name in URL -> show the create form
+    document.getElementById('createBtn').addEventListener('click', () => {
+      const to = document.getElementById('toName').value.trim();
+      const from = document.getElementById('fromName').value.trim();
+      if (!to) { alert('Kripya naam daalein'); return; }
+
+      const baseUrl = window.location.origin + window.location.pathname;
+      const link = `${baseUrl}?to=${encodeURIComponent(to)}${from ? '&from=' + encodeURIComponent(from) : ''}`;
+
+      const resultBox = document.getElementById('linkResult');
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = `
+        <div style="margin-bottom:8px;">✅ Link taiyaar hai!</div>
+        <div style="font-weight:600;">${link}</div>
+        <button id="copyBtn">📋 Copy Link</button>
+        <button id="waSendBtn">📲 WhatsApp Bhejo</button>
+      `;
+
+      document.getElementById('copyBtn').addEventListener('click', () => {
+        navigator.clipboard.writeText(link);
+        alert('Link copy ho gaya!');
+      });
+      document.getElementById('waSendBtn').addEventListener('click', () => {
+        const msg = encodeURIComponent(`🎁 ${to}, tumhare liye kuch khaas bheja hai... kholo aur dekho! 👇\n${link}`);
+        window.open(`https://wa.me/?text=${msg}`, '_blank');
+      });
+    });
+  }
+
+  // ---------- Step B: Balloon press-and-hold logic ----------
   const balloon = document.getElementById('balloon');
   const holdBtn = document.getElementById('holdBtn');
   const progressText = document.getElementById('progressText');
@@ -329,10 +469,14 @@
   }
 
   document.querySelector('.btn-thanks').addEventListener('click', () => {
-    alert('Yahan "Thank You Sandeep" wala mini-wish generate hoga jo wapas share ho sakega!');
+    const baseUrl = window.location.origin + window.location.pathname;
+    const thanksLink = `${baseUrl}?to=${encodeURIComponent(fromName || 'Dost')}&from=${encodeURIComponent(toName || '')}`;
+    const msg = encodeURIComponent(`🙏 Thank you ${fromName || ''}! Ek surprise wapas tumhare liye: ${thanksLink}`);
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
   });
   document.querySelector('.btn-share').addEventListener('click', () => {
-    const text = encodeURIComponent('🎂 Sandeep ke liye ek surprise wish! Dekho: [aapka-link-yahan]');
+    const currentLink = window.location.href;
+    const text = encodeURIComponent(`🎂 ${toName || 'Tumhare'} ke liye ek surprise wish! Dekho: ${currentLink}`);
     window.open(`https://wa.me/?text=${text}`, '_blank');
   });
 </script>
