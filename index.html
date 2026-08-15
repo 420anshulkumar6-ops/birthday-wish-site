@@ -536,4 +536,108 @@
       setTimeout(() => {
         const b = document.createElement('div');
         b.className = 'room-balloon';
-        b.style.le
+        b.style.left = leftPct + '%';
+        b.style.background = colors[i % colors.length];
+        b.style.setProperty('--target-bottom', (Math.random() * 60 + 100) + 'px');
+        room.appendChild(b);
+        requestAnimationFrame(() => b.classList.add('show'));
+        safePlay(popSmallSound);
+      }, i * 200);
+    });
+    this.textContent = 'Aage Badho ➜';
+    this.onclick = () => goToStage(4);
+  });
+
+  // Stage 4 -> Lights
+  document.getElementById('lightsBtn').addEventListener('click', function() {
+    const fairy = document.getElementById('fairyLights');
+    const colors = ['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93','#ffe066'];
+    for (let i = 0; i < 10; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'fairy-dot';
+      dot.style.background = colors[i % colors.length];
+      dot.style.color = colors[i % colors.length];
+      dot.style.animationDelay = (i * 0.1) + 's';
+      fairy.appendChild(dot);
+    }
+    fairy.classList.add('show');
+    document.getElementById('lightOverlay').classList.add('show');
+    safePlay(swooshSound);
+    this.textContent = 'Aage Badho ➜';
+    this.onclick = () => goToStage(5);
+  });
+
+  // Stage 5 -> Cake
+  document.getElementById('cakeBtn').addEventListener('click', function() {
+    document.getElementById('cakeWrap').classList.add('show');
+    safePlay(swooshSound);
+    this.textContent = 'Aage Badho ➜';
+    this.onclick = () => goToStage(6);
+  });
+
+  // Stage 6 -> Final celebration
+  document.getElementById('celebrateBtn').addEventListener('click', function() {
+    const flame = document.getElementById('flame2');
+    flame.classList.add('out');
+
+    safePlay(popBigSound);
+
+    const flash = document.getElementById('flash');
+    flash.style.transition = 'opacity 0.08s';
+    flash.style.opacity = '1';
+    setTimeout(() => { flash.style.opacity = '0'; }, 150);
+
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 400);
+
+    const burst = document.getElementById('burstText');
+    burst.classList.add('pop');
+
+    launchConfetti();
+
+    bgMusic.volume = 0.5;
+    safePlay(bgMusic);
+
+    setTimeout(() => {
+      partyRoom.style.display = 'none';
+      progressBar.style.display = 'none';
+      document.getElementById('stageFinal').classList.add('show');
+    }, 900);
+  });
+
+  function launchConfetti() {
+    const colors = ['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93','#ffe066'];
+    for (let i = 0; i < 80; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+      c.style.width = (Math.random() * 5 + 5) + 'px';
+      c.style.height = (Math.random() * 10 + 8) + 'px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3200);
+    }
+  }
+
+  // Mute toggle
+  document.getElementById('muteBtn').addEventListener('click', (e) => {
+    bgMusic.muted = !bgMusic.muted;
+    e.target.textContent = bgMusic.muted ? '🔇 Music On' : '🔊 Music Off';
+  });
+
+  // Try Yourself -> go to blank create form
+  document.getElementById('tryBtn').addEventListener('click', () => {
+    window.location.href = window.location.origin + window.location.pathname;
+  });
+
+  // Share
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    const currentLink = window.location.href;
+    const text = encodeURIComponent(`🎂 ${toName || 'Tumhare'} ke liye ek surprise party bana ke rakhi hai! Dekho: ${currentLink}`);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  });
+</script>
+
+</body>
+</html>
