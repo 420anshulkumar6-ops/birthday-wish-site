@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Wish Banao</title>
+<title>Birthday Party Banao</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #4a2c5e 100%);
     min-height: 100vh;
     overflow-x: hidden;
     display: flex;
@@ -18,28 +18,60 @@
     touch-action: none;
     user-select: none;
     position: relative;
+    transition: background 0.6s ease;
   }
 
-  /* Floating background decorations */
-  .bg-float {
-    position: fixed;
-    font-size: 28px;
-    opacity: 0.25;
-    animation: floatUp linear infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
-  @keyframes floatUp {
-    from { transform: translateY(110vh) rotate(0deg); }
-    to { transform: translateY(-10vh) rotate(360deg); }
-  }
-
-  #stage0, #stage1, #stage2, #stage3 {
+  .party-room {
     position: relative;
-    z-index: 2;
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    gap: 18px;
   }
 
-  /* ---------- Stage 0: Create form ---------- */
+  /* Progress bar */
+  #progressBar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 12px;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 16px;
+    border-radius: 20px;
+    z-index: 30;
+    display: none;
+  }
+
+  h1, h2 {
+    color: white;
+    text-align: center;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  h1 { font-size: 24px; }
+  h2 { font-size: 18px; opacity: 0.9; }
+
+  .action-btn {
+    background: #ffe066;
+    color: #333;
+    border: none;
+    padding: 15px 34px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 6px 0 #d4a900, 0 8px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.05s;
+  }
+  .action-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #d4a900; }
+
+  /* ---------- Create form (Stage 0) ---------- */
   #stage0 {
     display: flex;
     flex-direction: column;
@@ -51,237 +83,170 @@
     background: rgba(255,255,255,0.08);
     border-radius: 24px;
     backdrop-filter: blur(6px);
-    margin: 20px;
   }
-
-  #stage0 h1 {
-    color: white;
-    font-size: 23px;
-    text-align: center;
-    margin-bottom: 6px;
+  #stage0 label { color: white; font-size: 13px; align-self: flex-start; opacity: 0.9; margin-bottom: -6px; }
+  #stage0 input, #stage0 select, #stage0 textarea {
+    width: 100%; padding: 14px 16px; border-radius: 12px; border: none; font-size: 15px; outline: none; font-family: inherit;
   }
-
-  #stage0 label {
-    color: white;
-    font-size: 13px;
-    align-self: flex-start;
-    opacity: 0.9;
-    margin-bottom: -6px;
-  }
-
-  #stage0 input, #stage0 select {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: none;
-    font-size: 16px;
-    outline: none;
-  }
-
+  #stage0 textarea { resize: none; height: 70px; }
   select { background: white; color: #333; }
 
   .photo-upload-box {
-    width: 100%;
-    border: 2px dashed rgba(255,255,255,0.5);
-    border-radius: 14px;
-    padding: 18px;
-    text-align: center;
-    color: white;
-    font-size: 13px;
-    cursor: pointer;
-    position: relative;
+    width: 100%; border: 2px dashed rgba(255,255,255,0.5); border-radius: 14px;
+    padding: 16px; text-align: center; color: white; font-size: 13px; cursor: pointer;
   }
-
-  .photo-upload-box img {
-    max-width: 100%;
-    max-height: 120px;
-    border-radius: 10px;
-    margin-top: 8px;
-  }
-
+  .photo-upload-box img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-top: 8px; }
   #photoInput { display: none; }
 
-  #createBtn {
-    background: #ffe066;
-    color: #333;
-    border: none;
-    padding: 15px 36px;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 700;
-    box-shadow: 0 6px 0 #d4a900;
-    cursor: pointer;
-    margin-top: 8px;
-    width: 100%;
-  }
-  #createBtn:active { transform: translateY(3px); box-shadow: 0 3px 0 #d4a900; }
-
   #linkResult {
-    display: none;
-    width: 100%;
-    background: rgba(255,255,255,0.15);
-    border-radius: 12px;
-    padding: 14px;
-    color: white;
-    font-size: 13px;
-    word-break: break-all;
-    text-align: center;
+    display: none; width: 100%; background: rgba(255,255,255,0.15); border-radius: 12px;
+    padding: 14px; color: white; font-size: 13px; word-break: break-all; text-align: center;
   }
-
   #copyBtn, #waSendBtn {
-    background: white;
-    color: #764ba2;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    margin-top: 10px;
+    background: white; color: #764ba2; border: none; padding: 10px 18px; border-radius: 30px;
+    font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 10px;
   }
   #waSendBtn { background: #25D366; color: white; margin-left: 8px; }
 
-  /* ---------- Stage 1: Balloon ---------- */
-  #stage1 {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 26px;
-    position: absolute;
-    transition: opacity 0.4s ease;
-  }
+  /* ---------- Party stages (1-6) ---------- */
+  .party-stage { display: none; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+  .party-stage.active { display: flex; }
 
-  .balloon-wrap {
+  .room-visual {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 260px;
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(180deg, #3a3a5c 0%, #2a2a44 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.4);
   }
 
-  .balloon {
-    width: 90px;
-    height: 110px;
-    background: radial-gradient(circle at 35% 30%, #ff8fa3, #e63950);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    position: relative;
-    transform-origin: bottom center;
-    transition: transform 0.08s ease-out;
-    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.15);
-  }
-
-  .balloon::after {
-    content: '';
+  /* Banner */
+  .banner {
     position: absolute;
-    bottom: -22px;
+    top: -60px;
     left: 50%;
     transform: translateX(-50%);
-    width: 2px;
-    height: 60px;
-    background: #ccc;
+    display: flex;
+    gap: 4px;
+    transition: top 0.8s cubic-bezier(.17,.67,.5,1.3);
+  }
+  .banner.show { top: 12px; }
+  .banner-flag {
+    width: 22px; height: 26px;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
   }
 
-  .balloon.wobble { animation: wobble 1.6s ease-in-out infinite; }
-  @keyframes wobble {
-    0%, 100% { transform: rotate(-2deg); }
-    50% { transform: rotate(2deg); }
-  }
-
-  .instruction {
-    color: white;
-    font-size: 17px;
-    text-align: center;
-    padding: 0 24px;
-    font-weight: 500;
-  }
-
-  .progress-text {
-    color: #ffe066;
-    font-size: 16px;
-    font-weight: 700;
-    height: 20px;
-  }
-
-  #holdBtn {
-    background: #ffe066;
-    color: #333;
-    border: none;
-    padding: 16px 40px;
-    border-radius: 50px;
-    font-size: 17px;
-    font-weight: 700;
-    box-shadow: 0 6px 0 #d4a900, 0 8px 15px rgba(0,0,0,0.3);
-    cursor: pointer;
-    transition: transform 0.05s;
-  }
-  #holdBtn:active { transform: translateY(4px); box-shadow: 0 2px 0 #d4a900; }
-
-  /* FATT text burst */
-  .fatt-text {
-    position: fixed;
-    top: 50%;
+  .banner-text {
+    position: absolute;
+    top: -30px;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    font-size: 60px;
-    font-weight: 900;
+    transform: translateX(-50%);
     color: #ffe066;
-    text-shadow: 0 0 20px rgba(0,0,0,0.4), 3px 3px 0 #e63950;
-    z-index: 20;
+    font-weight: 800;
+    font-size: 15px;
+    white-space: nowrap;
+    transition: top 0.8s cubic-bezier(.17,.67,.5,1.3) 0.2s;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  .banner-text.show { top: 45px; }
+
+  /* Balloons in room */
+  .room-balloon {
+    position: absolute;
+    bottom: -80px;
+    width: 34px;
+    height: 42px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    transition: bottom 1s cubic-bezier(.17,.67,.5,1.3);
+  }
+  .room-balloon.show { bottom: var(--target-bottom, 20px); }
+
+  /* Lights overlay */
+  .light-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
     pointer-events: none;
   }
-  .fatt-text.pop {
-    animation: fattPop 0.55s cubic-bezier(.17,.89,.32,1.49) forwards;
+  .light-overlay.show {
+    opacity: 1;
+    animation: discoColor 2.4s ease-in-out infinite;
   }
+  @keyframes discoColor {
+    0%   { background: radial-gradient(circle, rgba(255,0,100,0.35), transparent 70%); }
+    25%  { background: radial-gradient(circle, rgba(0,180,255,0.35), transparent 70%); }
+    50%  { background: radial-gradient(circle, rgba(255,220,0,0.35), transparent 70%); }
+    75%  { background: radial-gradient(circle, rgba(150,0,255,0.35), transparent 70%); }
+    100% { background: radial-gradient(circle, rgba(255,0,100,0.35), transparent 70%); }
+  }
+
+  .fairy-lights {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .fairy-lights.show { opacity: 1; }
+  .fairy-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    animation: twinkle 1s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; box-shadow: 0 0 8px currentColor; } }
+
+  /* Cake */
+  .cake-wrap {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: bottom 0.9s cubic-bezier(.17,.67,.5,1.3);
+    font-size: 56px;
+    text-align: center;
+  }
+  .cake-wrap.show { bottom: 16px; }
+  .candle-flame { display: inline-block; animation: flicker 0.4s ease-in-out infinite alternate; }
+  @keyframes flicker { from { opacity: 1; } to { opacity: 0.6; transform: scale(0.9); } }
+  .candle-flame.out { animation: none; opacity: 0; }
+
+  .instruction-text { color: white; font-size: 15px; opacity: 0.9; }
+
+  /* FATT / POP text */
+  .burst-text {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 48px; font-weight: 900; color: #ffe066;
+    text-shadow: 0 0 20px rgba(0,0,0,0.4), 3px 3px 0 #e63950;
+    z-index: 25; pointer-events: none;
+  }
+  .burst-text.pop { animation: fattPop 0.55s cubic-bezier(.17,.89,.32,1.49) forwards; }
   @keyframes fattPop {
     0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 1; }
     60% { transform: translate(-50%, -50%) scale(1.3) rotate(5deg); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1.6) rotate(0deg); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1.5) rotate(0deg); opacity: 0; }
   }
 
-  /* Confetti */
   .confetti {
-    position: fixed;
-    top: -10px;
-    width: 8px;
-    height: 14px;
-    opacity: 0.9;
-    animation: fall linear forwards;
-    z-index: 5;
+    position: fixed; top: -10px; width: 8px; height: 14px; opacity: 0.9;
+    animation: fall linear forwards; z-index: 5;
   }
-  @keyframes fall {
-    to { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
-  }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0.3; } }
 
-  .flash {
-    position: fixed;
-    inset: 0;
-    background: white;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 10;
-  }
-
+  .flash { position: fixed; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 10; }
   .shake { animation: shakeAnim 0.4s; }
   @keyframes shakeAnim {
     0%, 100% { transform: translate(0,0); }
-    25% { transform: translate(-8px, 4px); }
-    50% { transform: translate(8px, -4px); }
-    75% { transform: translate(-4px, 6px); }
+    25% { transform: translate(-8px, 4px); } 50% { transform: translate(8px, -4px); } 75% { transform: translate(-4px, 6px); }
   }
 
-  /* ---------- Stage 2: Reveal ---------- */
-  #stage2 {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    text-align: center;
-    padding: 30px 24px;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    max-width: 400px;
-  }
-  #stage2.show { display: flex; opacity: 1; }
+  /* ---------- Final reveal ---------- */
+  #stageFinal { display: none; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+  #stageFinal.show { display: flex; }
 
   .reveal-card {
     background: rgba(255,255,255,0.12);
@@ -290,269 +255,196 @@
     padding: 26px 22px;
     backdrop-filter: blur(8px);
     box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-  }
-
-  .cake-emoji {
-    font-size: 64px;
-    animation: pop-in 0.5s cubic-bezier(.17,.89,.32,1.49);
-  }
-  @keyframes pop-in { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
-  .wish-photo {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #ffe066;
-    margin: 6px auto;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    display: none;
-  }
-
-  .wish-title {
-    color: white;
-    font-size: 27px;
-    font-weight: 800;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    margin-top: 8px;
-  }
-
-  .wish-msg {
-    color: #fff;
-    font-size: 15.5px;
-    max-width: 320px;
-    line-height: 1.7;
-    opacity: 0.95;
-    margin-top: 4px;
-  }
-
-  .sender-tag {
-    color: #ffe066;
-    font-size: 13px;
-    font-weight: 600;
-    margin-top: 6px;
-  }
-
-  .actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .actions button {
-    padding: 13px 22px;
-    border-radius: 30px;
-    border: none;
-    font-weight: 700;
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  }
-
-  .btn-share { background: #25D366; color: white; }
-  .btn-thanks { background: white; color: #764ba2; }
-
-  #muteBtn {
-    margin-top: 14px;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.5);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    cursor: pointer;
-  }
-
-  /* ---------- Stage 3: Thank You (simple, standalone) ---------- */
-  #stage3 {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    text-align: center;
-    padding: 30px 24px;
     max-width: 380px;
   }
-  #stage3.show { display: flex; }
-
-  .thanks-card {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 24px;
-    padding: 30px 24px;
-    backdrop-filter: blur(8px);
+  .wish-photo {
+    width: 120px; height: 120px; border-radius: 50%; object-fit: cover;
+    border: 4px solid #ffe066; margin: 4px auto 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); display: none;
   }
+  .wish-title { color: white; font-size: 25px; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .wish-msg { color: #fff; font-size: 15px; max-width: 320px; line-height: 1.7; opacity: 0.95; margin-top: 8px; }
+  .sender-tag { color: #ffe066; font-size: 13px; font-weight: 600; margin-top: 8px; }
 
-  .thanks-emoji {
-    font-size: 60px;
-    animation: pop-in 0.5s cubic-bezier(.17,.89,.32,1.49);
+  .final-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+  .final-actions button {
+    padding: 12px 20px; border-radius: 30px; border: none; font-weight: 700; font-size: 13px; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
-
-  .thanks-title {
-    color: white;
-    font-size: 24px;
-    font-weight: 800;
-    margin-top: 10px;
-  }
-
-  .thanks-msg {
-    color: white;
-    font-size: 15px;
-    opacity: 0.95;
-    margin-top: 8px;
-    line-height: 1.6;
+  .btn-share { background: #25D366; color: white; }
+  .btn-try { background: white; color: #764ba2; }
+  #muteBtn {
+    margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.5); color: white;
+    padding: 7px 14px; border-radius: 20px; font-size: 11px; cursor: pointer;
   }
 </style>
 </head>
 <body>
 
+<div id="progressBar"></div>
 <div class="flash" id="flash"></div>
-<div class="fatt-text" id="fattText">FATT!! 🎈</div>
+<div class="burst-text" id="burstText">🎉 POP! 🎉</div>
 
-<!-- Stage 0: Create wish form -->
+<!-- Stage 0: Create form -->
 <div id="stage0">
-  <h1>🎈 Birthday Wish Banao</h1>
-
+  <h1>🎉 Birthday Party Banao</h1>
   <label>Jiska birthday hai uska naam</label>
   <input type="text" id="toName" placeholder="Jaise: Sandeep" maxlength="20">
-
   <label>Aapka naam (sender)</label>
   <input type="text" id="fromName" placeholder="Jaise: Rahul" maxlength="20">
-
-  <label>Theme chuno</label>
-  <select id="themeSelect">
-    <option value="classic">🎈 Classic Balloon</option>
-    <option value="fireworks">🎆 Fireworks Party</option>
-    <option value="cake">🎂 Cake Celebration</option>
-  </select>
-
+  <label>Custom message (optional — khaali chhodo to default chalega)</label>
+  <textarea id="customMsg" placeholder="Apna khud ka wish message likho..." maxlength="200"></textarea>
   <label>Photo daalo (optional)</label>
   <div class="photo-upload-box" id="photoBox">
     📷 Photo choose karne ke liye tap karo
     <img id="photoPreview" style="display:none;">
   </div>
   <input type="file" id="photoInput" accept="image/*">
-
-  <button id="createBtn">Link Banao 🎁</button>
-
+  <button class="action-btn" id="createBtn" style="width:100%;">Party Link Banao 🎁</button>
   <div id="linkResult"></div>
 </div>
 
-<!-- Stage 1: Balloon press-and-hold -->
-<div id="stage1">
-  <div class="balloon-wrap">
-    <div class="balloon wobble" id="balloon"></div>
+<!-- Party experience container -->
+<div class="party-room" id="partyRoom" style="display:none;">
+
+  <!-- Stage 1: Welcome -->
+  <div class="party-stage" id="pStage1">
+    <h1 id="welcomeText">Rahul, aaj aapka special din hai! 🎉</h1>
+    <h2>Aao milkar celebrate karein</h2>
+    <button class="action-btn" onclick="goToStage(2)">Let's Start</button>
   </div>
-  <div class="progress-text" id="progressText"></div>
-  <div class="instruction" id="holdInstruction">🎈 Gubbara phulane ke liye button dabaye rakho</div>
-  <button id="holdBtn">Press &amp; Hold</button>
+
+  <!-- Stage 2: Decoration -->
+  <div class="party-stage" id="pStage2">
+    <h2>Party room taiyaar karte hain...</h2>
+    <div class="room-visual" id="room2">
+      <div class="banner-text" id="bannerText">HAPPY BIRTHDAY</div>
+      <div class="banner" id="banner"></div>
+    </div>
+    <div class="instruction-text">Sabse pehle decoration lagate hain 🎊</div>
+    <button class="action-btn" id="decorateBtn">Decoration Karo</button>
+  </div>
+
+  <!-- Stage 3: Balloons -->
+  <div class="party-stage" id="pStage3">
+    <h2>Ab thoda rangeen karte hain 🎈</h2>
+    <div class="room-visual" id="room3">
+      <div class="banner-text show">HAPPY BIRTHDAY</div>
+      <div class="banner show" id="bannerClone"></div>
+    </div>
+    <div class="instruction-text">Balloons laga dete hain</div>
+    <button class="action-btn" id="balloonBtn">Balloon Lagao</button>
+  </div>
+
+  <!-- Stage 4: Lights -->
+  <div class="party-stage" id="pStage4">
+    <h2>Ab mahol jamate hain ✨</h2>
+    <div class="room-visual" id="room4">
+      <div class="banner-text show">HAPPY BIRTHDAY</div>
+      <div class="banner show" id="bannerClone2"></div>
+      <div class="fairy-lights" id="fairyLights"></div>
+      <div class="light-overlay" id="lightOverlay"></div>
+    </div>
+    <div class="instruction-text">Lights on karte hain</div>
+    <button class="action-btn" id="lightsBtn">Lights On Karo</button>
+  </div>
+
+  <!-- Stage 5: Cake -->
+  <div class="party-stage" id="pStage5">
+    <h2>Ab sabse zaroori cheez... 🎂</h2>
+    <div class="room-visual" id="room5">
+      <div class="banner-text show">HAPPY BIRTHDAY</div>
+      <div class="light-overlay show"></div>
+      <div class="cake-wrap" id="cakeWrap">
+        🎂<span class="candle-flame" id="flame">🕯️</span>
+      </div>
+    </div>
+    <div class="instruction-text">Cake layenge?</div>
+    <button class="action-btn" id="cakeBtn">Cake Layao</button>
+  </div>
+
+  <!-- Stage 6: Final celebration trigger -->
+  <div class="party-stage" id="pStage6">
+    <h2>Sab kuch taiyaar hai! 🎊</h2>
+    <div class="room-visual" id="room6">
+      <div class="banner-text show">HAPPY BIRTHDAY</div>
+      <div class="light-overlay show"></div>
+      <div class="cake-wrap show">
+        🎂<span class="candle-flame" id="flame2">🕯️</span>
+      </div>
+    </div>
+    <div class="instruction-text" id="finalInstruction">Ab cake kaato aur celebration shuru karo!</div>
+    <button class="action-btn" id="celebrateBtn">🎉 Cake Kaato aur Celebrate Karo</button>
+  </div>
+
 </div>
 
-<!-- Stage 2: Wish Reveal -->
-<div id="stage2">
+<!-- Final reveal -->
+<div id="stageFinal">
   <div class="reveal-card">
-    <div class="cake-emoji" id="cakeEmoji">🎂</div>
     <img class="wish-photo" id="wishPhoto">
     <div class="wish-title" id="wishTitle">Happy Birthday! 🎉</div>
-    <div class="wish-msg" id="wishMsg">Aapki zindagi khushiyon, hasi aur pyaar se bhari rahe. Ye saal aapke liye naye sapno aur unki poorti ka saal ho. 🎈✨</div>
+    <div class="wish-msg" id="wishMsg"></div>
     <div class="sender-tag" id="senderTag"></div>
-    <div class="actions">
+    <div class="final-actions">
       <button class="btn-share" id="shareBtn">📲 Share Karo</button>
-      <button class="btn-thanks" id="thanksBtn">🙏 Thank You Bhejo</button>
+      <button class="btn-try" id="tryBtn">✨ Try Yourself</button>
     </div>
     <button id="muteBtn">🔊 Music Off</button>
   </div>
 </div>
 
-<!-- Stage 3: Thank You standalone -->
-<div id="stage3">
-  <div class="thanks-card">
-    <div class="thanks-emoji">🙏💛</div>
-    <div class="thanks-title" id="thanksTitle">Thank You!</div>
-    <div class="thanks-msg" id="thanksMsg">Aapka pyaar aur wishes dil ko chhoo gaye. Bahut bahut shukriya! 🎉</div>
-  </div>
-</div>
-
-<audio id="inflateSound" loop preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/24/audio_bdfe4b1155.mp3?filename=balloon-inflating-2-98572.mp3" type="audio/mpeg">
-</audio>
-<audio id="popSound" preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_88447e769f.mp3?filename=balloon-pop-1-6997.mp3" type="audio/mpeg">
-</audio>
-<audio id="bgMusic" loop preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8e70c5393.mp3?filename=happy-birthday-115763.mp3" type="audio/mpeg">
-</audio>
+<audio id="swooshSound" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=whoosh-6316.mp3" type="audio/mpeg"></audio>
+<audio id="popSmallSound" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_88447e769f.mp3?filename=balloon-pop-1-6997.mp3" type="audio/mpeg"></audio>
+<audio id="popBigSound" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_88447e769f.mp3?filename=balloon-pop-1-6997.mp3" type="audio/mpeg"></audio>
+<audio id="bgMusic" loop preload="auto"><source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8e70c5393.mp3?filename=happy-birthday-115763.mp3" type="audio/mpeg"></audio>
 
 <script>
-  // ---------- Background floating decorations ----------
-  function addFloaters(emojis, count) {
-    for (let i = 0; i < count; i++) {
-      const f = document.createElement('div');
-      f.className = 'bg-float';
-      f.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      f.style.left = Math.random() * 100 + 'vw';
-      f.style.animationDuration = (Math.random() * 8 + 10) + 's';
-      f.style.animationDelay = (Math.random() * 10) + 's';
-      f.style.fontSize = (Math.random() * 20 + 20) + 'px';
-      document.body.appendChild(f);
-    }
-  }
-
-  // ---------- Read URL parameters ----------
+  // ================= Setup =================
   const params = new URLSearchParams(window.location.search);
   const toName = params.get('to');
   const fromName = params.get('from');
-  const theme = params.get('theme') || 'classic';
+  const customMsgParam = params.get('msg');
   const photoData = params.get('photo');
-  const mode = params.get('mode'); // 'thanks' for standalone thank-you links
-
-  const THEMES = {
-    classic:   { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', emoji: '🎈', floaters: ['🎈','🎉','✨'] },
-    fireworks: { bg: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)', emoji: '🎆', floaters: ['🎆','✨','🎇'] },
-    cake:      { bg: 'linear-gradient(135deg, #ff9a8b 0%, #ff6a88 50%, #ff99ac 100%)', emoji: '🎂', floaters: ['🎂','🍰','🎈'] }
-  };
 
   const stage0 = document.getElementById('stage0');
-  const stage1El = document.getElementById('stage1');
-  const stage3El = document.getElementById('stage3');
+  const partyRoom = document.getElementById('partyRoom');
+  const progressBar = document.getElementById('progressBar');
+
+  const swooshSound = document.getElementById('swooshSound');
+  const popSmallSound = document.getElementById('popSmallSound');
+  const popBigSound = document.getElementById('popBigSound');
   const bgMusic = document.getElementById('bgMusic');
-  const inflateSound = document.getElementById('inflateSound');
 
-  document.body.style.background = THEMES[theme].bg;
-  addFloaters(THEMES[theme].floaters, 12);
+  function safePlay(el) { el.currentTime = 0; el.play().catch(() => {}); }
 
-  // ---------- ROUTING ----------
-  if (mode === 'thanks') {
-    // Standalone thank-you page (no balloon, no birthday wish)
+  const DEFAULT_MSG = "Aapki zindagi khushiyon, hasi aur pyaar se bhari rahe. Ye saal aapke liye naye sapno aur unki poorti ka saal ho. 🎈✨";
+
+  // ================= Routing =================
+  if (toName) {
     stage0.style.display = 'none';
-    stage3El.classList.add('show');
-    const thankFrom = toName || 'Dost'; // reused 'to' param as the receiver of thanks
-    document.getElementById('thanksTitle').textContent = `Thank You ${thankFrom}! 🎉`;
-    if (fromName) {
-      document.getElementById('thanksMsg').textContent =
-        `${fromName} ki taraf se: Aapka pyaar aur wishes dil ko chhoo gaye. Bahut bahut shukriya! 🙏💛`;
-    }
-  } else if (toName) {
-    // Wish link opened -> show balloon experience
-    stage0.style.display = 'none';
-    stage1El.style.display = 'flex';
-    document.getElementById('holdInstruction').textContent =
-      `${THEMES[theme].emoji} ${toName}, gubbara phulane ke liye button dabaye rakho`;
+    partyRoom.style.display = 'flex';
+    progressBar.style.display = 'block';
+
+    document.getElementById('welcomeText').textContent = `${toName}, aaj aapka special din hai! 🎉`;
     document.getElementById('wishTitle').textContent = `Happy Birthday ${toName}! 🎉`;
-    if (fromName) {
-      document.getElementById('wishMsg').textContent =
-        `Aapki zindagi khushiyon, hasi aur pyaar se bhari rahe. Ye saal naye sapno aur unki poorti ka saal ho. 🎈✨`;
-      document.getElementById('senderTag').textContent = `— ${fromName} ki taraf se ❤️`;
-    }
+    document.getElementById('wishMsg').textContent = customMsgParam ? decodeURIComponent(customMsgParam) : DEFAULT_MSG;
+    if (fromName) document.getElementById('senderTag').textContent = `— ${fromName} ki taraf se ❤️`;
     if (photoData) {
       const img = document.getElementById('wishPhoto');
       img.src = decodeURIComponent(photoData);
       img.style.display = 'block';
     }
+
+    buildBanner('banner');
+    buildBanner('bannerClone');
+    buildBanner('bannerClone2');
+    goToStage(1);
   } else {
-    // Show create form
+    setupForm();
+  }
+
+  // ================= Form (create link) =================
+  function setupForm() {
     const photoBox = document.getElementById('photoBox');
     const photoInput = document.getElementById('photoInput');
     const photoPreview = document.getElementById('photoPreview');
@@ -574,14 +466,14 @@
     document.getElementById('createBtn').addEventListener('click', () => {
       const to = document.getElementById('toName').value.trim();
       const from = document.getElementById('fromName').value.trim();
-      const chosenTheme = document.getElementById('themeSelect').value;
+      const customMsg = document.getElementById('customMsg').value.trim();
       if (!to) { alert('Kripya naam daalein'); return; }
 
       const baseUrl = window.location.origin + window.location.pathname;
-      let link = `${baseUrl}?to=${encodeURIComponent(to)}${from ? '&from=' + encodeURIComponent(from) : ''}&theme=${chosenTheme}`;
-
-      // Note: embedding photo directly in URL only works for small images / short-term sharing
-      if (uploadedPhotoBase64 && uploadedPhotoBase64.length < 1500) {
+      let link = `${baseUrl}?to=${encodeURIComponent(to)}`;
+      if (from) link += `&from=${encodeURIComponent(from)}`;
+      if (customMsg) link += `&msg=${encodeURIComponent(customMsg)}`;
+      if (uploadedPhotoBase64 && uploadedPhotoBase64.length < 1800) {
         link += `&photo=${encodeURIComponent(uploadedPhotoBase64)}`;
       }
 
@@ -593,156 +485,55 @@
         <button id="copyBtn">📋 Copy Link</button>
         <button id="waSendBtn">📲 WhatsApp Bhejo</button>
       `;
-
       document.getElementById('copyBtn').addEventListener('click', () => {
         navigator.clipboard.writeText(link);
         alert('Link copy ho gaya!');
       });
       document.getElementById('waSendBtn').addEventListener('click', () => {
-        const msg = encodeURIComponent(`🎁 ${to}, tumhare liye kuch khaas bheja hai... kholo aur dekho! 👇\n${link}`);
+        const msg = encodeURIComponent(`🎁 ${to}, tumhare liye kuch khaas taiyaar kiya hai... kholo aur khud dekho! 👇\n${link}`);
         window.open(`https://wa.me/?text=${msg}`, '_blank');
       });
     });
   }
 
-  // ---------- Balloon press-and-hold logic ----------
-  const balloon = document.getElementById('balloon');
-  const holdBtn = document.getElementById('holdBtn');
-  const progressText = document.getElementById('progressText');
-  const stage1 = document.getElementById('stage1');
-  const stage2 = document.getElementById('stage2');
-  const flash = document.getElementById('flash');
-  const fattText = document.getElementById('fattText');
-  const body = document.body;
-
-  let scale = 1;
-  let holding = false;
-  let popped = false;
-
-  const MAX_SCALE = 3.4;
-  const GROW_RATE = 0.045;
-  const SHRINK_RATE = 0.02;
-
-  function updateBalloon() {
-    balloon.style.transform = `scale(${scale})`;
-    const pct = Math.min(100, Math.round(((scale - 1) / (MAX_SCALE - 1)) * 100));
-    progressText.textContent = pct > 0 ? pct + '%' : '';
-
-    const redness = Math.min(255, 200 + pct);
-    balloon.style.background = `radial-gradient(circle at 35% 30%, #ff8fa3, rgb(${redness},${Math.max(30,57-pct*0.4)},${Math.max(50,80-pct*0.6)}))`;
-
-    if (scale >= MAX_SCALE && !popped) pop();
-  }
-
-  function tick() {
-    if (holding && !popped) {
-      scale += GROW_RATE;
-    } else if (!holding && scale > 1 && !popped) {
-      scale = Math.max(1, scale - SHRINK_RATE);
-      if (scale === 1) { inflateSound.pause(); inflateSound.currentTime = 0; }
+  // ================= Banner builder =================
+  function buildBanner(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const colors = ['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93'];
+    for (let i = 0; i < 8; i++) {
+      const flag = document.createElement('div');
+      flag.className = 'banner-flag';
+      flag.style.background = colors[i % colors.length];
+      el.appendChild(flag);
     }
-    updateBalloon();
   }
 
-  function startHold(e) {
-    e.preventDefault();
-    if (popped) return;
-    holding = true;
-    balloon.classList.remove('wobble');
-    inflateSound.currentTime = 0;
-    inflateSound.play().catch(() => {});
+  // ================= Stage navigation =================
+  let currentStage = 1;
+  function goToStage(n) {
+    document.querySelectorAll('.party-stage').forEach(s => s.classList.remove('active'));
+    document.getElementById('pStage' + n).classList.add('active');
+    currentStage = n;
+    progressBar.textContent = `Step ${n} of 6`;
   }
 
-  function endHold() {
-    holding = false;
-    if (!popped) inflateSound.pause();
-  }
+  // Stage 2 -> Decoration
+  document.getElementById('decorateBtn').addEventListener('click', function() {
+    safePlay(swooshSound);
+    document.getElementById('banner').classList.add('show');
+    document.getElementById('bannerText').classList.add('show');
+    this.textContent = 'Aage Badho ➜';
+    this.onclick = () => goToStage(3);
+  });
 
-  holdBtn.addEventListener('mousedown', startHold);
-  holdBtn.addEventListener('touchstart', startHold);
-  holdBtn.addEventListener('mouseup', endHold);
-  holdBtn.addEventListener('mouseleave', endHold);
-  holdBtn.addEventListener('touchend', endHold);
-
-  setInterval(tick, 60);
-
-  function pop() {
-    popped = true;
-    holding = false;
-
-    inflateSound.pause();
-    inflateSound.currentTime = 0;
-
-    const popSound = document.getElementById('popSound');
-    popSound.currentTime = 0;
-    popSound.play().catch(() => {});
-
-    flash.style.transition = 'opacity 0.08s';
-    flash.style.opacity = '1';
-    setTimeout(() => { flash.style.opacity = '0'; }, 120);
-
-    body.classList.add('shake');
-    setTimeout(() => body.classList.remove('shake'), 400);
-
-    balloon.style.transition = 'transform 0.15s, opacity 0.15s';
-    balloon.style.transform = 'scale(0)';
-    balloon.style.opacity = '0';
-
-    fattText.classList.add('pop');
-
-    launchConfetti();
-
-    bgMusic.volume = 0.5;
-    bgMusic.play().catch(() => {});
-
-    setTimeout(() => {
-      stage1.style.opacity = '0';
+  // Stage 3 -> Balloons
+  document.getElementById('balloonBtn').addEventListener('click', function() {
+    const room = document.getElementById('room3');
+    const colors = ['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93','#ff8fa3'];
+    const positions = [10, 25, 40, 55, 70, 85];
+    positions.forEach((leftPct, i) => {
       setTimeout(() => {
-        stage1.style.display = 'none';
-        stage2.classList.add('show');
-      }, 400);
-    }, 700);
-  }
-
-  function launchConfetti() {
-    const colors = ['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93','#ffe066'];
-    for (let i = 0; i < 70; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      c.style.left = Math.random() * 100 + 'vw';
-      c.style.background = colors[Math.floor(Math.random()*colors.length)];
-      c.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
-      c.style.width = (Math.random() * 5 + 5) + 'px';
-      c.style.height = (Math.random() * 10 + 8) + 'px';
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 3200);
-    }
-  }
-
-  document.getElementById('muteBtn').addEventListener('click', (e) => {
-    if (bgMusic.muted) {
-      bgMusic.muted = false;
-      e.target.textContent = '🔊 Music Off';
-    } else {
-      bgMusic.muted = true;
-      e.target.textContent = '🔇 Music On';
-    }
-  });
-
-  // Thank You -> simple standalone thank-you link (no balloon)
-  document.getElementById('thanksBtn')?.addEventListener('click', () => {
-    const baseUrl = window.location.origin + window.location.pathname;
-    const thanksLink = `${baseUrl}?mode=thanks&to=${encodeURIComponent(fromName || 'Dost')}&from=${encodeURIComponent(toName || '')}`;
-    const msg = encodeURIComponent(`🙏 Thank you ${fromName || ''}! ${thanksLink}`);
-    window.open(`https://wa.me/?text=${msg}`, '_blank');
-  });
-
-  document.getElementById('shareBtn')?.addEventListener('click', () => {
-    const currentLink = window.location.href;
-    const text = encodeURIComponent(`🎂 ${toName || 'Tumhare'} ke liye ek surprise wish! Dekho: ${currentLink}`);
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-  });
-</script>
-
-</body>
-</html>
+        const b = document.createElement('div');
+        b.className = 'room-balloon';
+        b.style.le
