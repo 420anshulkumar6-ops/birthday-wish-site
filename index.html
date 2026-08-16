@@ -61,6 +61,32 @@
         input[type="file"] {
             padding: 8px;
             border: none;
+            flex: 1;
+        }
+        .upload-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .upload-btn {
+            background: #00ffff;
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .upload-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        .status-text {
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
         .btn {
             background: linear-gradient(45deg, #ff1493, #8a2be2);
@@ -90,11 +116,6 @@
             margin: 20px 0;
             border: 1px dashed #555;
             border-radius: 8px;
-        }
-        #loading-screen {
-            display: none;
-            margin-top: 15px;
-            color: #00ffff;
         }
         #generated-link-box {
             display: none;
@@ -130,34 +151,44 @@
                 <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
             </div>
 
-            <!-- Memory Timeline (Optional Photos) -->
+            <!-- Memory Timeline (Optional Photos with Live Upload) -->
             <h3 style="color: #00ffff; font-size: 18px;">📸 Scrollable Memory Timeline (Optional)</h3>
             
             <div class="input-group">
                 <label>Memory 1 (Past / Childhood)</label>
-                <input type="file" id="photo1" accept="image/*">
+                <div class="upload-row">
+                    <input type="file" id="file1" accept="image/*">
+                    <button type="button" class="upload-btn" onclick="uploadSingleImage('1')">Upload</button>
+                </div>
+                <div id="status1" class="status-text" style="color: #ff1493;"></div>
+                <input type="hidden" id="url1">
                 <input type="text" id="cap1" placeholder="Caption: Hum pehli baar yahan mile the...">
             </div>
 
             <div class="input-group">
                 <label>Memory 2 (Funny Moment)</label>
-                <input type="file" id="photo2" accept="image/*">
+                <div class="upload-row">
+                    <input type="file" id="file2" accept="image/*">
+                    <button type="button" class="upload-btn" onclick="uploadSingleImage('2')">Upload</button>
+                </div>
+                <div id="status2" class="status-text" style="color: #ff1493;"></div>
+                <input type="hidden" id="url2">
                 <input type="text" id="cap2" placeholder="Caption: Tumhari sabse funny photo...">
             </div>
 
             <div class="input-group">
                 <label>Memory 3 (Recent / Best Photo)</label>
-                <input type="file" id="photo3" accept="image/*">
+                <div class="upload-row">
+                    <input type="file" id="file3" accept="image/*">
+                    <button type="button" class="upload-btn" onclick="uploadSingleImage('3')">Upload</button>
+                </div>
+                <div id="status3" class="status-text" style="color: #ff1493;"></div>
+                <input type="hidden" id="url3">
                 <input type="text" id="cap3" placeholder="Caption: Aaj bhi tum waise hi ho...">
             </div>
 
-            <button type="submit" class="btn">🪄 Generate Magic Link</button>
+            <button type="submit" class="btn">🪄 Generate Link Instantly</button>
         </form>
-
-        <div id="loading-screen">
-            <h3>Uploading Magic... Please wait! ⏳<br><small>(Photos me thoda time lag sakta hai)</small></h3>
-            <div class="ad-space">Google AdSense Banner (Loading Screen)</div>
-        </div>
 
         <div id="generated-link-box">
             <p>Your unique link is ready!</p>
@@ -168,64 +199,88 @@
 
     <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
 
-    <!-- Firebase Scripts (Firestore + Storage dono) -->
+    <!-- Firebase Scripts (Firestore + Storage) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
     <script>
+        // Aapki Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
             projectId: "birthday-maker-58e43",
             storageBucket: "birthday-maker-58e43.firebasestorage.app",
             messagingSenderId: "213307256948",
-            appId: "1:213307256948:web:4731c4d0c42ee6e978e121",
-            measurementId: "G-Z2PYMXNTXC"
+            appId: "1:213307256948:web:4731c4d0c42ee6e978e121"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // Photo upload karne ka function
-        async function uploadImage(inputId) {
-            let fileInput = document.getElementById(inputId);
-            if(fileInput.files.length > 0) {
-                let file = fileInput.files[0];
-                let storageRef = storage.ref('timeline_photos/' + Date.now() + '_' + file.name);
-                await storageRef.put(file);
-                let downloadURL = await storageRef.getDownloadURL();
-                return downloadURL;
+        // Individual Photo Upload Logic with Progress Bar
+        function uploadSingleImage(idNumber) {
+            let fileInput = document.getElementById('file' + idNumber);
+            let statusText = document.getElementById('status' + idNumber);
+            let urlInput = document.getElementById('url' + idNumber);
+            let uploadBtn = fileInput.nextElementSibling;
+
+            if(fileInput.files.length === 0) {
+                statusText.innerText = "⚠️ Please select a photo first!";
+                return;
             }
-            return ""; // Agar photo upload nahi ki toh khali bhej do
+
+            let file = fileInput.files[0];
+            let storageRef = storage.ref('timeline_photos/' + Date.now() + '_' + file.name);
+            let uploadTask = storageRef.put(file);
+
+            // Button ko disable kar do taaki double click na ho
+            uploadBtn.disabled = true;
+            uploadBtn.style.background = "#555";
+
+            // Upload progress track karna
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    statusText.innerText = "Uploading: " + Math.round(progress) + "% ⏳";
+                    statusText.style.color = "#00ffff";
+                },
+                (error) => {
+                    statusText.innerText = "❌ Upload failed! Try again.";
+                    statusText.style.color = "#ff4444";
+                    uploadBtn.disabled = false;
+                    uploadBtn.style.background = "#00ffff";
+                },
+                () => {
+                    // Upload Complete! URL save kar lo
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        urlInput.value = downloadURL;
+                        statusText.innerText = "✅ Uploaded Successfully!";
+                        statusText.style.color = "#25D366";
+                        uploadBtn.style.display = "none"; // Button hata do
+                    });
+                }
+            );
         }
 
-        document.getElementById("wish-form").addEventListener("submit", async function(e) {
+        // Final Form Submit (Ab yeh Instant Hoga!)
+        document.getElementById("wish-form").addEventListener("submit", function(e) {
             e.preventDefault(); 
             
             this.style.display = "none"; 
-            document.getElementById("loading-screen").style.display = "block"; 
             
-            try {
-                // 1. Pehle teeno photos upload hongi (agar select ki hain)
-                let url1 = await uploadImage("photo1");
-                let url2 = await uploadImage("photo2");
-                let url3 = await uploadImage("photo3");
-
-                // 2. Fir database me saara data save hoga
-                let docRef = await db.collection("wishes").add({
-                    name: document.getElementById("bName").value,
-                    password: document.getElementById("bPassword").value,
-                    message: document.getElementById("bMessage").value,
-                    photo1: url1, cap1: document.getElementById("cap1").value,
-                    photo2: url2, cap2: document.getElementById("cap2").value,
-                    photo3: url3, cap3: document.getElementById("cap3").value,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // 3. Success! Link generate karke dikhao
-                document.getElementById("loading-screen").style.display = "none";
+            // Database me data instantly add karna (URLs hidden input se lekar)
+            db.collection("wishes").add({
+                name: document.getElementById("bName").value,
+                password: document.getElementById("bPassword").value,
+                message: document.getElementById("bMessage").value,
+                photo1: document.getElementById("url1").value, cap1: document.getElementById("cap1").value,
+                photo2: document.getElementById("url2").value, cap2: document.getElementById("cap2").value,
+                photo3: document.getElementById("url3").value, cap3: document.getElementById("cap3").value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then((docRef) => {
                 document.getElementById("generated-link-box").style.display = "block";
                 
                 let realLink = window.location.origin + "/wish.html?id=" + docRef.id;
@@ -235,13 +290,12 @@
                     let text = `I have a magical surprise for you! ✨ Unlock it here: ${realLink}`;
                     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
                 };
-
-            } catch (error) {
+            })
+            .catch((error) => {
                 console.error("Error: ", error);
-                alert("Upload me dikkat aayi! Kripya dobara try karein.");
-                document.getElementById("loading-screen").style.display = "none";
-                document.getElementById("wish-form").style.display = "block"; 
-            }
+                alert("Data save hone me dikkat aayi!");
+                this.style.display = "block"; 
+            });
         });
     </script>
 </body>
