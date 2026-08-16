@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Magical Birthday Wish</title>
+    <style>
+        /* CSS: Dark Mode aur Neon Theme */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0d12;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: #1a1a24;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #ff1493;
+            text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493;
+            font-size: 24px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            font-size: 14px;
+            color: #b3b3b3;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: #252532;
+            border: 1px solid #ff1493;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input:focus, textarea:focus {
+            box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+        }
+        .btn {
+            background: linear-gradient(45deg, #ff1493, #8a2be2);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            box-shadow: 0 0 15px #ff1493;
+            transform: scale(1.02);
+        }
+        /* AdSense Placeholder */
+        .ad-space {
+            width: 100%;
+            height: 100px;
+            background: #2a2a35;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            border: 1px dashed #555;
+            border-radius: 8px;
+        }
+        #loading-screen {
+            display: none;
+            margin-top: 15px;
+            color: #00ffff;
+        }
+        #generated-link-box {
+            display: none;
+            margin-top: 20px;
+            background: #252532;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #00ffff;
+        }
+        #share-btn {
+            background: #25D366; /* WhatsApp Green */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top AdSense Placeholder -->
+    <div class="ad-space" style="max-width: 500px;">
+        Google AdSense Banner (Top)
+    </div>
+
+    <div class="container">
+        <h1>✨ Create a Magical Wish ✨</h1>
+        <p>Fill details to generate a unique surprise link!</p>
+        
+        <form id="wish-form">
+            <div class="input-group">
+                <label>Birthday Person's Name</label>
+                <input type="text" id="bName" required placeholder="e.g. Rahul">
+            </div>
+            
+            <div class="input-group">
+                <label>Secret Password (To unlock their gift)</label>
+                <input type="text" id="bPassword" required placeholder="e.g. unka pet name ya favorite jagah">
+            </div>
+
+            <div class="input-group">
+                <label>Your Special Message</label>
+                <textarea id="bMessage" rows="4" required placeholder="Write something emotional or funny..."></textarea>
+            </div>
+
+            <!-- Hum photo upload Firebase wale step me add karenge taaki code complex na ho -->
+
+            <button type="submit" class="btn">🪄 Generate Magic Link</button>
+        </form>
+
+        <!-- Loading Text (Jahan user ad dekhega ruk kar) -->
+        <div id="loading-screen">
+            <h3>Creating your magic link... Please wait! ⏳</h3>
+            <div class="ad-space">Google AdSense Banner (Loading Screen)</div>
+        </div>
+
+        <!-- Generated Link Area -->
+        <div id="generated-link-box">
+            <p>Your unique link is ready!</p>
+            <input type="text" id="final-link" readonly>
+            <button class="btn" id="share-btn">📲 Share on WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Bottom AdSense Placeholder -->
+    <div class="ad-space" style="max-width: 500px;">
+        Google AdSense Banner (Bottom)
+    </div>
+
+    <!-- JavaScript For Form Actions -->
+    <script>
+        document.getElementById("wish-form").addEventListener("submit", function(e) {
+            e.preventDefault(); // Page refresh hone se rokega
+            
+            // Form aur button hide karein
+            this.style.display = "none";
+            
+            // Loading screen dikhayein (Ad impression badhane ke liye 3 seconds delay)
+            document.getElementById("loading-screen").style.display = "block";
+            
+            setTimeout(() => {
+                document.getElementById("loading-screen").style.display = "none";
+                document.getElementById("generated-link-box").style.display = "block";
+                
+                // Dummy link (Next step me hum ise Firebase se connect karke real link banayenge)
+                let dummyId = Math.floor(Math.random() * 1000000);
+                let link = window.location.origin + "/wish.html?id=" + dummyId;
+                document.getElementById("final-link").value = link;
+                
+            }, 3000); // 3 seconds ka wait
+        });
+    </script>
+
+</body>
+</html>
