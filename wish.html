@@ -6,102 +6,21 @@
     <title>Someone Sent You A Surprise!</title>
     <style>
         /* CSS: Dark Theme & Neon Glow */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d0d12;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 90%;
-            max-width: 500px;
-            background: #1a1a24;
-            padding: 30px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            text-align: center;
-        }
-        h1 {
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-            font-size: 28px;
-        }
-        .ad-space {
-            width: 100%;
-            height: 100px;
-            background: #2a2a35;
-            color: #666;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
-            border: 1px dashed #555;
-            border-radius: 8px;
-        }
-        
-        /* Password Lock Screen */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; margin-top: 20px; margin-bottom: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); text-align: center; }
+        h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; font-size: 28px; }
+        .ad-space { width: 100%; height: 100px; background: #2a2a35; color: #666; display: flex; align-items: center; justify-content: center; margin: 20px 0; border: 1px dashed #555; border-radius: 8px; }
         #lock-screen { display: block; }
-        input {
-            width: 100%; padding: 12px; background: #252532; border: 1px solid #00ffff;
-            border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box;
-            outline: none; margin-bottom: 15px; text-align: center;
-        }
-        .btn {
-            background: linear-gradient(45deg, #00ffff, #0080ff); color: white; border: none;
-            padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px;
-            cursor: pointer; transition: 0.3s; margin-top: 10px;
-        }
+        input { width: 100%; padding: 12px; background: #252532; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; text-align: center; }
+        .btn { background: linear-gradient(45deg, #00ffff, #0080ff); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .btn:hover { box-shadow: 0 0 15px #00ffff; transform: scale(1.02); }
-
-        /* Surprise Screen */
         #surprise-screen { display: none; }
-        .message-box {
-            background: #252532; padding: 20px; border-left: 5px solid #ff1493;
-            border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6;
-            text-align: left; font-style: italic;
-        }
-        
-        /* Memory Timeline (Scrollable Gallery) */
-        .timeline-container {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-        .memory-card {
-            background: #252532;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #ff1493;
-            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.15);
-            animation: fadeIn 1.5s ease-in-out;
-        }
-        .memory-card img {
-            width: 100%;
-            border-radius: 8px;
-            max-height: 350px;
-            object-fit: cover;
-        }
-        .memory-card p {
-            color: #e0e0e0;
-            font-size: 16px;
-            margin-top: 12px;
-            margin-bottom: 0;
-            font-weight: 500;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .message-box { background: #252532; padding: 20px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6; text-align: left; font-style: italic; }
+        .timeline-container { margin-top: 30px; display: flex; flex-direction: column; gap: 25px; }
+        .memory-card { background: #252532; padding: 15px; border-radius: 12px; border: 1px solid #ff1493; box-shadow: 0 4px 15px rgba(255, 20, 147, 0.15); animation: fadeIn 1.5s ease-in-out; }
+        .memory-card img { width: 100%; border-radius: 8px; max-height: 350px; object-fit: cover; }
+        .memory-card p { color: #e0e0e0; font-size: 16px; margin-top: 12px; margin-bottom: 0; font-weight: 500; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .create-own-btn { background: linear-gradient(45deg, #ff1493, #8a2be2); margin-top: 35px; }
         .error-msg { color: #ff4444; display: none; margin-bottom: 10px; font-weight: bold; }
     </style>
@@ -112,7 +31,6 @@
 
     <div class="container">
         
-        <!-- LOCK SCREEN -->
         <div id="lock-screen">
             <h1>🔒 Secret Surprise</h1>
             <p>Someone made a special wish for you. Enter the secret password to unlock it!</p>
@@ -121,14 +39,12 @@
             <button class="btn" onclick="checkPassword()">🔓 Unlock Surprise</button>
         </div>
 
-        <!-- SURPRISE SCREEN -->
         <div id="surprise-screen">
             <h1>🎉 Happy Birthday! 🎉</h1>
             <h2 id="display-name" style="color: #ff1493; font-size: 32px; margin-bottom: 5px;"></h2>
             
             <div class="message-box" id="display-message"></div>
 
-            <!-- Memory Timeline Container (Photos yahan aayengi) -->
             <div id="timeline" class="timeline-container"></div>
 
             <button class="btn create-own-btn" onclick="window.location.href='index.html'">🪄 Create a Wish for Your Friend</button>
@@ -138,15 +54,11 @@
 
     <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
 
-    <!-- Confetti Animation Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // Aapki Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
@@ -155,16 +67,13 @@
             messagingSenderId: "213307256948",
             appId: "1:213307256948:web:4731c4d0c42ee6e978e121"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         const urlParams = new URLSearchParams(window.location.search);
         const docId = urlParams.get('id');
-
         let wishData = null;
 
-        // URL se data fetch karna
         if(docId) {
             db.collection("wishes").doc(docId).get().then((doc) => {
                 if (doc.exists) {
@@ -179,7 +88,6 @@
             document.getElementById("lock-screen").innerHTML = "<h2>Invalid Link! 🚫</h2>";
         }
 
-        // Password Check aur Screen Unlock
         function checkPassword() {
             if(!wishData) return;
 
@@ -187,34 +95,34 @@
             let actualPassword = wishData.password.toLowerCase().trim();
             
             if(entered === actualPassword && actualPassword !== "") {
-                // Unlock Success!
                 document.getElementById("lock-screen").style.display = "none";
                 document.getElementById("surprise-screen").style.display = "block";
                 
-                // Text Set Karna
                 document.getElementById("display-name").innerText = wishData.name;
                 document.getElementById("display-message").innerText = wishData.message;
 
-                // Memory Timeline Set Karna (Photos)
                 let timelineHTML = "";
                 
-                if(wishData.photo1) {
-                    timelineHTML += `<div class="memory-card"><img src="${wishData.photo1}"><p>✨ ${wishData.cap1 || 'Sweet Memories'}</p></div>`;
-                }
-                if(wishData.photo2) {
-                    timelineHTML += `<div class="memory-card"><img src="${wishData.photo2}"><p>😂 ${wishData.cap2 || 'Unforgettable Moments'}</p></div>`;
-                }
-                if(wishData.photo3) {
-                    timelineHTML += `<div class="memory-card"><img src="${wishData.photo3}"><p>❤️ ${wishData.cap3 || 'Always Special'}</p></div>`;
+                // 1. Naya Logic (Dynamic Array Data check karega)
+                if(wishData.photos && wishData.photos.length > 0) {
+                    wishData.photos.forEach(photo => {
+                        let cap = photo.caption || "Beautiful Memory";
+                        timelineHTML += `<div class="memory-card"><img src="${photo.url}"><p>✨ ${cap}</p></div>`;
+                    });
+                } 
+                // 2. Purana Logic (Aapke pehle wale purane links ke liye)
+                else {
+                    if(wishData.photo1) timelineHTML += `<div class="memory-card"><img src="${wishData.photo1}"><p>✨ ${wishData.cap1 || 'Sweet Memories'}</p></div>`;
+                    if(wishData.photo2) timelineHTML += `<div class="memory-card"><img src="${wishData.photo2}"><p>😂 ${wishData.cap2 || 'Unforgettable Moments'}</p></div>`;
+                    if(wishData.photo3) timelineHTML += `<div class="memory-card"><img src="${wishData.photo3}"><p>❤️ ${wishData.cap3 || 'Always Special'}</p></div>`;
                 }
 
                 document.getElementById("timeline").innerHTML = timelineHTML;
                 
-                // Confetti (Patakhe) Blast
+                // Confetti Animation
                 var duration = 3 * 1000;
                 var animationEnd = Date.now() + duration;
                 var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
                 var interval = setInterval(function() {
                     var timeLeft = animationEnd - Date.now();
                     if (timeLeft <= 0) return clearInterval(interval);
