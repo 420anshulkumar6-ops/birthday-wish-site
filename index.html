@@ -34,26 +34,33 @@
         .input-group {
             margin-bottom: 15px;
             text-align: left;
+            background: #252532;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed #ff1493;
         }
         label {
             font-size: 14px;
             color: #b3b3b3;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: block;
+            font-weight: bold;
         }
         input, textarea {
             width: 100%;
             padding: 12px;
-            background: #252532;
-            border: 1px solid #ff1493;
+            background: #1a1a24;
+            border: 1px solid #00ffff;
             border-radius: 8px;
             color: white;
             font-size: 16px;
             box-sizing: border-box;
             outline: none;
+            margin-bottom: 10px;
         }
-        input:focus, textarea:focus {
-            box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+        input[type="file"] {
+            padding: 8px;
+            border: none;
         }
         .btn {
             background: linear-gradient(45deg, #ff1493, #8a2be2);
@@ -97,9 +104,6 @@
             border-radius: 8px;
             border: 1px solid #00ffff;
         }
-        #final-link {
-            margin-bottom: 10px;
-        }
         #share-btn {
             background: #25D366; 
         }
@@ -107,56 +111,69 @@
 </head>
 <body>
 
-    <!-- Top AdSense Placeholder -->
-    <div class="ad-space" style="max-width: 500px;">
-        Google AdSense Banner (Top)
-    </div>
+    <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Top)</div>
 
     <div class="container">
         <h1>✨ Create a Magical Wish ✨</h1>
-        <p>Fill details to generate a unique surprise link!</p>
+        <p>Fill details & add photos to generate a surprise link!</p>
         
         <form id="wish-form">
-            <div class="input-group">
-                <label>Birthday Person's Name</label>
+            <!-- Basic Details -->
+            <div class="input-group" style="border: 1px solid #00ffff;">
+                <label>Birthday Person's Name *</label>
                 <input type="text" id="bName" required placeholder="e.g. Rahul">
+                
+                <label>Secret Password *</label>
+                <input type="text" id="bPassword" required placeholder="e.g. pet name ya favorite place">
+                
+                <label>Special Birthday Message *</label>
+                <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
             </div>
+
+            <!-- Memory Timeline (Optional Photos) -->
+            <h3 style="color: #00ffff; font-size: 18px;">📸 Scrollable Memory Timeline (Optional)</h3>
             
             <div class="input-group">
-                <label>Secret Password (To unlock their gift)</label>
-                <input type="text" id="bPassword" required placeholder="e.g. pet name ya favorite place">
+                <label>Memory 1 (Past / Childhood)</label>
+                <input type="file" id="photo1" accept="image/*">
+                <input type="text" id="cap1" placeholder="Caption: Hum pehli baar yahan mile the...">
             </div>
 
             <div class="input-group">
-                <label>Your Special Message</label>
-                <textarea id="bMessage" rows="4" required placeholder="Write something emotional or funny..."></textarea>
+                <label>Memory 2 (Funny Moment)</label>
+                <input type="file" id="photo2" accept="image/*">
+                <input type="text" id="cap2" placeholder="Caption: Tumhari sabse funny photo...">
+            </div>
+
+            <div class="input-group">
+                <label>Memory 3 (Recent / Best Photo)</label>
+                <input type="file" id="photo3" accept="image/*">
+                <input type="text" id="cap3" placeholder="Caption: Aaj bhi tum waise hi ho...">
             </div>
 
             <button type="submit" class="btn">🪄 Generate Magic Link</button>
         </form>
 
         <div id="loading-screen">
-            <h3>Creating your magic link... Please wait! ⏳</h3>
+            <h3>Uploading Magic... Please wait! ⏳<br><small>(Photos me thoda time lag sakta hai)</small></h3>
             <div class="ad-space">Google AdSense Banner (Loading Screen)</div>
         </div>
 
         <div id="generated-link-box">
             <p>Your unique link is ready!</p>
-            <input type="text" id="final-link" readonly>
+            <input type="text" id="final-link" readonly style="width: 100%; margin-bottom: 10px;">
             <button class="btn" id="share-btn">📲 Share on WhatsApp</button>
         </div>
     </div>
 
-    <div class="ad-space" style="max-width: 500px;">
-        Google AdSense Banner (Bottom)
-    </div>
+    <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
 
-    <!-- Firebase Scripts (Direct CDN, No npm required) -->
+    <!-- Firebase Scripts (Firestore + Storage dono) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
     <script>
-        // Aapki exact Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
@@ -167,32 +184,50 @@
             measurementId: "G-Z2PYMXNTXC"
         };
 
-        // Firebase start karna
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
-        document.getElementById("wish-form").addEventListener("submit", function(e) {
+        // Photo upload karne ka function
+        async function uploadImage(inputId) {
+            let fileInput = document.getElementById(inputId);
+            if(fileInput.files.length > 0) {
+                let file = fileInput.files[0];
+                let storageRef = storage.ref('timeline_photos/' + Date.now() + '_' + file.name);
+                await storageRef.put(file);
+                let downloadURL = await storageRef.getDownloadURL();
+                return downloadURL;
+            }
+            return ""; // Agar photo upload nahi ki toh khali bhej do
+        }
+
+        document.getElementById("wish-form").addEventListener("submit", async function(e) {
             e.preventDefault(); 
             
-            let bName = document.getElementById("bName").value;
-            let bPassword = document.getElementById("bPassword").value;
-            let bMessage = document.getElementById("bMessage").value;
-
             this.style.display = "none"; 
             document.getElementById("loading-screen").style.display = "block"; 
             
-            // Database me data add karna
-            db.collection("wishes").add({
-                name: bName,
-                password: bPassword,
-                message: bMessage,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then((docRef) => {
+            try {
+                // 1. Pehle teeno photos upload hongi (agar select ki hain)
+                let url1 = await uploadImage("photo1");
+                let url2 = await uploadImage("photo2");
+                let url3 = await uploadImage("photo3");
+
+                // 2. Fir database me saara data save hoga
+                let docRef = await db.collection("wishes").add({
+                    name: document.getElementById("bName").value,
+                    password: document.getElementById("bPassword").value,
+                    message: document.getElementById("bMessage").value,
+                    photo1: url1, cap1: document.getElementById("cap1").value,
+                    photo2: url2, cap2: document.getElementById("cap2").value,
+                    photo3: url3, cap3: document.getElementById("cap3").value,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // 3. Success! Link generate karke dikhao
                 document.getElementById("loading-screen").style.display = "none";
                 document.getElementById("generated-link-box").style.display = "block";
                 
-                // Real Link generate karna docRef.id ke sath
                 let realLink = window.location.origin + "/wish.html?id=" + docRef.id;
                 document.getElementById("final-link").value = realLink;
 
@@ -200,11 +235,13 @@
                     let text = `I have a magical surprise for you! ✨ Unlock it here: ${realLink}`;
                     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
                 };
-            })
-            .catch((error) => {
-                console.error("Error adding document: ", error);
-                alert("Koi dikkat aayi! Kripya check karein ki aapne Firestore Database 'Test Mode' me chalu kiya hai ya nahi.");
-            });
+
+            } catch (error) {
+                console.error("Error: ", error);
+                alert("Upload me dikkat aayi! Kripya dobara try karein.");
+                document.getElementById("loading-screen").style.display = "none";
+                document.getElementById("wish-form").style.display = "block"; 
+            }
         });
     </script>
 </body>
