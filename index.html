@@ -9,7 +9,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; margin-top: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; }
         h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 24px; }
-        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; }
+        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; animation: fadeIn 0.5s; }
         label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
         input, textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
         input[type="file"] { padding: 8px; border: none; flex: 1; }
@@ -20,9 +20,12 @@
         .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         .btn:hover:not(:disabled) { box-shadow: 0 0 15px #ff1493; transform: scale(1.02); }
         .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
+        .btn-outline { background: transparent; border: 2px dashed #00ffff; color: #00ffff; margin-bottom: 15px; }
+        .btn-outline:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px #00ffff; }
         .ad-space { width: 100%; height: 100px; background: #2a2a35; color: #666; display: flex; align-items: center; justify-content: center; margin: 20px 0; border: 1px dashed #555; border-radius: 8px; }
         #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
         #share-btn { background: #25D366; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -46,41 +49,14 @@
                 <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
             </div>
 
-            <!-- Memory Timeline (Optional Photos with Live Upload) -->
-            <h3 style="color: #00ffff; font-size: 18px;">📸 Scrollable Memory Timeline (Optional)</h3>
+            <!-- Memory Timeline (Dynamic Setup) -->
+            <h3 style="color: #00ffff; font-size: 18px;">📸 Memory Timeline (Optional)</h3>
             
-            <div class="input-group">
-                <label>Memory 1 (Past / Childhood)</label>
-                <div class="upload-row">
-                    <input type="file" id="file1" accept="image/*">
-                    <button type="button" class="upload-btn" onclick="uploadSingleImage('1')">Upload</button>
-                </div>
-                <div id="status1" class="status-text" style="color: #ff1493;"></div>
-                <input type="hidden" id="url1">
-                <input type="text" id="cap1" placeholder="Caption: Hum pehli baar yahan mile the...">
+            <div id="dynamic-image-container">
+                <!-- Javascript yahan naye photo upload boxes banayega -->
             </div>
 
-            <div class="input-group">
-                <label>Memory 2 (Funny Moment)</label>
-                <div class="upload-row">
-                    <input type="file" id="file2" accept="image/*">
-                    <button type="button" class="upload-btn" onclick="uploadSingleImage('2')">Upload</button>
-                </div>
-                <div id="status2" class="status-text" style="color: #ff1493;"></div>
-                <input type="hidden" id="url2">
-                <input type="text" id="cap2" placeholder="Caption: Tumhari sabse funny photo...">
-            </div>
-
-            <div class="input-group">
-                <label>Memory 3 (Recent / Best Photo)</label>
-                <div class="upload-row">
-                    <input type="file" id="file3" accept="image/*">
-                    <button type="button" class="upload-btn" onclick="uploadSingleImage('3')">Upload</button>
-                </div>
-                <div id="status3" class="status-text" style="color: #ff1493;"></div>
-                <input type="hidden" id="url3">
-                <input type="text" id="cap3" placeholder="Caption: Aaj bhi tum waise hi ho...">
-            </div>
+            <button type="button" class="btn btn-outline" onclick="addImageRow()">➕ Add Another Photo</button>
 
             <!-- Main Generate Button -->
             <button type="submit" id="generate-btn" class="btn">🪄 Generate Link Instantly</button>
@@ -95,15 +71,12 @@
 
     <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
 
-    <!-- Firebase Scripts (Sirf Database ke liye) -->
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // 1. IMGBB API KEY (Jo aapne share ki thi)
         const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
-
-        // 2. FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
@@ -113,13 +86,15 @@
             appId: "1:213307256948:web:4731c4d0c42ee6e978e121",
             measurementId: "G-Z2PYMXNTXC"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Tracker: Kitni photos abhi upload ho rahi hain
         let activeUploads = 0; 
+        let imageCounter = 0; // Track karega ki kitni images user ne add ki hain
         const generateBtn = document.getElementById("generate-btn");
+
+        // Page load hone par default ek box dikhaye
+        window.onload = function() { addImageRow(); };
 
         function updateButtonState() {
             if (activeUploads > 0) {
@@ -129,6 +104,27 @@
                 generateBtn.disabled = false;
                 generateBtn.innerText = "🪄 Generate Link Instantly";
             }
+        }
+
+        // Naya Image Box banaye
+        function addImageRow() {
+            imageCounter++;
+            let id = imageCounter;
+            let container = document.getElementById("dynamic-image-container");
+            
+            let div = document.createElement("div");
+            div.className = "input-group";
+            div.innerHTML = `
+                <label>Memory ${id} (Optional)</label>
+                <div class="upload-row">
+                    <input type="file" id="file${id}" accept="image/*">
+                    <button type="button" class="upload-btn" onclick="uploadSingleImage('${id}')">Upload</button>
+                </div>
+                <div id="status${id}" class="status-text" style="color: #ff1493;"></div>
+                <input type="hidden" id="url${id}">
+                <input type="text" id="cap${id}" placeholder="Caption for this memory...">
+            `;
+            container.appendChild(div);
         }
 
         // ImgBB par Photo Upload karne ka Function
@@ -147,18 +143,14 @@
             let formData = new FormData();
             formData.append("image", file);
 
-            // Upload shuru, button block karo
             activeUploads++;
             updateButtonState();
-
             uploadBtn.disabled = true;
             uploadBtn.style.background = "#555";
 
-            // ImgBB API Request
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
 
-            // Progress Bar Logic
             xhr.upload.onprogress = function(event) {
                 if (event.lengthComputable) {
                     let progress = (event.loaded / event.total) * 100;
@@ -167,16 +159,12 @@
                 }
             };
 
-            // Jab Upload Pura Ho Jaye
             xhr.onload = function() {
                 activeUploads--;
                 updateButtonState();
-
                 if (xhr.status === 200) {
                     let response = JSON.parse(xhr.responseText);
-                    let imageURL = response.data.url; 
-                    
-                    urlInput.value = imageURL;
+                    urlInput.value = response.data.url; 
                     statusText.innerText = "✅ Uploaded Successfully!";
                     statusText.style.color = "#25D366";
                     uploadBtn.style.display = "none"; 
@@ -200,18 +188,31 @@
             xhr.send(formData);
         }
 
-        // Final Form Submit (Data + ImgBB Links)
+        // Final Form Submit 
         document.getElementById("wish-form").addEventListener("submit", function(e) {
             e.preventDefault(); 
             this.style.display = "none"; 
+            
+            // Saari uploaded photos ko ek array me jama karna
+            let photosArray = [];
+            for(let i = 1; i <= imageCounter; i++) {
+                let urlVal = document.getElementById("url" + i) ? document.getElementById("url" + i).value : "";
+                let capVal = document.getElementById("cap" + i) ? document.getElementById("cap" + i).value : "";
+                
+                // Agar URL valid hai (photo upload hui hai), toh hi array me add karo
+                if(urlVal !== "") {
+                    photosArray.push({
+                        url: urlVal,
+                        caption: capVal
+                    });
+                }
+            }
             
             db.collection("wishes").add({
                 name: document.getElementById("bName").value,
                 password: document.getElementById("bPassword").value,
                 message: document.getElementById("bMessage").value,
-                photo1: document.getElementById("url1").value, cap1: document.getElementById("cap1").value,
-                photo2: document.getElementById("url2").value, cap2: document.getElementById("cap2").value,
-                photo3: document.getElementById("url3").value, cap3: document.getElementById("cap3").value,
+                photos: photosArray, // Direct array save karna
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then((docRef) => {
