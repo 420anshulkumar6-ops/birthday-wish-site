@@ -6,128 +6,23 @@
     <title>Create Magical Birthday Wish</title>
     <style>
         /* CSS: Dark Mode aur Neon Theme */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d0d12;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 500px;
-            background: #1a1a24;
-            padding: 30px;
-            margin-top: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 20, 147, 0.2);
-            text-align: center;
-        }
-        h1 {
-            color: #ff1493;
-            text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493;
-            font-size: 24px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-            background: #252532;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed #ff1493;
-        }
-        label {
-            font-size: 14px;
-            color: #b3b3b3;
-            margin-bottom: 8px;
-            display: block;
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            background: #1a1a24;
-            border: 1px solid #00ffff;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            outline: none;
-            margin-bottom: 10px;
-        }
-        input[type="file"] {
-            padding: 8px;
-            border: none;
-            flex: 1;
-        }
-        .upload-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-        .upload-btn {
-            background: #00ffff;
-            color: #000;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .upload-btn:hover {
-            background: #ffffff;
-            box-shadow: 0 0 10px #00ffff;
-        }
-        .status-text {
-            font-size: 13px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        .btn {
-            background: linear-gradient(45deg, #ff1493, #8a2be2);
-            color: white;
-            border: none;
-            padding: 15px;
-            width: 100%;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-        .btn:hover {
-            box-shadow: 0 0 15px #ff1493;
-            transform: scale(1.02);
-        }
-        .ad-space {
-            width: 100%;
-            height: 100px;
-            background: #2a2a35;
-            color: #666;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
-            border: 1px dashed #555;
-            border-radius: 8px;
-        }
-        #generated-link-box {
-            display: none;
-            margin-top: 20px;
-            background: #252532;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #00ffff;
-        }
-        #share-btn {
-            background: #25D366; 
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; margin-top: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; }
+        h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 24px; }
+        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; }
+        label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
+        input, textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
+        input[type="file"] { padding: 8px; border: none; flex: 1; }
+        .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
+        .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .upload-btn:hover { background: #ffffff; box-shadow: 0 0 10px #00ffff; }
+        .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
+        .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn:hover:not(:disabled) { box-shadow: 0 0 15px #ff1493; transform: scale(1.02); }
+        .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
+        .ad-space { width: 100%; height: 100px; background: #2a2a35; color: #666; display: flex; align-items: center; justify-content: center; margin: 20px 0; border: 1px dashed #555; border-radius: 8px; }
+        #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
+        #share-btn { background: #25D366; }
     </style>
 </head>
 <body>
@@ -187,7 +82,8 @@
                 <input type="text" id="cap3" placeholder="Caption: Aaj bhi tum waise hi ho...">
             </div>
 
-            <button type="submit" class="btn">🪄 Generate Link Instantly</button>
+            <!-- Main Generate Button -->
+            <button type="submit" id="generate-btn" class="btn">🪄 Generate Link Instantly</button>
         </form>
 
         <div id="generated-link-box">
@@ -199,27 +95,43 @@
 
     <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
 
-    <!-- Firebase Scripts (Firestore + Storage) -->
+    <!-- Firebase Scripts (Sirf Database ke liye) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
     <script>
-        // Aapki Firebase Configuration
+        // 1. IMGBB API KEY (Jo aapne share ki thi)
+        const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
+
+        // 2. FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
             projectId: "birthday-maker-58e43",
             storageBucket: "birthday-maker-58e43.firebasestorage.app",
             messagingSenderId: "213307256948",
-            appId: "1:213307256948:web:4731c4d0c42ee6e978e121"
+            appId: "1:213307256948:web:4731c4d0c42ee6e978e121",
+            measurementId: "G-Z2PYMXNTXC"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
-        // Individual Photo Upload Logic with Progress Bar
+        // Tracker: Kitni photos abhi upload ho rahi hain
+        let activeUploads = 0; 
+        const generateBtn = document.getElementById("generate-btn");
+
+        function updateButtonState() {
+            if (activeUploads > 0) {
+                generateBtn.disabled = true;
+                generateBtn.innerText = "⏳ Uploading Photos... Please Wait";
+            } else {
+                generateBtn.disabled = false;
+                generateBtn.innerText = "🪄 Generate Link Instantly";
+            }
+        }
+
+        // ImgBB par Photo Upload karne ka Function
         function uploadSingleImage(idNumber) {
             let fileInput = document.getElementById('file' + idNumber);
             let statusText = document.getElementById('status' + idNumber);
@@ -232,45 +144,67 @@
             }
 
             let file = fileInput.files[0];
-            let storageRef = storage.ref('timeline_photos/' + Date.now() + '_' + file.name);
-            let uploadTask = storageRef.put(file);
+            let formData = new FormData();
+            formData.append("image", file);
 
-            // Button ko disable kar do taaki double click na ho
+            // Upload shuru, button block karo
+            activeUploads++;
+            updateButtonState();
+
             uploadBtn.disabled = true;
             uploadBtn.style.background = "#555";
 
-            // Upload progress track karna
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            // ImgBB API Request
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
+
+            // Progress Bar Logic
+            xhr.upload.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    let progress = (event.loaded / event.total) * 100;
                     statusText.innerText = "Uploading: " + Math.round(progress) + "% ⏳";
                     statusText.style.color = "#00ffff";
-                },
-                (error) => {
-                    statusText.innerText = "❌ Upload failed! Try again.";
+                }
+            };
+
+            // Jab Upload Pura Ho Jaye
+            xhr.onload = function() {
+                activeUploads--;
+                updateButtonState();
+
+                if (xhr.status === 200) {
+                    let response = JSON.parse(xhr.responseText);
+                    let imageURL = response.data.url; 
+                    
+                    urlInput.value = imageURL;
+                    statusText.innerText = "✅ Uploaded Successfully!";
+                    statusText.style.color = "#25D366";
+                    uploadBtn.style.display = "none"; 
+                } else {
+                    statusText.innerText = "❌ Upload failed!";
                     statusText.style.color = "#ff4444";
                     uploadBtn.disabled = false;
                     uploadBtn.style.background = "#00ffff";
-                },
-                () => {
-                    // Upload Complete! URL save kar lo
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        urlInput.value = downloadURL;
-                        statusText.innerText = "✅ Uploaded Successfully!";
-                        statusText.style.color = "#25D366";
-                        uploadBtn.style.display = "none"; // Button hata do
-                    });
                 }
-            );
+            };
+
+            xhr.onerror = function() {
+                activeUploads--;
+                updateButtonState();
+                statusText.innerText = "❌ Internet issue!";
+                statusText.style.color = "#ff4444";
+                uploadBtn.disabled = false;
+                uploadBtn.style.background = "#00ffff";
+            };
+
+            xhr.send(formData);
         }
 
-        // Final Form Submit (Ab yeh Instant Hoga!)
+        // Final Form Submit (Data + ImgBB Links)
         document.getElementById("wish-form").addEventListener("submit", function(e) {
             e.preventDefault(); 
-            
             this.style.display = "none"; 
             
-            // Database me data instantly add karna (URLs hidden input se lekar)
             db.collection("wishes").add({
                 name: document.getElementById("bName").value,
                 password: document.getElementById("bPassword").value,
