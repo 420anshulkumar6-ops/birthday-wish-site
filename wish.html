@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Magical Birthday Wish</title>
+    <title>Someone Sent You A Surprise!</title>
     <style>
-        /* CSS: Dark Mode aur Neon Theme */
+        /* CSS: Dark Theme & Neon Glow */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0d0d12;
@@ -15,6 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
         .container {
             width: 90%;
@@ -23,56 +24,14 @@
             padding: 30px;
             margin-top: 20px;
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 20, 147, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
             text-align: center;
         }
         h1 {
-            color: #ff1493;
-            text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493;
-            font-size: 24px;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            font-size: 28px;
         }
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        label {
-            font-size: 14px;
-            color: #b3b3b3;
-            margin-bottom: 5px;
-            display: block;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            background: #252532;
-            border: 1px solid #ff1493;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            outline: none;
-        }
-        input:focus, textarea:focus {
-            box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
-        }
-        .btn {
-            background: linear-gradient(45deg, #ff1493, #8a2be2);
-            color: white;
-            border: none;
-            padding: 15px;
-            width: 100%;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-        .btn:hover {
-            box-shadow: 0 0 15px #ff1493;
-            transform: scale(1.02);
-        }
-        /* AdSense Placeholder */
         .ad-space {
             width: 100%;
             height: 100px;
@@ -85,22 +44,63 @@
             border: 1px dashed #555;
             border-radius: 8px;
         }
-        #loading-screen {
-            display: none;
-            margin-top: 15px;
-            color: #00ffff;
+        
+        /* Password Lock Screen */
+        #lock-screen {
+            display: block;
         }
-        #generated-link-box {
-            display: none;
-            margin-top: 20px;
+        input {
+            width: 100%;
+            padding: 12px;
             background: #252532;
-            padding: 15px;
-            border-radius: 8px;
             border: 1px solid #00ffff;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            margin-bottom: 15px;
         }
-        #share-btn {
-            background: #25D366; /* WhatsApp Green */
-            margin-top: 10px;
+        .btn {
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            box-shadow: 0 0 15px #00ffff;
+            transform: scale(1.02);
+        }
+
+        /* Birthday Message Screen (Hidden Initially) */
+        #surprise-screen {
+            display: none;
+        }
+        .message-box {
+            background: #252532;
+            padding: 20px;
+            border-left: 5px solid #ff1493;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: left;
+            font-style: italic;
+        }
+        .create-own-btn {
+            background: linear-gradient(45deg, #ff1493, #8a2be2);
+            margin-top: 30px;
+        }
+        .error-msg {
+            color: #ff4444;
+            display: none;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -112,42 +112,29 @@
     </div>
 
     <div class="container">
-        <h1>✨ Create a Magical Wish ✨</h1>
-        <p>Fill details to generate a unique surprise link!</p>
         
-        <form id="wish-form">
-            <div class="input-group">
-                <label>Birthday Person's Name</label>
-                <input type="text" id="bName" required placeholder="e.g. Rahul">
-            </div>
+        <!-- LOCK SCREEN -->
+        <div id="lock-screen">
+            <h1>🔒 Secret Surprise</h1>
+            <p>Someone made a special wish for you. Enter the secret password to unlock it!</p>
+            <p class="error-msg" id="error-msg">Incorrect Password! Try again.</p>
+            <input type="text" id="entered-password" placeholder="Enter Password...">
+            <button class="btn" onclick="checkPassword()">🔓 Unlock Surprise</button>
+        </div>
+
+        <!-- SURPRISE SCREEN -->
+        <div id="surprise-screen">
+            <h1>🎉 Happy Birthday! 🎉</h1>
+            <h2 id="display-name" style="color: #ff1493;"></h2>
             
-            <div class="input-group">
-                <label>Secret Password (To unlock their gift)</label>
-                <input type="text" id="bPassword" required placeholder="e.g. unka pet name ya favorite jagah">
+            <div class="message-box" id="display-message">
+                <!-- Message yahan aayega -->
             </div>
 
-            <div class="input-group">
-                <label>Your Special Message</label>
-                <textarea id="bMessage" rows="4" required placeholder="Write something emotional or funny..."></textarea>
-            </div>
-
-            <!-- Hum photo upload Firebase wale step me add karenge taaki code complex na ho -->
-
-            <button type="submit" class="btn">🪄 Generate Magic Link</button>
-        </form>
-
-        <!-- Loading Text (Jahan user ad dekhega ruk kar) -->
-        <div id="loading-screen">
-            <h3>Creating your magic link... Please wait! ⏳</h3>
-            <div class="ad-space">Google AdSense Banner (Loading Screen)</div>
+            <!-- Call to action: Isse aur log aapki website par aayenge -->
+            <button class="btn create-own-btn" onclick="window.location.href='index.html'">🪄 Create a Wish for Your Friend</button>
         </div>
 
-        <!-- Generated Link Area -->
-        <div id="generated-link-box">
-            <p>Your unique link is ready!</p>
-            <input type="text" id="final-link" readonly>
-            <button class="btn" id="share-btn">📲 Share on WhatsApp</button>
-        </div>
     </div>
 
     <!-- Bottom AdSense Placeholder -->
@@ -155,29 +142,82 @@
         Google AdSense Banner (Bottom)
     </div>
 
-    <!-- JavaScript For Form Actions -->
-    <script>
-        document.getElementById("wish-form").addEventListener("submit", function(e) {
-            e.preventDefault(); // Page refresh hone se rokega
-            
-            // Form aur button hide karein
-            this.style.display = "none";
-            
-            // Loading screen dikhayein (Ad impression badhane ke liye 3 seconds delay)
-            document.getElementById("loading-screen").style.display = "block";
-            
-            setTimeout(() => {
-                document.getElementById("loading-screen").style.display = "none";
-                document.getElementById("generated-link-box").style.display = "block";
-                
-                // Dummy link (Next step me hum ise Firebase se connect karke real link banayenge)
-                let dummyId = Math.floor(Math.random() * 1000000);
-                let link = window.location.origin + "/wish.html?id=" + dummyId;
-                document.getElementById("final-link").value = link;
-                
-            }, 3000); // 3 seconds ka wait
-        });
-    </script>
+    <!-- Confetti Animation Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
+    <script>
+        // Aapki Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
+            authDomain: "birthday-maker-58e43.firebaseapp.com",
+            projectId: "birthday-maker-58e43",
+            storageBucket: "birthday-maker-58e43.firebasestorage.app",
+            messagingSenderId: "213307256948",
+            appId: "1:213307256948:web:4731c4d0c42ee6e978e121",
+            measurementId: "G-Z2PYMXNTXC"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // URL se ID nikalna (jaise: wish.html?id=abc123xyz)
+        const urlParams = new URLSearchParams(window.location.search);
+        const docId = urlParams.get('id');
+
+        let actualPassword = "";
+
+        // Agar URL me ID hai, toh database se data fetch karo
+        if(docId) {
+            db.collection("wishes").doc(docId).get().then((doc) => {
+                if (doc.exists) {
+                    let data = doc.data();
+                    // Database se data variables me save kar liya
+                    actualPassword = data.password.toLowerCase().trim();
+                    document.getElementById("display-name").innerText = data.name;
+                    document.getElementById("display-message").innerText = data.message;
+                } else {
+                    document.getElementById("lock-screen").innerHTML = "<h2>Oops! Link Expired or Invalid. 😥</h2>";
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+        } else {
+            document.getElementById("lock-screen").innerHTML = "<h2>Invalid Link! 🚫</h2>";
+        }
+
+        // Password Check Karne ka Function
+        function checkPassword() {
+            let entered = document.getElementById("entered-password").value.toLowerCase().trim();
+            
+            if(entered === actualPassword && actualPassword !== "") {
+                // Password match ho gaya!
+                document.getElementById("lock-screen").style.display = "none";
+                document.getElementById("surprise-screen").style.display = "block";
+                
+                // Confetti (Patakhe) Blast karna
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+                var interval = setInterval(function() {
+                    var timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+                    var particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                }, 250);
+
+            } else {
+                // Galat Password
+                document.getElementById("error-msg").style.display = "block";
+            }
+        }
+    </script>
 </body>
 </html>
