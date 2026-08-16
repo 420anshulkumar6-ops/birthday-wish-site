@@ -72,7 +72,6 @@
             box-shadow: 0 0 15px #ff1493;
             transform: scale(1.02);
         }
-        /* AdSense Placeholder */
         .ad-space {
             width: 100%;
             height: 100px;
@@ -98,9 +97,11 @@
             border-radius: 8px;
             border: 1px solid #00ffff;
         }
+        #final-link {
+            margin-bottom: 10px;
+        }
         #share-btn {
-            background: #25D366; /* WhatsApp Green */
-            margin-top: 10px;
+            background: #25D366; 
         }
     </style>
 </head>
@@ -123,7 +124,7 @@
             
             <div class="input-group">
                 <label>Secret Password (To unlock their gift)</label>
-                <input type="text" id="bPassword" required placeholder="e.g. unka pet name ya favorite jagah">
+                <input type="text" id="bPassword" required placeholder="e.g. pet name ya favorite place">
             </div>
 
             <div class="input-group">
@@ -131,18 +132,14 @@
                 <textarea id="bMessage" rows="4" required placeholder="Write something emotional or funny..."></textarea>
             </div>
 
-            <!-- Hum photo upload Firebase wale step me add karenge taaki code complex na ho -->
-
             <button type="submit" class="btn">🪄 Generate Magic Link</button>
         </form>
 
-        <!-- Loading Text (Jahan user ad dekhega ruk kar) -->
         <div id="loading-screen">
             <h3>Creating your magic link... Please wait! ⏳</h3>
             <div class="ad-space">Google AdSense Banner (Loading Screen)</div>
         </div>
 
-        <!-- Generated Link Area -->
         <div id="generated-link-box">
             <p>Your unique link is ready!</p>
             <input type="text" id="final-link" readonly>
@@ -150,34 +147,65 @@
         </div>
     </div>
 
-    <!-- Bottom AdSense Placeholder -->
     <div class="ad-space" style="max-width: 500px;">
         Google AdSense Banner (Bottom)
     </div>
 
-    <!-- JavaScript For Form Actions -->
+    <!-- Firebase Scripts (Direct CDN, No npm required) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <script>
+        // Aapki exact Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
+            authDomain: "birthday-maker-58e43.firebaseapp.com",
+            projectId: "birthday-maker-58e43",
+            storageBucket: "birthday-maker-58e43.firebasestorage.app",
+            messagingSenderId: "213307256948",
+            appId: "1:213307256948:web:4731c4d0c42ee6e978e121",
+            measurementId: "G-Z2PYMXNTXC"
+        };
+
+        // Firebase start karna
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         document.getElementById("wish-form").addEventListener("submit", function(e) {
-            e.preventDefault(); // Page refresh hone se rokega
+            e.preventDefault(); 
             
-            // Form aur button hide karein
-            this.style.display = "none";
+            let bName = document.getElementById("bName").value;
+            let bPassword = document.getElementById("bPassword").value;
+            let bMessage = document.getElementById("bMessage").value;
+
+            this.style.display = "none"; 
+            document.getElementById("loading-screen").style.display = "block"; 
             
-            // Loading screen dikhayein (Ad impression badhane ke liye 3 seconds delay)
-            document.getElementById("loading-screen").style.display = "block";
-            
-            setTimeout(() => {
+            // Database me data add karna
+            db.collection("wishes").add({
+                name: bName,
+                password: bPassword,
+                message: bMessage,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then((docRef) => {
                 document.getElementById("loading-screen").style.display = "none";
                 document.getElementById("generated-link-box").style.display = "block";
                 
-                // Dummy link (Next step me hum ise Firebase se connect karke real link banayenge)
-                let dummyId = Math.floor(Math.random() * 1000000);
-                let link = window.location.origin + "/wish.html?id=" + dummyId;
-                document.getElementById("final-link").value = link;
-                
-            }, 3000); // 3 seconds ka wait
+                // Real Link generate karna docRef.id ke sath
+                let realLink = window.location.origin + "/wish.html?id=" + docRef.id;
+                document.getElementById("final-link").value = realLink;
+
+                document.getElementById("share-btn").onclick = function() {
+                    let text = `I have a magical surprise for you! ✨ Unlock it here: ${realLink}`;
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
+                };
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+                alert("Koi dikkat aayi! Kripya check karein ki aapne Firestore Database 'Test Mode' me chalu kiya hai ya nahi.");
+            });
         });
     </script>
-
 </body>
 </html>
