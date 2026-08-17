@@ -3,70 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Surprise For You!</title>
+    <title>Someone Sent You A Surprise!</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; text-align: center;}
+        /* DJ Lights */
+        @keyframes djLights { 0% { background-color: #ff00ff; } 15% { background-color: #00ffff; } 30% { background-color: #ffff00; } 45% { background-color: #ff0000; } 60% { background-color: #00ff00; } 75% { background-color: #0000ff; } 90% { background-color: #ff8c00; } 100% { background-color: #ff00ff; } }
+        body.disco-mode { animation: djLights 0.8s infinite alternate; }
         
-        /* Royal Text & Button Styles */
-        .royal-text { color: #ffd700; font-size: 32px; font-weight: bold; font-family: 'Georgia', serif; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.5); letter-spacing: 2px; margin-top: 20px;}
-        .royal-btn { background: linear-gradient(45deg, #d4af37, #ffd700); color: #000; border: none; padding: 15px 30px; font-size: 20px; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); margin-top: 30px; transition: 0.3s; font-family: 'Georgia', serif;}
-        .royal-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
-
-        /* Party Elements (Placeholders for Canva Images) */
-        #box-element { font-size: 150px; cursor: pointer; animation: float 2s infinite; margin-top: 50px; display: inline-block;}
-        #decor-element { display: none; font-size: 60px; margin-top: 20px; }
-        #balloons-element { display: none; font-size: 80px; margin-top: 20px; }
-        #cake-element { display: none; font-size: 120px; margin-top: 20px; }
+        /* Base Styling */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden;}
+        .container { width: 100%; max-width: 500px; background: rgba(26, 26, 36, 0.9); padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); text-align: center; margin-bottom: 30px; box-sizing: border-box;}
         
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-        /* Final Content Screens */
-        #party-builder-screen { display: none; width: 100%; max-width: 500px; padding: 20px; }
-        #final-surprise-screen { display: none; width: 100%; max-width: 500px; background: rgba(26, 26, 36, 0.9); padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); margin-top: 30px; box-sizing: border-box;}
+        h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff; font-size: 28px; }
+        input { width: 100%; padding: 12px; background: rgba(37, 37, 50, 0.9); border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; text-align: center; }
+        .btn { background: linear-gradient(45deg, #00ffff, #0080ff); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn:hover { box-shadow: 0 0 15px #00ffff; transform: scale(1.02); }
         
+        /* Gift Box */
+        .gift-emoji { font-size: 150px; cursor: pointer; display: inline-block; animation: bounce 1.2s infinite; text-shadow: 0 0 30px #ff1493; margin: 40px 0;}
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
+        
+        /* Modules CSS */
         .message-box { background: rgba(37, 37, 50, 0.9); padding: 20px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6; text-align: left; font-style: italic; }
-        .memory-card { background: rgba(37, 37, 50, 0.9); padding: 15px; border-radius: 12px; border: 1px solid #ff1493; margin-top: 25px; }
+        .timeline-container { margin-top: 30px; display: flex; flex-direction: column; gap: 25px; }
+        .memory-card { background: rgba(37, 37, 50, 0.9); padding: 15px; border-radius: 12px; border: 1px solid #ff1493; box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3); }
         .memory-card img { width: 100%; border-radius: 8px; max-height: 350px; object-fit: cover; }
+        
+        /* CAKE & MIC MODULE */
+        .cake-container { margin-top: 30px; background: #252532; padding: 20px; border-radius: 12px; border: 2px dashed #00ffff;}
+        .cake-emoji { font-size: 80px; position: relative; display: inline-block;}
+        .flame { font-size: 40px; position: absolute; top: -35px; left: 20px; animation: flicker 0.5s infinite alternate; }
+        @keyframes flicker { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.1); } }
+        
+        /* SCRATCH CARD MODULE */
+        .scratch-container { position: relative; width: 100%; height: 150px; margin-top: 30px; border-radius: 12px; overflow: hidden; border: 2px solid #ff1493; background: #fff;}
+        .scratch-message { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #ff1493; text-align: center; padding: 10px; box-sizing: border-box; }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
+        
+        /* REASONS BUTTON MODULE */
+        .reasons-container { margin-top: 30px; padding: 20px; background: #252532; border-radius: 12px; }
+        .reason-text { font-size: 20px; color: #00ffff; margin-top: 15px; min-height: 30px; font-weight: bold; transition: 0.3s;}
+
+        #lock-screen { display: block; }
+        #gift-screen, #surprise-screen { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- All Sound Effects (Save these files in your folder later) -->
-    <audio id="sfx-box" src="box_open.mp3"></audio>
-    <audio id="sfx-decor" src="decorate.mp3"></audio>
-    <audio id="sfx-balloon" src="balloon_show.mp3"></audio>
-    <audio id="sfx-cake" src="cake_place.mp3"></audio>
-    <audio id="sfx-candle" src="candle.mp3"></audio>
-    <audio id="sfx-pop" src="pop.mp3"></audio>
+    <div class="container">
+        
+        <!-- STEP 1: LOCK SCREEN -->
+        <div id="lock-screen">
+            <h1>🔒 Secret Surprise</h1>
+            <p>Someone made a special wish for you. Enter the secret password to unlock it!</p>
+            <p id="error-msg" style="color: #ff4444; display: none;">Incorrect Password! Try again.</p>
+            <input type="text" id="entered-password" placeholder="Enter Password Here...">
+            <button class="btn" onclick="checkPassword()">🔓 Unlock Surprise</button>
+        </div>
+
+        <!-- STEP 2: GIFT SCREEN -->
+        <div id="gift-screen">
+            <h1 style="color: #ff1493;">You unlocked it! 🎉</h1>
+            <p style="font-size: 18px;">Tap the big gift box to open your surprise...</p>
+            <div class="gift-emoji" onclick="openGift()">🎁</div>
+        </div>
+
+        <!-- STEP 3: SURPRISE SCREEN -->
+        <div id="surprise-screen">
+            <h1 style="font-size: 35px;">🎉 Happy Birthday! 🎉</h1>
+            <h2 id="display-name" style="color: #ff1493; font-size: 32px; margin-bottom: 5px;"></h2>
+            
+            <div class="message-box" id="display-message"></div>
+
+            <!-- PRO FEATURE 1: BLOW THE CANDLE -->
+            <div class="cake-container">
+                <h3 style="color:#00ffff; margin-top:0;">🎂 Make a Wish!</h3>
+                <p style="font-size:14px; color:#bbb;">Click the button, then blow into your phone's microphone to put out the candle!</p>
+                <div class="cake-emoji">
+                    <span class="flame" id="flame">🔥</span>
+                    🎂
+                </div>
+                <br>
+                <button class="btn" id="mic-btn" style="background:#ff1493; width:auto; padding:10px 20px;" onclick="enableMic()">🎙️ Enable Mic to Blow</button>
+                <h3 id="cake-success" style="color:#25D366; display:none;">✨ Wish Granted! ✨</h3>
+            </div>
+
+            <!-- PRO FEATURE 2: SCRATCH CARD -->
+            <div class="scratch-container" id="scratch-area" style="display:none;">
+                <div class="scratch-message" id="scratch-text"></div>
+                <canvas id="scratch-pad"></canvas>
+            </div>
+
+            <!-- PRO FEATURE 3: THINGS I LOVE BUTTON -->
+            <div class="reasons-container" id="reasons-area" style="display:none;">
+                <h3>❤️ Why You Are Special</h3>
+                <button class="btn" onclick="showNextReason()">Tap to reveal a reason 👆</button>
+                <div class="reason-text" id="reason-text">...</div>
+            </div>
+
+            <div id="timeline" class="timeline-container"></div>
+        </div>
+
+    </div>
+
+    <!-- Hidden Audio Player -->
     <audio id="bg-audio" loop></audio>
-
-    <!-- Initial Loading -->
-    <h2 id="loading-text" style="color:#fff; margin-top: 50vh;">Loading Magic...</h2>
-
-    <!-- STEP 1: The Royal Entrance -->
-    <div id="entrance-screen" style="display:none; width:100%;">
-        <div id="box-element" onclick="startParty()">🎁</div><br>
-        <div class="royal-text">Tap it</div>
-    </div>
-
-    <!-- STEP 2: The Party Builder -->
-    <div id="party-builder-screen">
-        <div id="decor-element">✨🎊✨</div>
-        <div id="balloons-element">🎈🎈🎈</div>
-        <div id="cake-element">🎂</div>
-        
-        <button id="action-btn" class="royal-btn" onclick="nextAction()" style="display:none;">Decorate the Room</button>
-    </div>
-
-    <!-- FINAL STEP: The Surprise Reveal -->
-    <div id="final-surprise-screen">
-        <!-- Naya Custom Title aur Name -->
-        <h1 id="display-title" style="font-size: 30px; color: #00ffff;"></h1>
-        <h2 id="display-name" style="color: #ff1493; font-size: 35px; margin-bottom: 5px;"></h2>
-        
-        <div class="message-box" id="display-message"></div>
-        <div id="timeline"></div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -87,102 +127,179 @@
         const urlParams = new URLSearchParams(window.location.search);
         const docId = urlParams.get('id');
         let wishData = null;
-        let partyStep = 0;
+        let reasonsList = [];
+        let currentReason = 0;
 
-        // Fetch Data First (No Password required now)
         if(docId) {
             db.collection("wishes").doc(docId).get().then((doc) => {
-                if (doc.exists) { 
-                    wishData = doc.data(); 
-                    document.getElementById("loading-text").style.display = "none";
-                    document.getElementById("entrance-screen").style.display = "block";
-                } else {
-                    document.getElementById("loading-text").innerText = "Link Expired or Invalid.";
-                }
+                if (doc.exists) { wishData = doc.data(); } 
+                else { document.getElementById("lock-screen").innerHTML = "<h2>Oops! Link Expired. 😥</h2>"; }
             });
         }
 
-        function playSound(id) {
-            let audio = document.getElementById(id);
-            if(audio) {
-                audio.currentTime = 0;
-                audio.play().catch(e => console.log("Sound error (Canva files pending):", e));
+        function checkPassword() {
+            if(!wishData) return;
+            let entered = document.getElementById("entered-password").value.toLowerCase().trim();
+            if(entered === wishData.password.toLowerCase().trim() && wishData.password !== "") {
+                document.getElementById("lock-screen").style.display = "none";
+                document.getElementById("gift-screen").style.display = "block";
+            } else {
+                document.getElementById("error-msg").style.display = "block";
             }
         }
 
-        // Tap the Box -> Opens Party Builder
-        function startParty() {
-            playSound('sfx-box');
-            document.getElementById("entrance-screen").style.display = "none";
-            document.getElementById("party-builder-screen").style.display = "block";
-            document.getElementById("action-btn").style.display = "inline-block";
-        }
+        function openGift() {
+            // Fullscreen & Disco
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen().catch(e => console.log(e)); }
+            document.body.classList.add("disco-mode");
 
-        // Party Builder Flow
-        function nextAction() {
-            let btn = document.getElementById("action-btn");
+            // Play Local Music
+            if(wishData.music) {
+                let audio = document.getElementById("bg-audio");
+                audio.src = wishData.music; 
+                audio.play().catch(e => console.log(e));
+            }
+
+            document.getElementById("gift-screen").style.display = "none";
+            document.getElementById("surprise-screen").style.display = "block";
             
-            if (partyStep === 0) {
-                playSound('sfx-decor');
-                document.getElementById("decor-element").style.display = "block";
-                btn.innerText = "Attach Balloons";
-                partyStep++;
-            } 
-            else if (partyStep === 1) {
-                playSound('sfx-balloon');
-                document.getElementById("balloons-element").style.display = "block";
-                btn.innerText = "Place the Cake";
-                partyStep++;
-            } 
-            else if (partyStep === 2) {
-                playSound('sfx-cake');
-                document.getElementById("cake-element").style.display = "block";
-                btn.innerText = "Cut the Cake";
-                partyStep++;
-            } 
-            else if (partyStep === 3) {
-                playSound('sfx-candle'); // Cake cutting sound
-                document.getElementById("cake-element").innerText = "🍰"; // Visual changes to cut cake
-                btn.innerText = "Let's Celebrate!";
-                partyStep++;
-            } 
-            else if (partyStep === 4) {
-                playSound('sfx-pop');
-                
-                // Start Main BG Music
-                if(wishData.music) {
-                    let bgAudio = document.getElementById("bg-audio");
-                    bgAudio.src = wishData.music;
-                    bgAudio.play().catch(e => console.log(e));
-                }
+            document.getElementById("display-name").innerText = wishData.name;
+            document.getElementById("display-message").innerText = wishData.message;
 
-                // Hide Builder, Show Final Reveal
-                document.getElementById("party-builder-screen").style.display = "none";
-                document.getElementById("final-surprise-screen").style.display = "block";
-
-                // Setup Final Data
-                document.getElementById("display-title").innerText = wishData.title || "Special Surprise!";
-                document.getElementById("display-name").innerText = wishData.name;
-                document.getElementById("display-message").innerText = wishData.message;
-
-                let timelineHTML = "";
-                if(wishData.photos && wishData.photos.length > 0) {
-                    wishData.photos.forEach(photo => {
-                        timelineHTML += `<div class="memory-card"><img src="${photo.url}"><p>✨ ${photo.caption || ''}</p></div>`;
-                    });
-                }
-                document.getElementById("timeline").innerHTML = timelineHTML;
-
-                // Heavy Confetti Blast
-                var duration = 4 * 1000;
-                var animationEnd = Date.now() + duration;
-                var interval = setInterval(function() {
-                    var timeLeft = animationEnd - Date.now();
-                    if (timeLeft <= 0) return clearInterval(interval);
-                    confetti({ particleCount: 50, spread: 360, origin: { x: Math.random(), y: Math.random() - 0.2 } });
-                }, 250);
+            // Setup Timeline
+            let timelineHTML = "";
+            if(wishData.photos && wishData.photos.length > 0) {
+                wishData.photos.forEach(photo => {
+                    timelineHTML += `<div class="memory-card"><img src="${photo.url}"><p>✨ ${photo.caption || ''}</p></div>`;
+                });
             }
+            document.getElementById("timeline").innerHTML = timelineHTML;
+
+            // Setup Scratch Card
+            if(wishData.scratch && wishData.scratch.trim() !== "") {
+                document.getElementById("scratch-area").style.display = "block";
+                document.getElementById("scratch-text").innerText = wishData.scratch;
+                initScratchCard();
+            }
+
+            // Setup Reasons
+            if(wishData.reasons && wishData.reasons.trim() !== "") {
+                document.getElementById("reasons-area").style.display = "block";
+                reasonsList = wishData.reasons.split(',').map(item => item.trim());
+            }
+
+            fireConfetti();
+        }
+
+        // --- FEATURE 1: MIC BLOW LOGIC ---
+        let audioContext, analyser, microphone, scriptProcessor;
+        async function enableMic() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                document.getElementById("mic-btn").innerText = "Blow now! 🌬️";
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+                
+                microphone.connect(analyser);
+                analyser.connect(scriptProcessor);
+                scriptProcessor.connect(audioContext.destination);
+                
+                scriptProcessor.onaudioprocess = function() {
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    let values = 0;
+                    for (let i = 0; i < array.length; i++) { values += array[i]; }
+                    const average = values / array.length;
+                    
+                    // Threshold for blowing (adjust if needed, usually around 50-70)
+                    if (average > 60) {
+                        document.getElementById('flame').style.display = 'none'; // Bujh gaya!
+                        document.getElementById('mic-btn').style.display = 'none';
+                        document.getElementById('cake-success').style.display = 'block';
+                        fireConfetti(); // Phir se patakhe
+                        
+                        // Stop listening
+                        stream.getTracks().forEach(track => track.stop());
+                        scriptProcessor.disconnect();
+                    }
+                };
+            } catch(e) {
+                alert("Please allow Microphone access to blow the candle!");
+            }
+        }
+
+        // --- FEATURE 2: SCRATCH CARD LOGIC ---
+        function initScratchCard() {
+            const canvas = document.getElementById('scratch-pad');
+            const ctx = canvas.getContext('2d');
+            let rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 150;
+
+            // Fill top layer
+            ctx.fillStyle = '#1a1a24';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '22px Arial';
+            ctx.fillStyle = '#00ffff';
+            ctx.textAlign = "center";
+            ctx.fillText('🪙 Scratch Here!', canvas.width/2, 80);
+
+            let isDrawing = false;
+            
+            function getPos(e) {
+                let r = canvas.getBoundingClientRect();
+                let x = (e.clientX || e.touches[0].clientX) - r.left;
+                let y = (e.clientY || e.touches[0].clientY) - r.top;
+                return {x, y};
+            }
+
+            function scratch(e) {
+                if(!isDrawing) return;
+                e.preventDefault();
+                let pos = getPos(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 20, 0, Math.PI*2);
+                ctx.fill();
+            }
+
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mousemove', scratch);
+            
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('touchend', () => isDrawing = false);
+            canvas.addEventListener('touchmove', scratch);
+        }
+
+        // --- FEATURE 3: REASONS BUTTON LOGIC ---
+        function showNextReason() {
+            if(reasonsList.length > 0) {
+                let textDiv = document.getElementById("reason-text");
+                textDiv.style.opacity = 0;
+                setTimeout(() => {
+                    textDiv.innerText = "✨ " + reasonsList[currentReason] + " ✨";
+                    currentReason = (currentReason + 1) % reasonsList.length;
+                    textDiv.style.opacity = 1;
+                    fireConfetti(); // Halke patakhe
+                }, 300);
+            }
+        }
+
+        function fireConfetti() {
+            var duration = 2 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
         }
     </script>
 </body>
 </html>
+
