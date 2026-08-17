@@ -5,42 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Someone Sent You A Surprise!</title>
     <style>
-        /* CSS: Dark Theme & Neon Glow */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; margin-top: 20px; margin-bottom: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); text-align: center; }
+        /* CSS: DJ Lights Animation */
+        @keyframes djLights {
+            0% { background-color: #ff00ff; }
+            15% { background-color: #00ffff; }
+            30% { background-color: #ffff00; }
+            45% { background-color: #ff0000; }
+            60% { background-color: #00ff00; }
+            75% { background-color: #0000ff; }
+            90% { background-color: #ff8c00; }
+            100% { background-color: #ff00ff; }
+        }
+        
+        /* DJ Mode Class */
+        body.disco-mode {
+            animation: djLights 0.8s infinite alternate;
+        }
+
+        /* Base CSS */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: background-color 0.5s;}
+        
+        /* Main Container setup for disco mode compatibility */
+        .container { width: 90%; max-width: 500px; background: rgba(26, 26, 36, 0.85); padding: 30px; margin-top: 20px; margin-bottom: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); text-align: center; backdrop-filter: blur(10px); }
+        
         h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; font-size: 28px; }
-        .ad-space { width: 100%; height: 100px; background: #2a2a35; color: #666; display: flex; align-items: center; justify-content: center; margin: 20px 0; border: 1px dashed #555; border-radius: 8px; }
+        .ad-space { width: 100%; height: 100px; background: rgba(42, 42, 53, 0.9); color: #fff; display: flex; align-items: center; justify-content: center; margin: 20px 0; border: 1px dashed #fff; border-radius: 8px; }
         
         /* Screens Setup */
         #lock-screen { display: block; }
-        #gift-screen { display: none; }
+        #gift-screen { display: none; margin-top: 30px; }
         #surprise-screen { display: none; }
 
-        input { width: 100%; padding: 12px; background: #252532; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; text-align: center; }
+        input { width: 100%; padding: 12px; background: rgba(37, 37, 50, 0.9); border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; text-align: center; }
         .btn { background: linear-gradient(45deg, #00ffff, #0080ff); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .btn:hover { box-shadow: 0 0 15px #00ffff; transform: scale(1.02); }
         
-        .message-box { background: #252532; padding: 20px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6; text-align: left; font-style: italic; }
+        .message-box { background: rgba(37, 37, 50, 0.9); padding: 20px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6; text-align: left; font-style: italic; }
         .timeline-container { margin-top: 30px; display: flex; flex-direction: column; gap: 25px; }
-        .memory-card { background: #252532; padding: 15px; border-radius: 12px; border: 1px solid #ff1493; box-shadow: 0 4px 15px rgba(255, 20, 147, 0.15); animation: fadeIn 1.5s ease-in-out; }
+        .memory-card { background: rgba(37, 37, 50, 0.9); padding: 15px; border-radius: 12px; border: 1px solid #ff1493; box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3); animation: fadeIn 1.5s ease-in-out; }
         .memory-card img { width: 100%; border-radius: 8px; max-height: 350px; object-fit: cover; }
-        .memory-card p { color: #e0e0e0; font-size: 16px; margin-top: 12px; margin-bottom: 0; font-weight: 500; }
+        .memory-card p { color: #fff; font-size: 16px; margin-top: 12px; margin-bottom: 0; font-weight: bold; }
         
         /* Gift Box Animation */
-        .gift-emoji { font-size: 100px; cursor: pointer; display: inline-block; animation: bounce 1.5s infinite; text-shadow: 0 0 20px #ff1493; margin-top: 30px;}
+        .gift-emoji { font-size: 120px; cursor: pointer; display: inline-block; animation: bounce 1.2s infinite; text-shadow: 0 0 30px #ff1493; margin-top: 20px; margin-bottom: 20px;}
         .gift-emoji:hover { transform: scale(1.1); animation: none; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         .create-own-btn { background: linear-gradient(45deg, #ff1493, #8a2be2); margin-top: 35px; }
-        .error-msg { color: #ff4444; display: none; margin-bottom: 10px; font-weight: bold; }
+        .error-msg { color: #ff4444; display: none; margin-bottom: 10px; font-weight: bold; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 5px;}
     </style>
 </head>
 <body>
 
-    <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Top)</div>
+    <div class="ad-space" style="max-width: 500px; display: none;" id="top-ad">Google AdSense Banner (Top)</div>
 
-    <div class="container">
+    <div class="container" id="main-container">
         
         <!-- STEP 1: LOCK SCREEN -->
         <div id="lock-screen">
@@ -54,14 +74,14 @@
         <!-- STEP 2: GIFT BOX SCREEN -->
         <div id="gift-screen">
             <h1 style="color: #ff1493;">You unlocked it! 🎉</h1>
-            <p>Tap the gift box below to open your surprise...</p>
+            <p style="font-size: 18px; font-weight: bold;">Tap the gift box below to open your surprise...</p>
             <div class="gift-emoji" onclick="openGift()">🎁</div>
         </div>
 
         <!-- STEP 3: SURPRISE SCREEN -->
         <div id="surprise-screen">
-            <h1>🎉 Happy Birthday! 🎉</h1>
-            <h2 id="display-name" style="color: #ff1493; font-size: 32px; margin-bottom: 5px;"></h2>
+            <h1 style="font-size: 35px; text-shadow: 0 0 15px #fff;">🎉 Happy Birthday! 🎉</h1>
+            <h2 id="display-name" style="color: #ff1493; font-size: 32px; margin-bottom: 5px; text-shadow: 0 0 10px #ff1493;"></h2>
             
             <div class="message-box" id="display-message"></div>
             <div id="timeline" class="timeline-container"></div>
@@ -74,13 +94,14 @@
     <!-- Hidden Audio Player -->
     <audio id="bg-audio" loop></audio>
 
-    <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
+    <div class="ad-space" style="max-width: 500px; display: none;" id="bottom-ad">Google AdSense Banner (Bottom)</div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
@@ -96,15 +117,22 @@
         const docId = urlParams.get('id');
         let wishData = null;
 
+        // Fetch Data from Firebase
         if(docId) {
             db.collection("wishes").doc(docId).get().then((doc) => {
-                if (doc.exists) { wishData = doc.data(); } 
+                if (doc.exists) { 
+                    wishData = doc.data(); 
+                    // Ads show karo jab data aa jaye
+                    document.getElementById("top-ad").style.display = "flex";
+                    document.getElementById("bottom-ad").style.display = "flex";
+                } 
                 else { document.getElementById("lock-screen").innerHTML = "<h2>Oops! Link Expired or Invalid. 😥</h2>"; }
             });
         } else {
             document.getElementById("lock-screen").innerHTML = "<h2>Invalid Link! 🚫</h2>";
         }
 
+        // STEP 1: Password Logic
         function checkPassword() {
             if(!wishData) return;
             let entered = document.getElementById("entered-password").value.toLowerCase().trim();
@@ -118,21 +146,38 @@
             }
         }
 
+        // STEP 2: Gift Box Tap -> Fullscreen + DJ Lights + Music + Surprise Data
         function openGift() {
+            
+            // 1. FULLSCREEN REQUEST (Browser allowed on user click)
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen().catch(e => console.log(e)); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen().catch(e => console.log(e)); }
+            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen().catch(e => console.log(e)); }
+
+            // 2. ACTIVATE DJ LIGHTS
+            document.body.classList.add("disco-mode");
+
+            // 3. START MUSIC
+            if(wishData.music) {
+                let audio = document.getElementById("bg-audio");
+                audio.src = wishData.music; // Yeh value ab local file name hogi (e.g. song1.mp3)
+                audio.volume = 1.0;
+                audio.play().catch(error => console.log("Audio Error:", error));
+            }
+
+            // 4. SHOW SURPRISE
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
             
-            // Audio Playback
-            if(wishData.music) {
-                let audio = document.getElementById("bg-audio");
-                audio.src = wishData.music;
-                audio.volume = 0.8;
-                audio.play().catch(error => console.log("Audio Error:", error));
-            }
+            // Hide Ads temporarily in disco mode for better experience
+            document.getElementById("top-ad").style.display = "none";
+            document.getElementById("bottom-ad").style.display = "none";
 
             document.getElementById("display-name").innerText = wishData.name;
             document.getElementById("display-message").innerText = wishData.message;
 
+            // Load Timeline Photos
             let timelineHTML = "";
             if(wishData.photos && wishData.photos.length > 0) {
                 wishData.photos.forEach(photo => {
@@ -140,20 +185,21 @@
                     timelineHTML += `<div class="memory-card"><img src="${photo.url}"><p>✨ ${cap}</p></div>`;
                 });
             } else {
+                // Backward compatibility
                 if(wishData.photo1) timelineHTML += `<div class="memory-card"><img src="${wishData.photo1}"><p>✨ ${wishData.cap1 || 'Sweet Memories'}</p></div>`;
                 if(wishData.photo2) timelineHTML += `<div class="memory-card"><img src="${wishData.photo2}"><p>😂 ${wishData.cap2 || 'Unforgettable Moments'}</p></div>`;
                 if(wishData.photo3) timelineHTML += `<div class="memory-card"><img src="${wishData.photo3}"><p>❤️ ${wishData.cap3 || 'Always Special'}</p></div>`;
             }
             document.getElementById("timeline").innerHTML = timelineHTML;
             
-            // Confetti
-            var duration = 3 * 1000;
+            // 5. CONFETTI BLAST
+            var duration = 4 * 1000;
             var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            var defaults = { startVelocity: 40, spread: 360, ticks: 60, zIndex: 0 };
             var interval = setInterval(function() {
                 var timeLeft = animationEnd - Date.now();
                 if (timeLeft <= 0) return clearInterval(interval);
-                var particleCount = 50 * (timeLeft / duration);
+                var particleCount = 60 * (timeLeft / duration);
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
             }, 250);
         }
