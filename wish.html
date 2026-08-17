@@ -77,7 +77,7 @@
             <!-- PRO FEATURE 1: BLOW THE CANDLE -->
             <div class="cake-container">
                 <h3 style="color:#00ffff; margin-top:0;">🎂 Make a Wish!</h3>
-                <p style="font-size:14px; color:#bbb;">Click the button, then blow into your phone's microphone to put out the candle!</p>
+                <p style="font-size:14px; color:#bbb;">Click the button, then blow closely into your phone's microphone to put out the candle!</p>
                 <div class="cake-emoji">
                     <span class="flame" id="flame">🔥</span>
                     🎂
@@ -192,17 +192,28 @@
             fireConfetti();
         }
 
-        // --- FEATURE 1: MIC BLOW LOGIC ---
+        // --- FEATURE 1: MIC BLOW LOGIC (FIXED) ---
         let audioContext, analyser, microphone, scriptProcessor;
         async function enableMic() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                document.getElementById("mic-btn").innerText = "Blow now! 🌬️";
+                // IMPORTANT FIX: Phone ka 'Noise Cancellation' band karna taaki phookne ki aawaz record ho
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: { 
+                        echoCancellation: false, 
+                        noiseSuppression: false, 
+                        autoGainControl: false 
+                    } 
+                });
+                
+                document.getElementById("mic-btn").innerText = "Blow closely into the mic! 🌬️";
                 
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 analyser = audioContext.createAnalyser();
                 microphone = audioContext.createMediaStreamSource(stream);
                 scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+                
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 1024;
                 
                 microphone.connect(analyser);
                 analyser.connect(scriptProcessor);
@@ -211,24 +222,30 @@
                 scriptProcessor.onaudioprocess = function() {
                     const array = new Uint8Array(analyser.frequencyBinCount);
                     analyser.getByteFrequencyData(array);
-                    let values = 0;
-                    for (let i = 0; i < array.length; i++) { values += array[i]; }
-                    const average = values / array.length;
                     
-                    // Threshold for blowing (adjust if needed, usually around 50-70)
-                    if (average > 60) {
-                        document.getElementById('flame').style.display = 'none'; // Bujh gaya!
+                    // Aawaz ka sabse uncha level (Peak Volume) check karna
+                    let maxVolume = 0;
+                    for (let i = 0; i < array.length; i++) { 
+                        if (array[i] > maxVolume) {
+                            maxVolume = array[i];
+                        }
+                    }
+                    
+                    // Threshold ko kam kiya hai (100) taaki halke se phookne par bhi kaam kare
+                    if (maxVolume > 100) {
+                        document.getElementById('flame').style.display = 'none'; // Candle bujh gayi!
                         document.getElementById('mic-btn').style.display = 'none';
                         document.getElementById('cake-success').style.display = 'block';
                         fireConfetti(); // Phir se patakhe
                         
-                        // Stop listening
+                        // Background process rokna
                         stream.getTracks().forEach(track => track.stop());
                         scriptProcessor.disconnect();
                     }
                 };
             } catch(e) {
-                alert("Please allow Microphone access to blow the candle!");
+                console.error("Mic error:", e);
+                alert("Please allow Microphone access from browser settings to blow the candle!");
             }
         }
 
@@ -271,9 +288,9 @@
             canvas.addEventListener('mouseup', () => isDrawing = false);
             canvas.addEventListener('mousemove', scratch);
             
-            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
             canvas.addEventListener('touchend', () => isDrawing = false);
-            canvas.addEventListener('touchmove', scratch);
+            canvas.addEventListener('touchmove', scratch, {passive: false});
         }
 
         // --- FEATURE 3: REASONS BUTTON LOGIC ---
