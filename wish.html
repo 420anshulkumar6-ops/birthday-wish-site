@@ -5,41 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday!</title>
     <style>
-        /* Neon Theme & No Scrolling Setup */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        /* Continuous Background Light Animation */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: #ffffff;
+            animation: bgDiscoLights 8s infinite alternate;
+        }
+
+        @keyframes bgDiscoLights {
+            0% { background-color: #0a001a; }
+            33% { background-color: #1a0033; }
+            66% { background-color: #001122; }
+            100% { background-color: #1a001a; }
+        }
         
-        /* Video jaisi decoration patti (Top Border Glow) */
-        .neon-border { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, #b100ff, #ff1493, #00ffff, #b100ff); background-size: 200% 200%; animation: gradientGlow 3s ease infinite; box-shadow: 0 0 15px #b100ff, 0 0 30px #ff1493; z-index: 100; }
+        /* Top Neon Glow Border */
+        .neon-border { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, #b100ff, #ff1493, #00ffff, #b100ff); background-size: 200% 200%; animation: gradientGlow 3s ease infinite; box-shadow: 0 0 15px #b100ff, 0 0 30px #ff1493; z-index: 100; }
         @keyframes gradientGlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* Container Settings */
-        .container { width: 100%; max-width: 500px; padding: 15px; box-sizing: border-box; text-align: center; display: flex; flex-direction: column; height: 100vh; justify-content: center; position: relative; }
+        /* Container Settings (Padding removed for full-width image) */
+        .container { width: 100%; max-width: 500px; text-align: center; display: flex; flex-direction: column; min-height: 100vh; position: relative; }
         
         /* Gift Box Initial Screen */
         #gift-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0d0d12; z-index: 50; }
         .gift-emoji { font-size: 150px; cursor: pointer; animation: bounce 1s infinite; text-shadow: 0 0 40px #b100ff; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        /* Surprise Screen (Hidden Initially) */
-        #surprise-screen { display: none; flex-direction: column; height: 100%; justify-content: space-evenly; align-items: center; }
+        /* Surprise Screen Layout Fixed */
+        #surprise-screen { display: none; flex-direction: column; align-items: center; padding-top: 20px; padding-bottom: 30px; gap: 15px; } /* Gap kam kiya taaki sab paas rahe */
 
-        /* 1. Animated Heading (Left to Right smooth glide) */
-        .animated-title { font-family: 'Georgia', cursive; font-size: 26px; color: #fff; font-weight: bold; text-shadow: 0 0 10px #b100ff, 0 0 20px #ff1493; white-space: nowrap; animation: slideLTR 4s ease-in-out infinite alternate; margin: 10px 0; }
-        @keyframes slideLTR { 0% { transform: translateX(-20px); } 100% { transform: translateX(20px); } }
+        /* 1. Animated Heading */
+        .animated-title { font-family: 'Georgia', cursive; font-size: 26px; color: #fff; font-weight: bold; text-shadow: 0 0 10px #b100ff, 0 0 20px #ff1493; white-space: nowrap; animation: slideLTR 4s ease-in-out infinite alternate; margin: 10px 0; padding: 0 15px;}
+        @keyframes slideLTR { 0% { transform: translateX(-15px); } 100% { transform: translateX(15px); } }
 
         /* 2. Image Carousel Area */
-        .slider-container { position: relative; width: 100%; height: 45vh; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 10px 0; }
-        .slide-img { max-width: 100%; max-height: 40vh; border-radius: 12px; border: 2px solid #b100ff; box-shadow: 0 0 15px rgba(177, 0, 255, 0.4); object-fit: contain; }
-        .slide-caption { margin-top: 8px; font-style: italic; color: #ccc; font-size: 16px; min-height: 20px; text-shadow: 0 0 5px #000; }
+        .slider-container { width: 100%; display: flex; flex-direction: column; align-items: center; }
         
-        /* Carousel Arrows */
-        .nav-btn { position: absolute; top: 45%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: #fff; border: 1px solid #b100ff; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 10px #b100ff; z-index: 10; }
+        /* Image now touches left and right edges (margin 0) */
+        .slide-img { width: 100%; max-height: 50vh; object-fit: cover; border-top: 2px solid #b100ff; border-bottom: 2px solid #b100ff; box-shadow: 0 0 15px rgba(177, 0, 255, 0.4); }
+        .slide-caption { margin-top: 8px; font-style: italic; color: #ccc; font-size: 16px; min-height: 20px; text-shadow: 0 0 5px #000; padding: 0 15px;}
+        
+        /* Buttons moved below image */
+        .slider-controls { display: flex; justify-content: center; gap: 30px; margin-top: 10px; }
+        .nav-btn { background: rgba(0,0,0,0.6); color: #fff; border: 1px solid #b100ff; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 10px #b100ff; z-index: 10; }
         .nav-btn:active { background: #b100ff; }
-        .nav-left { left: 5px; }
-        .nav-right { right: 5px; }
 
-        /* 3. Message Area (Fixed height with scroll inside if needed) */
-        .message-box { width: 90%; background: rgba(26, 26, 36, 0.8); padding: 15px; border-left: 4px solid #b100ff; border-radius: 8px; font-size: 16px; line-height: 1.5; font-style: italic; max-height: 25vh; overflow-y: auto; text-align: center; box-shadow: 0 0 10px rgba(177, 0, 255, 0.2); }
+        /* 3. Message Area Fixed */
+        .message-box { width: 90%; background: rgba(26, 26, 36, 0.8); padding: 15px; border-left: 4px solid #b100ff; border-radius: 8px; font-size: 16px; line-height: 1.5; font-style: italic; text-align: center; box-shadow: 0 0 10px rgba(177, 0, 255, 0.2); box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -47,27 +65,37 @@
 
     <div class="container" id="main-content-area">
         
+        <!-- ENTRANCE: Gift Box -->
         <div id="gift-screen">
             <h2 style="color: #b100ff; text-shadow: 0 0 10px #b100ff;">A Special Surprise!</h2>
             <div class="gift-emoji" onclick="openGift()">🎁</div>
             <p style="color: #ccc;">Tap to open</p>
         </div>
 
+        <!-- MAIN LAYOUT -->
         <div id="surprise-screen">
+            <!-- Part 1: Animated Name -->
             <div class="animated-title" id="display-title">Happy Birthday!</div>
 
+            <!-- Part 2: Image Slider -->
             <div class="slider-container" id="slider-area">
-                <button class="nav-btn nav-left" id="btn-prev" onclick="manualSlide('prev')">&#10094;</button>
                 <img src="" id="current-img" class="slide-img" alt="Memory" style="display:none;">
                 <div class="slide-caption" id="current-cap"></div>
-                <button class="nav-btn nav-right" id="btn-next" onclick="manualSlide('next')">&#10095;</button>
+                
+                <!-- Buttons Moved Below the Image -->
+                <div class="slider-controls" id="slider-controls" style="display:none;">
+                    <button class="nav-btn" id="btn-prev" onclick="manualSlide('prev')">&#10094;</button>
+                    <button class="nav-btn" id="btn-next" onclick="manualSlide('next')">&#10095;</button>
+                </div>
             </div>
 
+            <!-- Part 3: Message -->
             <div class="message-box" id="display-message"></div>
         </div>
 
     </div>
 
+    <!-- Audios -->
     <audio id="sfx-box" src="box.mp3"></audio>
     <audio id="bg-audio" loop></audio>
 
@@ -91,12 +119,10 @@
         const docId = urlParams.get('id');
         let wishData = null;
         
-        // Slider Variables
         let photos = [];
         let currentSlideIndex = 0;
         let slideInterval = null;
 
-        // Fetch Data
         if(docId) {
             db.collection("wishes").doc(docId).get().then((doc) => {
                 if (doc.exists) { 
@@ -109,41 +135,35 @@
         }
 
         function openGift() {
-            // 1. Play Box Sound
             let boxSound = document.getElementById("sfx-box");
             boxSound.play().catch(e => console.log("Upload box.mp3 to folder first!"));
 
-            // 2. Fullscreen & Confetti
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen().catch(e => console.log(e)); }
-            fireConfetti();
+            
+            // Start Continuous Confetti Magic
+            startContinuousConfetti();
 
-            // 3. Play BG Music
             if(wishData.music) {
                 setTimeout(() => {
                     let audio = document.getElementById("bg-audio");
                     audio.src = wishData.music; audio.play().catch(e => console.log(e));
-                }, 1000); // Wait 1 sec for box sound
+                }, 1000); 
             }
 
-            // 4. Switch Screens
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "flex";
 
-            // 5. Populate Data
             document.getElementById("display-title").innerText = `Happy Birthday ${wishData.name}!`;
             document.getElementById("display-message").innerText = wishData.message;
 
-            // 6. Setup Slider
             setupSlider();
         }
 
         // --- SLIDER LOGIC ---
         function setupSlider() {
             let imgEl = document.getElementById("current-img");
-            let capEl = document.getElementById("current-cap");
-            let btnPrev = document.getElementById("btn-prev");
-            let btnNext = document.getElementById("btn-next");
+            let controlsEl = document.getElementById("slider-controls");
 
             if (photos.length === 0) {
                 document.getElementById("slider-area").style.display = "none";
@@ -153,12 +173,10 @@
             imgEl.style.display = "block";
             
             if (photos.length === 1) {
-                // Single Image: Hide arrows, no auto-slide
-                btnPrev.style.display = "none";
-                btnNext.style.display = "none";
+                controlsEl.style.display = "none";
                 updateSlideView();
             } else {
-                // Multiple Images: Show arrows, start auto-slide (2 seconds)
+                controlsEl.style.display = "flex";
                 updateSlideView();
                 slideInterval = setInterval(autoSlideNext, 2000);
             }
@@ -175,7 +193,6 @@
         }
 
         function manualSlide(direction) {
-            // Stop auto-slide permanently if user clicks manually
             if (slideInterval) {
                 clearInterval(slideInterval);
                 slideInterval = null;
@@ -189,13 +206,12 @@
             updateSlideView();
         }
 
-        function fireConfetti() {
-            var duration = 3 * 1000; var end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#b100ff', '#ff1493', '#00ffff'] });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#b100ff', '#ff1493', '#00ffff'] });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+        // --- CONTINUOUS CONFETTI LOGIC ---
+        function startContinuousConfetti() {
+            setInterval(function() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#b100ff', '#ff1493', '#00ffff'], zIndex: 1000 });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#b100ff', '#ff1493', '#00ffff'], zIndex: 1000 });
+            }, 150); // Har 150ms me thode thode phool girenge
         }
     </script>
 </body>
