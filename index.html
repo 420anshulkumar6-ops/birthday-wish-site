@@ -11,8 +11,17 @@
         h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 24px; }
         .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; animation: fadeIn 0.5s; }
         label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
-        input, textarea, select { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
+        input[type="text"], textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
         input[type="file"] { padding: 8px; border: none; flex: 1; }
+        
+        /* Music Preview List CSS */
+        .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
+        .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; font-weight: normal; }
+        .play-btn { background: #00ffff; color: #000; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .play-btn:hover { box-shadow: 0 0 10px #00ffff; transform: scale(1.1); }
+        .playing { background: #ff1493; color: white; box-shadow: 0 0 10px #ff1493; }
+
         .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
         .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .upload-btn:hover { background: #ffffff; box-shadow: 0 0 10px #00ffff; }
@@ -48,16 +57,36 @@
                 <label>Special Birthday Message *</label>
                 <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
                 
-                <label>Choose Background Music 🎵</label>
-                <select id="bMusic">
-                    <!-- High quality .mp3 direct links -->
-                    <option value="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939405fc6.mp3">Happy Birthday (Instrumental)</option>
-                    <option value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3">Romantic / Piano Theme</option>
-                    <option value="https://cdn.pixabay.com/download/audio/2022/03/24/audio_5170d4fcb4.mp3">Fun / Upbeat Theme</option>
-                </select>
+                <label style="margin-top: 10px;">Choose Background Music 🎵</label>
+                
+                <!-- Music Preview List -->
+                <div class="music-list">
+                    <div class="music-item">
+                        <label>
+                            <input type="radio" name="bMusic" value="https://ia801402.us.archive.org/16/items/HappyBirthdayToYouPiano/HappyBirthdayToYouPiano.mp3" checked>
+                            Happy Birthday (Piano)
+                        </label>
+                        <button type="button" class="play-btn" onclick="togglePreview(this, 'https://ia801402.us.archive.org/16/items/HappyBirthdayToYouPiano/HappyBirthdayToYouPiano.mp3')">▶️</button>
+                    </div>
+                    <div class="music-item">
+                        <label>
+                            <input type="radio" name="bMusic" value="https://ia800806.us.archive.org/15/items/canon-in-d-pachelbel/Canon_in_D_Pachelbel.mp3">
+                            Romantic (Canon in D)
+                        </label>
+                        <button type="button" class="play-btn" onclick="togglePreview(this, 'https://ia800806.us.archive.org/15/items/canon-in-d-pachelbel/Canon_in_D_Pachelbel.mp3')">▶️</button>
+                    </div>
+                    <div class="music-item">
+                        <label>
+                            <input type="radio" name="bMusic" value="https://ia600902.us.archive.org/18/items/tvtunes_24522/The%20Pink%20Panther.mp3">
+                            Funny Theme (Pink Panther)
+                        </label>
+                        <button type="button" class="play-btn" onclick="togglePreview(this, 'https://ia600902.us.archive.org/18/items/tvtunes_24522/The%20Pink%20Panther.mp3')">▶️</button>
+                    </div>
+                </div>
+                <audio id="preview-audio" style="display: none;"></audio>
             </div>
 
-            <!-- Memory Timeline (Dynamic Setup) -->
+            <!-- Memory Timeline -->
             <h3 style="color: #00ffff; font-size: 18px;">📸 Memory Timeline (Optional)</h3>
             
             <div id="dynamic-image-container"></div>
@@ -98,8 +127,41 @@
         let activeUploads = 0; 
         let imageCounter = 0; 
         const generateBtn = document.getElementById("generate-btn");
+        const previewAudio = document.getElementById("preview-audio");
+        let currentPlayBtn = null;
 
         window.onload = function() { addImageRow(); };
+
+        // Music Preview Logic
+        function togglePreview(btnElement, url) {
+            // Agar pehle se wahi gaana baj raha hai toh pause karo
+            if (currentPlayBtn === btnElement && !previewAudio.paused) {
+                previewAudio.pause();
+                btnElement.innerText = "▶️";
+                btnElement.classList.remove("playing");
+                return;
+            }
+
+            // Dusra play karne se pehle sabhi buttons reset karo
+            let allBtns = document.querySelectorAll(".play-btn");
+            allBtns.forEach(btn => {
+                btn.innerText = "▶️";
+                btn.classList.remove("playing");
+            });
+
+            // Naya gaana play karo
+            previewAudio.src = url;
+            previewAudio.play();
+            btnElement.innerText = "⏸️";
+            btnElement.classList.add("playing");
+            currentPlayBtn = btnElement;
+
+            // Gaana khatam hone par button reset
+            previewAudio.onended = function() {
+                btnElement.innerText = "▶️";
+                btnElement.classList.remove("playing");
+            };
+        }
 
         function updateButtonState() {
             if (activeUploads > 0) {
@@ -192,6 +254,12 @@
             e.preventDefault(); 
             this.style.display = "none"; 
             
+            // Background me jo music preview chal raha hai use rokna
+            previewAudio.pause();
+
+            // Selected Music value uthana
+            let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
+            
             let photosArray = [];
             for(let i = 1; i <= imageCounter; i++) {
                 let urlVal = document.getElementById("url" + i) ? document.getElementById("url" + i).value : "";
@@ -203,7 +271,7 @@
                 name: document.getElementById("bName").value,
                 password: document.getElementById("bPassword").value,
                 message: document.getElementById("bMessage").value,
-                music: document.getElementById("bMusic").value,
+                music: selectedMusic, // Radio button se selected music
                 photos: photosArray, 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
