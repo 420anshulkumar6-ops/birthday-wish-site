@@ -3,100 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Happy Birthday!</title>
+    <title>Someone Sent You A Surprise!</title>
     <style>
-        /* Continuous Background Light Animation */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            color: #ffffff;
-            animation: bgDiscoLights 8s infinite alternate;
-        }
-
-        @keyframes bgDiscoLights {
-            0% { background-color: #0a001a; }
-            33% { background-color: #1a0033; }
-            66% { background-color: #001122; }
-            100% { background-color: #1a001a; }
-        }
+        /* DJ Lights */
+        @keyframes djLights { 0% { background-color: #ff00ff; } 15% { background-color: #00ffff; } 30% { background-color: #ffff00; } 45% { background-color: #ff0000; } 60% { background-color: #00ff00; } 75% { background-color: #0000ff; } 90% { background-color: #ff8c00; } 100% { background-color: #ff00ff; } }
+        body.disco-mode { animation: djLights 0.8s infinite alternate; }
         
-        /* Top Neon Glow Border */
-        .neon-border { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, #b100ff, #ff1493, #00ffff, #b100ff); background-size: 200% 200%; animation: gradientGlow 3s ease infinite; box-shadow: 0 0 15px #b100ff, 0 0 30px #ff1493; z-index: 100; }
-        @keyframes gradientGlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        /* Container Settings (Padding removed for full-width image) */
-        .container { width: 100%; max-width: 500px; text-align: center; display: flex; flex-direction: column; min-height: 100vh; position: relative; }
+        /* Base Styling */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden;}
+        .container { width: 100%; max-width: 500px; background: rgba(26, 26, 36, 0.9); padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); text-align: center; margin-bottom: 30px; box-sizing: border-box;}
         
-        /* Gift Box Initial Screen */
-        #gift-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0d0d12; z-index: 50; }
-        .gift-emoji { font-size: 150px; cursor: pointer; animation: bounce 1s infinite; text-shadow: 0 0 40px #b100ff; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-        /* Surprise Screen Layout Fixed */
-        #surprise-screen { display: none; flex-direction: column; align-items: center; padding-top: 20px; padding-bottom: 30px; gap: 15px; } /* Gap kam kiya taaki sab paas rahe */
-
-        /* 1. Animated Heading */
-        .animated-title { font-family: 'Georgia', cursive; font-size: 26px; color: #fff; font-weight: bold; text-shadow: 0 0 10px #b100ff, 0 0 20px #ff1493; white-space: nowrap; animation: slideLTR 4s ease-in-out infinite alternate; margin: 10px 0; padding: 0 15px;}
-        @keyframes slideLTR { 0% { transform: translateX(-15px); } 100% { transform: translateX(15px); } }
-
-        /* 2. Image Carousel Area */
-        .slider-container { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff; font-size: 28px; }
+        input { width: 100%; padding: 12px; background: rgba(37, 37, 50, 0.9); border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; text-align: center; }
+        .btn { background: linear-gradient(45deg, #00ffff, #0080ff); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn:hover { box-shadow: 0 0 15px #00ffff; transform: scale(1.02); }
         
-        /* Image now touches left and right edges (margin 0) */
-        .slide-img { width: 100%; max-height: 50vh; object-fit: cover; border-top: 2px solid #b100ff; border-bottom: 2px solid #b100ff; box-shadow: 0 0 15px rgba(177, 0, 255, 0.4); }
-        .slide-caption { margin-top: 8px; font-style: italic; color: #ccc; font-size: 16px; min-height: 20px; text-shadow: 0 0 5px #000; padding: 0 15px;}
+        /* Gift Box */
+        .gift-emoji { font-size: 150px; cursor: pointer; display: inline-block; animation: bounce 1.2s infinite; text-shadow: 0 0 30px #ff1493; margin: 40px 0;}
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
         
-        /* Buttons moved below image */
-        .slider-controls { display: flex; justify-content: center; gap: 30px; margin-top: 10px; }
-        .nav-btn { background: rgba(0,0,0,0.6); color: #fff; border: 1px solid #b100ff; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 10px #b100ff; z-index: 10; }
-        .nav-btn:active { background: #b100ff; }
+        /* Modules CSS */
+        .message-box { background: rgba(37, 37, 50, 0.9); padding: 20px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6; text-align: left; font-style: italic; }
+        .timeline-container { margin-top: 30px; display: flex; flex-direction: column; gap: 25px; }
+        .memory-card { background: rgba(37, 37, 50, 0.9); padding: 15px; border-radius: 12px; border: 1px solid #ff1493; box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3); }
+        .memory-card img { width: 100%; border-radius: 8px; max-height: 350px; object-fit: cover; }
+        
+        /* CAKE & MIC MODULE */
+        .cake-container { margin-top: 30px; background: #252532; padding: 20px; border-radius: 12px; border: 2px dashed #00ffff;}
+        .cake-emoji { font-size: 80px; position: relative; display: inline-block;}
+        .flame { font-size: 40px; position: absolute; top: -35px; left: 20px; animation: flicker 0.5s infinite alternate; }
+        @keyframes flicker { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.1); } }
+        
+        /* SCRATCH CARD MODULE */
+        .scratch-container { position: relative; width: 100%; height: 150px; margin-top: 30px; border-radius: 12px; overflow: hidden; border: 2px solid #ff1493; background: #fff;}
+        .scratch-message { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #ff1493; text-align: center; padding: 10px; box-sizing: border-box; }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
 
-        /* 3. Message Area Fixed */
-        .message-box { width: 90%; background: rgba(26, 26, 36, 0.8); padding: 15px; border-left: 4px solid #b100ff; border-radius: 8px; font-size: 16px; line-height: 1.5; font-style: italic; text-align: center; box-shadow: 0 0 10px rgba(177, 0, 255, 0.2); box-sizing: border-box; }
+        #gift-screen, #surprise-screen { display: none; }
     </style>
 </head>
 <body>
-    <div class="neon-border"></div>
 
     <div class="container" id="main-content-area">
         
-        <!-- ENTRANCE: Gift Box -->
+        <!-- STEP 1: GIFT SCREEN (Direct Entry Point) -->
         <div id="gift-screen">
-            <h2 style="color: #b100ff; text-shadow: 0 0 10px #b100ff;">A Special Surprise!</h2>
+            <h1 style="color: #ff1493;">Surprise for you! 🎉</h1>
+            <p style="font-size: 18px;">Tap the big gift box to open your surprise...</p>
             <div class="gift-emoji" onclick="openGift()">🎁</div>
-            <p style="color: #ccc;">Tap to open</p>
         </div>
 
-        <!-- MAIN LAYOUT -->
+        <!-- STEP 2: SURPRISE SCREEN -->
         <div id="surprise-screen">
-            <!-- Part 1: Animated Name -->
-            <div class="animated-title" id="display-title">Happy Birthday!</div>
+            <h1 style="font-size: 35px;">🎉 Happy Birthday! 🎉</h1>
+            <h2 id="display-name" style="color: #ff1493; font-size: 32px; margin-bottom: 5px;"></h2>
+            
+            <div class="message-box" id="display-message"></div>
 
-            <!-- Part 2: Image Slider -->
-            <div class="slider-container" id="slider-area">
-                <img src="" id="current-img" class="slide-img" alt="Memory" style="display:none;">
-                <div class="slide-caption" id="current-cap"></div>
-                
-                <!-- Buttons Moved Below the Image -->
-                <div class="slider-controls" id="slider-controls" style="display:none;">
-                    <button class="nav-btn" id="btn-prev" onclick="manualSlide('prev')">&#10094;</button>
-                    <button class="nav-btn" id="btn-next" onclick="manualSlide('next')">&#10095;</button>
+            <!-- PRO FEATURE 1: BLOW THE CANDLE -->
+            <div class="cake-container">
+                <h3 style="color:#00ffff; margin-top:0;">🎂 Make a Wish!</h3>
+                <p style="font-size:14px; color:#bbb;">Click the button, then blow into your phone's microphone to put out the candle!</p>
+                <div class="cake-emoji">
+                    <span class="flame" id="flame">🔥</span>
+                    🎂
                 </div>
+                <br>
+                <button class="btn" id="mic-btn" style="background:#ff1493; width:auto; padding:10px 20px;" onclick="enableMic()">🎙️ Enable Mic to Blow</button>
+                <h3 id="cake-success" style="color:#25D366; display:none;">✨ Wish Granted! ✨</h3>
             </div>
 
-            <!-- Part 3: Message -->
-            <div class="message-box" id="display-message"></div>
+            <!-- PRO FEATURE 2: SCRATCH CARD -->
+            <div class="scratch-container" id="scratch-area" style="display:none;">
+                <div class="scratch-message" id="scratch-text"></div>
+                <canvas id="scratch-pad"></canvas>
+            </div>
+
+            <div id="timeline" class="timeline-container"></div>
         </div>
 
     </div>
 
-    <!-- Audios -->
-    <audio id="sfx-box" src="box.mp3"></audio>
+    <!-- Hidden Audio Player -->
     <audio id="bg-audio" loop></audio>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -118,100 +106,148 @@
         const urlParams = new URLSearchParams(window.location.search);
         const docId = urlParams.get('id');
         let wishData = null;
-        
-        let photos = [];
-        let currentSlideIndex = 0;
-        let slideInterval = null;
 
         if(docId) {
             db.collection("wishes").doc(docId).get().then((doc) => {
                 if (doc.exists) { 
                     wishData = doc.data(); 
-                    if(wishData.photos) photos = wishData.photos;
-                } else { 
-                    document.getElementById("main-content-area").innerHTML = "<h2 style='color:#ff4444;'>Oops! Link Expired. 😥</h2>"; 
+                    document.getElementById("gift-screen").style.display = "block";
+                } 
+                else { 
+                    document.getElementById("main-content-area").innerHTML = "<h2 style='color:#ff4444;'>Oops! Link Expired or Invalid. 😥</h2>"; 
                 }
             });
+        } else {
+            document.getElementById("main-content-area").innerHTML = "<h2 style='color:#ff4444;'>Invalid Link! 🚫</h2>"; 
         }
 
         function openGift() {
-            let boxSound = document.getElementById("sfx-box");
-            boxSound.play().catch(e => console.log("Upload box.mp3 to folder first!"));
-
+            // Fullscreen & Disco
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen().catch(e => console.log(e)); }
-            
-            // Start Continuous Confetti Magic
-            startContinuousConfetti();
+            document.body.classList.add("disco-mode");
 
+            // Play Local Music
             if(wishData.music) {
-                setTimeout(() => {
-                    let audio = document.getElementById("bg-audio");
-                    audio.src = wishData.music; audio.play().catch(e => console.log(e));
-                }, 1000); 
+                let audio = document.getElementById("bg-audio");
+                audio.src = wishData.music; 
+                audio.play().catch(e => console.log(e));
             }
 
             document.getElementById("gift-screen").style.display = "none";
-            document.getElementById("surprise-screen").style.display = "flex";
-
-            document.getElementById("display-title").innerText = `Happy Birthday ${wishData.name}!`;
+            document.getElementById("surprise-screen").style.display = "block";
+            
+            document.getElementById("display-name").innerText = wishData.name;
             document.getElementById("display-message").innerText = wishData.message;
 
-            setupSlider();
-        }
+            // Setup Timeline
+            let timelineHTML = "";
+            if(wishData.photos && wishData.photos.length > 0) {
+                wishData.photos.forEach(photo => {
+                    timelineHTML += `<div class="memory-card"><img src="${photo.url}"><p>✨ ${photo.caption || ''}</p></div>`;
+                });
+            }
+            document.getElementById("timeline").innerHTML = timelineHTML;
 
-        // --- SLIDER LOGIC ---
-        function setupSlider() {
-            let imgEl = document.getElementById("current-img");
-            let controlsEl = document.getElementById("slider-controls");
-
-            if (photos.length === 0) {
-                document.getElementById("slider-area").style.display = "none";
-                return;
+            // Setup Scratch Card
+            if(wishData.scratch && wishData.scratch.trim() !== "") {
+                document.getElementById("scratch-area").style.display = "block";
+                document.getElementById("scratch-text").innerText = wishData.scratch;
+                initScratchCard();
             }
 
-            imgEl.style.display = "block";
+            fireConfetti();
+        }
+
+        // --- FEATURE 1: MIC BLOW LOGIC ---
+        let audioContext, analyser, microphone, scriptProcessor;
+        async function enableMic() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                document.getElementById("mic-btn").innerText = "Blow now! 🌬️";
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+                
+                microphone.connect(analyser);
+                analyser.connect(scriptProcessor);
+                scriptProcessor.connect(audioContext.destination);
+                
+                scriptProcessor.onaudioprocess = function() {
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    let values = 0;
+                    for (let i = 0; i < array.length; i++) { values += array[i]; }
+                    const average = values / array.length;
+                    
+                    if (average > 60) {
+                        document.getElementById('flame').style.display = 'none'; // Bujh gaya!
+                        document.getElementById('mic-btn').style.display = 'none';
+                        document.getElementById('cake-success').style.display = 'block';
+                        fireConfetti(); // Phir se patakhe
+                        
+                        stream.getTracks().forEach(track => track.stop());
+                        scriptProcessor.disconnect();
+                    }
+                };
+            } catch(e) {
+                alert("Please allow Microphone access to blow the candle!");
+            }
+        }
+
+        // --- FEATURE 2: SCRATCH CARD LOGIC ---
+        function initScratchCard() {
+            const canvas = document.getElementById('scratch-pad');
+            const ctx = canvas.getContext('2d');
+            let rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 150;
+
+            ctx.fillStyle = '#1a1a24';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '22px Arial';
+            ctx.fillStyle = '#00ffff';
+            ctx.textAlign = "center";
+            ctx.fillText('🪙 Scratch Here!', canvas.width/2, 80);
+
+            let isDrawing = false;
             
-            if (photos.length === 1) {
-                controlsEl.style.display = "none";
-                updateSlideView();
-            } else {
-                controlsEl.style.display = "flex";
-                updateSlideView();
-                slideInterval = setInterval(autoSlideNext, 2000);
-            }
-        }
-
-        function updateSlideView() {
-            document.getElementById("current-img").src = photos[currentSlideIndex].url;
-            document.getElementById("current-cap").innerText = photos[currentSlideIndex].caption || '';
-        }
-
-        function autoSlideNext() {
-            currentSlideIndex = (currentSlideIndex + 1) % photos.length;
-            updateSlideView();
-        }
-
-        function manualSlide(direction) {
-            if (slideInterval) {
-                clearInterval(slideInterval);
-                slideInterval = null;
+            function getPos(e) {
+                let r = canvas.getBoundingClientRect();
+                let x = (e.clientX || e.touches[0].clientX) - r.left;
+                let y = (e.clientY || e.touches[0].clientY) - r.top;
+                return {x, y};
             }
 
-            if (direction === 'next') {
-                currentSlideIndex = (currentSlideIndex + 1) % photos.length;
-            } else {
-                currentSlideIndex = (currentSlideIndex - 1 + photos.length) % photos.length;
+            function scratch(e) {
+                if(!isDrawing) return;
+                e.preventDefault();
+                let pos = getPos(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 20, 0, Math.PI*2);
+                ctx.fill();
             }
-            updateSlideView();
+
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mousemove', scratch);
+            
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('touchend', () => isDrawing = false);
+            canvas.addEventListener('touchmove', scratch);
         }
 
-        // --- CONTINUOUS CONFETTI LOGIC ---
-        function startContinuousConfetti() {
-            setInterval(function() {
-                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#b100ff', '#ff1493', '#00ffff'], zIndex: 1000 });
-                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#b100ff', '#ff1493', '#00ffff'], zIndex: 1000 });
-            }, 150); // Har 150ms me thode thode phool girenge
+        function fireConfetti() {
+            var duration = 2 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
         }
     </script>
 </body>
