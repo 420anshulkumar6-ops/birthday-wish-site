@@ -6,9 +6,9 @@
     <title>Create Magical Birthday Wish</title>
     <style>
         /* CSS: Dark Mode aur Neon Theme */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; margin-top: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; }
-        h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 24px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; }
+        h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 26px; margin-bottom: 20px;}
         .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; animation: fadeIn 0.5s; }
         label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
         input[type="text"], textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
@@ -17,31 +17,26 @@
         /* Music Preview List CSS */
         .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
-        .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; font-weight: normal; }
+        .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; }
         .play-btn { background: #00ffff; color: #000; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .play-btn:hover { box-shadow: 0 0 10px #00ffff; transform: scale(1.1); }
         .playing { background: #ff1493; color: white; box-shadow: 0 0 10px #ff1493; }
 
         .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
         .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .upload-btn:hover { background: #ffffff; box-shadow: 0 0 10px #00ffff; }
         .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
         
         .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         .btn:hover:not(:disabled) { box-shadow: 0 0 15px #ff1493; transform: scale(1.02); }
-        .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none; }
-        .btn-outline { background: transparent; border: 2px dashed #00ffff; color: #00ffff; margin-bottom: 15px; }
-        .btn-outline:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px #00ffff;}
+        .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 2px dashed #00ffff; color: #00ffff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;}
         
-        .ad-space { width: 100%; height: 100px; background: #2a2a35; color: #666; display: flex; align-items: center; justify-content: center; margin: 20px 0; border: 1px dashed #555; border-radius: 8px; }
         #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
         #share-btn { background: #25D366; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
-    <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Top)</div>
 
     <div class="container">
         <h1>✨ Create a Magical Wish ✨</h1>
@@ -60,40 +55,37 @@
                 <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
                 
                 <label style="margin-top: 10px;">Choose Background Music 🎵</label>
-                
-                <!-- Music Preview List (Local Files) -->
                 <div class="music-list">
                     <div class="music-item">
-                        <label>
-                            <input type="radio" name="bMusic" value="song1.mp3" checked>
-                            Happy Birthday (Special Theme)
-                        </label>
+                        <label><input type="radio" name="bMusic" value="song1.mp3" checked> Birthday Piano</label>
                         <button type="button" class="play-btn" onclick="togglePreview(this, 'song1.mp3')">▶️</button>
                     </div>
                     <div class="music-item">
-                        <label>
-                            <input type="radio" name="bMusic" value="song2.mp3">
-                            Romantic Theme
-                        </label>
+                        <label><input type="radio" name="bMusic" value="song2.mp3"> Romantic Theme</label>
                         <button type="button" class="play-btn" onclick="togglePreview(this, 'song2.mp3')">▶️</button>
                     </div>
                     <div class="music-item">
-                        <label>
-                            <input type="radio" name="bMusic" value="song3.mp3">
-                            Fun Theme
-                        </label>
+                        <label><input type="radio" name="bMusic" value="song3.mp3"> Fun Theme</label>
                         <button type="button" class="play-btn" onclick="togglePreview(this, 'song3.mp3')">▶️</button>
                     </div>
                 </div>
                 <audio id="preview-audio" style="display: none;"></audio>
             </div>
 
+            <!-- PRO FEATURES DATA -->
+            <div class="input-group">
+                <label>🎁 Hidden Scratch Card Gift</label>
+                <input type="text" id="bScratch" placeholder="e.g. Free Dinner Date!">
+                
+                <label>❤️ Things I Love About You (Comma separated)</label>
+                <textarea id="bReasons" rows="2" placeholder="e.g. Your smile, Your caring nature, Your jokes"></textarea>
+            </div>
+
             <!-- Memory Timeline (Dynamic Setup) -->
             <h3 style="color: #00ffff; font-size: 18px;">📸 Memory Timeline (Optional)</h3>
-            
             <div id="dynamic-image-container"></div>
             
-            <button type="button" class="btn btn-outline" onclick="addImageRow()">➕ Add Another Photo</button>
+            <button type="button" class="btn-outline" onclick="addImageRow()">➕ Add Another Photo</button>
             <button type="submit" id="generate-btn" class="btn">🪄 Generate Link Instantly</button>
         </form>
 
@@ -104,17 +96,13 @@
         </div>
     </div>
 
-    <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
-
     <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // ImgBB API Key
         const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
         
-        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
@@ -134,7 +122,6 @@
 
         window.onload = function() { addImageRow(); };
 
-        // Music Preview Logic
         function togglePreview(btnElement, url) {
             if (currentPlayBtn === btnElement && !previewAudio.paused) {
                 previewAudio.pause();
@@ -143,34 +130,26 @@
                 return;
             }
             let allBtns = document.querySelectorAll(".play-btn");
-            allBtns.forEach(btn => {
-                btn.innerText = "▶️";
-                btn.classList.remove("playing");
-            });
+            allBtns.forEach(btn => { btn.innerText = "▶️"; btn.classList.remove("playing"); });
 
             previewAudio.src = url;
             previewAudio.play().catch(e => alert("Please make sure MP3 files are in the folder!"));
             btnElement.innerText = "⏸️";
             btnElement.classList.add("playing");
             currentPlayBtn = btnElement;
-
-            previewAudio.onended = function() {
-                btnElement.innerText = "▶️";
-                btnElement.classList.remove("playing");
-            };
+            previewAudio.onended = function() { btnElement.innerText = "▶️"; btnElement.classList.remove("playing"); };
         }
 
         function updateButtonState() {
             if (activeUploads > 0) {
                 generateBtn.disabled = true;
-                generateBtn.innerText = "⏳ Uploading Photos... Please Wait";
+                generateBtn.innerText = "⏳ Uploading Photos...";
             } else {
                 generateBtn.disabled = false;
                 generateBtn.innerText = "🪄 Generate Link Instantly";
             }
         }
 
-        // Dynamic Image Row Generator
         function addImageRow() {
             imageCounter++;
             let id = imageCounter;
@@ -190,17 +169,13 @@
             container.appendChild(div);
         }
 
-        // ImgBB Upload Logic
         function uploadSingleImage(idNumber) {
             let fileInput = document.getElementById('file' + idNumber);
             let statusText = document.getElementById('status' + idNumber);
             let urlInput = document.getElementById('url' + idNumber);
             let uploadBtn = fileInput.nextElementSibling;
 
-            if(fileInput.files.length === 0) {
-                statusText.innerText = "⚠️ Please select a photo first!";
-                return;
-            }
+            if(fileInput.files.length === 0) { statusText.innerText = "⚠️ Please select a photo!"; return; }
 
             let file = fileInput.files[0];
             let formData = new FormData();
@@ -238,7 +213,6 @@
                     uploadBtn.style.background = "#00ffff";
                 }
             };
-
             xhr.onerror = function() {
                 activeUploads--;
                 updateButtonState();
@@ -247,32 +221,28 @@
                 uploadBtn.disabled = false;
                 uploadBtn.style.background = "#00ffff";
             };
-
             xhr.send(formData);
         }
 
-        // Form Submit Logic
         document.getElementById("wish-form").addEventListener("submit", function(e) {
             e.preventDefault(); 
             this.style.display = "none"; 
-            
-            previewAudio.pause(); // Stop preview music
+            previewAudio.pause(); 
 
             let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
             let photosArray = [];
-            
             for(let i = 1; i <= imageCounter; i++) {
                 let urlVal = document.getElementById("url" + i) ? document.getElementById("url" + i).value : "";
                 let capVal = document.getElementById("cap" + i) ? document.getElementById("cap" + i).value : "";
-                if(urlVal !== "") {
-                    photosArray.push({ url: urlVal, caption: capVal });
-                }
+                if(urlVal !== "") { photosArray.push({ url: urlVal, caption: capVal }); }
             }
             
             db.collection("wishes").add({
                 name: document.getElementById("bName").value,
                 password: document.getElementById("bPassword").value,
                 message: document.getElementById("bMessage").value,
+                scratch: document.getElementById("bScratch").value, // New Scratch Data
+                reasons: document.getElementById("bReasons").value, // New Reasons Data
                 music: selectedMusic, 
                 photos: photosArray, 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
