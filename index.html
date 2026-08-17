@@ -2,86 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Magical Birthday Wish</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Someone Sent You A Surprise!</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; }
-        h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 26px; margin-bottom: 20px;}
-        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; }
-        label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
-        input[type="text"], textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
-        input[type="file"] { padding: 8px; border: none; flex: 1; color: white; }
+        /* DJ Lights */
+        @keyframes djLights { 0% { background-color: #ff00ff; } 15% { background-color: #00ffff; } 30% { background-color: #ffff00; } 45% { background-color: #ff0000; } 60% { background-color: #00ff00; } 75% { background-color: #0000ff; } 90% { background-color: #ff8c00; } 100% { background-color: #ff00ff; } }
+        body.disco-mode { animation: djLights 0.8s infinite alternate; }
         
-        .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
-        .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; }
-        .play-btn { background: #00ffff; color: #000; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        /* Base Styling */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden;}
+        .container { width: 100%; max-width: 500px; background: rgba(26, 26, 36, 0.9); padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); text-align: center; margin-bottom: 30px; box-sizing: border-box;}
         
-        .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
-        .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
+        h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff; font-size: 28px; }
+        input { width: 100%; padding: 12px; background: rgba(37, 37, 50, 0.9); border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; text-align: center; }
+        .btn { background: linear-gradient(45deg, #00ffff, #0080ff); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn:hover { box-shadow: 0 0 15px #00ffff; transform: scale(1.02); }
         
-        .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; }
-        .btn-outline { background: transparent; border: 2px dashed #00ffff; color: #00ffff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;}
+        /* Gift Box */
+        .gift-emoji { font-size: 150px; cursor: pointer; display: inline-block; animation: bounce 1.2s infinite; text-shadow: 0 0 30px #ff1493; margin: 40px 0;}
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
         
-        #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
-        #share-btn { background: #25D366; }
+        /* Modules CSS */
+        .message-box { background: rgba(37, 37, 50, 0.9); padding: 20px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6; text-align: left; font-style: italic; }
+        .timeline-container { margin-top: 30px; display: flex; flex-direction: column; gap: 25px; }
+        .memory-card { background: rgba(37, 37, 50, 0.9); padding: 15px; border-radius: 12px; border: 1px solid #ff1493; box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3); }
+        .memory-card img { width: 100%; border-radius: 8px; max-height: 350px; object-fit: cover; }
+        
+        /* CAKE & MIC MODULE */
+        .cake-container { margin-top: 30px; background: #252532; padding: 20px; border-radius: 12px; border: 2px dashed #00ffff;}
+        .cake-emoji { font-size: 80px; position: relative; display: inline-block;}
+        .flame { font-size: 40px; position: absolute; top: -35px; left: 20px; animation: flicker 0.5s infinite alternate; }
+        @keyframes flicker { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.1); } }
+        
+        /* SCRATCH CARD MODULE */
+        .scratch-container { position: relative; width: 100%; height: 150px; margin-top: 30px; border-radius: 12px; overflow: hidden; border: 2px solid #ff1493; background: #fff;}
+        .scratch-message { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: #ff1493; text-align: center; padding: 10px; box-sizing: border-box; }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
+        
+        /* REASONS BUTTON MODULE */
+        .reasons-container { margin-top: 30px; padding: 20px; background: #252532; border-radius: 12px; }
+        .reason-text { font-size: 20px; color: #00ffff; margin-top: 15px; min-height: 30px; font-weight: bold; transition: 0.3s;}
+
+        #lock-screen { display: block; }
+        #gift-screen, #surprise-screen { display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>✨ Create a Virtual Party ✨</h1>
         
-        <form id="wish-form">
-            <div class="input-group" style="border: 1px solid #00ffff;">
-                <label>Birthday Person's Name *</label>
-                <input type="text" id="bName" required placeholder="e.g. Rahul">
-                
-                <label>Main Title / Heading *</label>
-                <input type="text" id="bTitle" required placeholder="e.g. A Special Surprise for You!">
-                
-                <label>Special Birthday Message *</label>
-                <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
-                
-                <label style="margin-top: 10px;">Choose Main Background Music 🎵</label>
-                <div class="music-list">
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song1.mp3" checked> Birthday Theme</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song1.mp3')">▶️</button>
-                    </div>
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song2.mp3"> Romantic Theme</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song2.mp3')">▶️</button>
-                    </div>
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song3.mp3"> Fun Theme</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song3.mp3')">▶️</button>
-                    </div>
+        <!-- STEP 1: LOCK SCREEN -->
+        <div id="lock-screen">
+            <h1>🔒 Secret Surprise</h1>
+            <p>Someone made a special wish for you. Enter the secret password to unlock it!</p>
+            <p id="error-msg" style="color: #ff4444; display: none;">Incorrect Password! Try again.</p>
+            <input type="text" id="entered-password" placeholder="Enter Password Here...">
+            <button class="btn" onclick="checkPassword()">🔓 Unlock Surprise</button>
+        </div>
+
+        <!-- STEP 2: GIFT SCREEN -->
+        <div id="gift-screen">
+            <h1 style="color: #ff1493;">You unlocked it! 🎉</h1>
+            <p style="font-size: 18px;">Tap the big gift box to open your surprise...</p>
+            <div class="gift-emoji" onclick="openGift()">🎁</div>
+        </div>
+
+        <!-- STEP 3: SURPRISE SCREEN -->
+        <div id="surprise-screen">
+            <h1 style="font-size: 35px;">🎉 Happy Birthday! 🎉</h1>
+            <h2 id="display-name" style="color: #ff1493; font-size: 32px; margin-bottom: 5px;"></h2>
+            
+            <div class="message-box" id="display-message"></div>
+
+            <!-- PRO FEATURE 1: BLOW THE CANDLE -->
+            <div class="cake-container">
+                <h3 style="color:#00ffff; margin-top:0;">🎂 Make a Wish!</h3>
+                <p style="font-size:14px; color:#bbb;">Click the button, then blow closely into your phone's microphone to put out the candle!</p>
+                <div class="cake-emoji">
+                    <span class="flame" id="flame">🔥</span>
+                    🎂
                 </div>
-                <audio id="preview-audio" style="display: none;"></audio>
+                <br>
+                <button class="btn" id="mic-btn" style="background:#ff1493; width:auto; padding:10px 20px;" onclick="enableMic()">🎙️ Enable Mic to Blow</button>
+                <h3 id="cake-success" style="color:#25D366; display:none;">✨ Wish Granted! ✨</h3>
             </div>
 
-            <h3 style="color: #00ffff; font-size: 18px;">📸 Memory Timeline (Optional)</h3>
-            <div id="dynamic-image-container"></div>
-            <button type="button" class="btn-outline" onclick="addImageRow()">➕ Add Another Photo</button>
-            <button type="submit" id="generate-btn" class="btn">🪄 Generate Link Instantly</button>
-        </form>
+            <!-- PRO FEATURE 2: SCRATCH CARD -->
+            <div class="scratch-container" id="scratch-area" style="display:none;">
+                <div class="scratch-message" id="scratch-text"></div>
+                <canvas id="scratch-pad"></canvas>
+            </div>
 
-        <div id="generated-link-box">
-            <p>Your unique link is ready!</p>
-            <input type="text" id="final-link" readonly style="width: 100%; margin-bottom: 10px;">
-            <button class="btn" id="share-btn">📲 Share on WhatsApp</button>
+            <!-- PRO FEATURE 3: THINGS I LOVE BUTTON -->
+            <div class="reasons-container" id="reasons-area" style="display:none;">
+                <h3>❤️ Why You Are Special</h3>
+                <button class="btn" onclick="showNextReason()">Tap to reveal a reason 👆</button>
+                <div class="reason-text" id="reason-text">...</div>
+            </div>
+
+            <div id="timeline" class="timeline-container"></div>
         </div>
+
     </div>
 
-    <!-- Firebase Scripts -->
+    <!-- Hidden Audio Player -->
+    <audio id="bg-audio" loop></audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
@@ -93,89 +124,198 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let imageCounter = 0; 
-        const previewAudio = document.getElementById("preview-audio");
-        let currentPlayBtn = null;
+        const urlParams = new URLSearchParams(window.location.search);
+        const docId = urlParams.get('id');
+        let wishData = null;
+        let reasonsList = [];
+        let currentReason = 0;
 
-        window.onload = function() { addImageRow(); };
-
-        function togglePreview(btnElement, url) {
-            if (currentPlayBtn === btnElement && !previewAudio.paused) {
-                previewAudio.pause(); btnElement.innerText = "▶️"; return;
-            }
-            document.querySelectorAll(".play-btn").forEach(btn => btn.innerText = "▶️");
-            previewAudio.src = url; previewAudio.play();
-            btnElement.innerText = "⏸️"; currentPlayBtn = btnElement;
-        }
-
-        function addImageRow() {
-            imageCounter++;
-            let id = imageCounter;
-            let div = document.createElement("div");
-            div.className = "input-group";
-            div.innerHTML = `
-                <label>Memory ${id}</label>
-                <div class="upload-row">
-                    <input type="file" id="file${id}" accept="image/*">
-                    <button type="button" class="upload-btn" onclick="uploadSingleImage('${id}')">Upload</button>
-                </div>
-                <div id="status${id}" class="status-text" style="color: #ff1493;"></div>
-                <input type="hidden" id="url${id}">
-                <input type="text" id="cap${id}" placeholder="Caption for this memory...">
-            `;
-            document.getElementById("dynamic-image-container").appendChild(div);
-        }
-
-        function uploadSingleImage(idNumber) {
-            let fileInput = document.getElementById('file' + idNumber);
-            let statusText = document.getElementById('status' + idNumber);
-            let urlInput = document.getElementById('url' + idNumber);
-            let uploadBtn = fileInput.nextElementSibling;
-            if(fileInput.files.length === 0) return;
-
-            let formData = new FormData();
-            formData.append("image", fileInput.files[0]);
-            uploadBtn.disabled = true;
-
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    urlInput.value = JSON.parse(xhr.responseText).data.url; 
-                    statusText.innerText = "✅ Uploaded!"; statusText.style.color = "#25D366"; uploadBtn.style.display = "none"; 
-                }
-            };
-            xhr.send(formData);
-        }
-
-        document.getElementById("wish-form").addEventListener("submit", function(e) {
-            e.preventDefault(); 
-            this.style.display = "none"; 
-            previewAudio.pause(); 
-
-            let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
-            let photosArray = [];
-            for(let i = 1; i <= imageCounter; i++) {
-                let urlVal = document.getElementById("url" + i) ? document.getElementById("url" + i).value : "";
-                let capVal = document.getElementById("cap" + i) ? document.getElementById("cap" + i).value : "";
-                if(urlVal !== "") { photosArray.push({ url: urlVal, caption: capVal }); }
-            }
-            
-            db.collection("wishes").add({
-                name: document.getElementById("bName").value,
-                title: document.getElementById("bTitle").value, // Naya Custom Title
-                message: document.getElementById("bMessage").value,
-                music: selectedMusic, 
-                photos: photosArray, 
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then((docRef) => {
-                document.getElementById("generated-link-box").style.display = "block";
-                let realLink = window.location.origin + "/wish.html?id=" + docRef.id;
-                document.getElementById("final-link").value = realLink;
-                document.getElementById("share-btn").onclick = () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('✨ I have a magical surprise for you: ' + realLink)}`);
+        if(docId) {
+            db.collection("wishes").doc(docId).get().then((doc) => {
+                if (doc.exists) { wishData = doc.data(); } 
+                else { document.getElementById("lock-screen").innerHTML = "<h2>Oops! Link Expired. 😥</h2>"; }
             });
-        });
+        }
+
+        function checkPassword() {
+            if(!wishData) return;
+            let entered = document.getElementById("entered-password").value.toLowerCase().trim();
+            if(entered === wishData.password.toLowerCase().trim() && wishData.password !== "") {
+                document.getElementById("lock-screen").style.display = "none";
+                document.getElementById("gift-screen").style.display = "block";
+            } else {
+                document.getElementById("error-msg").style.display = "block";
+            }
+        }
+
+        function openGift() {
+            // Fullscreen & Disco
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen().catch(e => console.log(e)); }
+            document.body.classList.add("disco-mode");
+
+            // Play Local Music
+            if(wishData.music) {
+                let audio = document.getElementById("bg-audio");
+                audio.src = wishData.music; 
+                audio.play().catch(e => console.log(e));
+            }
+
+            document.getElementById("gift-screen").style.display = "none";
+            document.getElementById("surprise-screen").style.display = "block";
+            
+            document.getElementById("display-name").innerText = wishData.name;
+            document.getElementById("display-message").innerText = wishData.message;
+
+            // Setup Timeline
+            let timelineHTML = "";
+            if(wishData.photos && wishData.photos.length > 0) {
+                wishData.photos.forEach(photo => {
+                    timelineHTML += `<div class="memory-card"><img src="${photo.url}"><p>✨ ${photo.caption || ''}</p></div>`;
+                });
+            }
+            document.getElementById("timeline").innerHTML = timelineHTML;
+
+            // Setup Scratch Card
+            if(wishData.scratch && wishData.scratch.trim() !== "") {
+                document.getElementById("scratch-area").style.display = "block";
+                document.getElementById("scratch-text").innerText = wishData.scratch;
+                initScratchCard();
+            }
+
+            // Setup Reasons
+            if(wishData.reasons && wishData.reasons.trim() !== "") {
+                document.getElementById("reasons-area").style.display = "block";
+                reasonsList = wishData.reasons.split(',').map(item => item.trim());
+            }
+
+            fireConfetti();
+        }
+
+        // --- FEATURE 1: MIC BLOW LOGIC (FIXED) ---
+        let audioContext, analyser, microphone, scriptProcessor;
+        async function enableMic() {
+            try {
+                // IMPORTANT FIX: Phone ka 'Noise Cancellation' band karna taaki phookne ki aawaz record ho
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: { 
+                        echoCancellation: false, 
+                        noiseSuppression: false, 
+                        autoGainControl: false 
+                    } 
+                });
+                
+                document.getElementById("mic-btn").innerText = "Blow closely into the mic! 🌬️";
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+                
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 1024;
+                
+                microphone.connect(analyser);
+                analyser.connect(scriptProcessor);
+                scriptProcessor.connect(audioContext.destination);
+                
+                scriptProcessor.onaudioprocess = function() {
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    
+                    // Aawaz ka sabse uncha level (Peak Volume) check karna
+                    let maxVolume = 0;
+                    for (let i = 0; i < array.length; i++) { 
+                        if (array[i] > maxVolume) {
+                            maxVolume = array[i];
+                        }
+                    }
+                    
+                    // Threshold ko kam kiya hai (100) taaki halke se phookne par bhi kaam kare
+                    if (maxVolume > 100) {
+                        document.getElementById('flame').style.display = 'none'; // Candle bujh gayi!
+                        document.getElementById('mic-btn').style.display = 'none';
+                        document.getElementById('cake-success').style.display = 'block';
+                        fireConfetti(); // Phir se patakhe
+                        
+                        // Background process rokna
+                        stream.getTracks().forEach(track => track.stop());
+                        scriptProcessor.disconnect();
+                    }
+                };
+            } catch(e) {
+                console.error("Mic error:", e);
+                alert("Please allow Microphone access from browser settings to blow the candle!");
+            }
+        }
+
+        // --- FEATURE 2: SCRATCH CARD LOGIC ---
+        function initScratchCard() {
+            const canvas = document.getElementById('scratch-pad');
+            const ctx = canvas.getContext('2d');
+            let rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = 150;
+
+            // Fill top layer
+            ctx.fillStyle = '#1a1a24';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '22px Arial';
+            ctx.fillStyle = '#00ffff';
+            ctx.textAlign = "center";
+            ctx.fillText('🪙 Scratch Here!', canvas.width/2, 80);
+
+            let isDrawing = false;
+            
+            function getPos(e) {
+                let r = canvas.getBoundingClientRect();
+                let x = (e.clientX || e.touches[0].clientX) - r.left;
+                let y = (e.clientY || e.touches[0].clientY) - r.top;
+                return {x, y};
+            }
+
+            function scratch(e) {
+                if(!isDrawing) return;
+                e.preventDefault();
+                let pos = getPos(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 20, 0, Math.PI*2);
+                ctx.fill();
+            }
+
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mousemove', scratch);
+            
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+            canvas.addEventListener('touchend', () => isDrawing = false);
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+        }
+
+        // --- FEATURE 3: REASONS BUTTON LOGIC ---
+        function showNextReason() {
+            if(reasonsList.length > 0) {
+                let textDiv = document.getElementById("reason-text");
+                textDiv.style.opacity = 0;
+                setTimeout(() => {
+                    textDiv.innerText = "✨ " + reasonsList[currentReason] + " ✨";
+                    currentReason = (currentReason + 1) % reasonsList.length;
+                    textDiv.style.opacity = 1;
+                    fireConfetti(); // Halke patakhe
+                }, 300);
+            }
+        }
+
+        function fireConfetti() {
+            var duration = 2 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
     </script>
 </body>
 </html>
