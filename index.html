@@ -5,88 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Magical Birthday Wish</title>
     <style>
-        /* CSS: Dark Mode aur Neon Theme */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; }
-        h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 26px; margin-bottom: 20px;}
-        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; animation: fadeIn 0.5s; }
+        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; border-radius: 15px; border: 1px solid #b100ff; box-shadow: 0 0 20px rgba(177, 0, 255, 0.3); text-align: center; margin-bottom: 20px; }
+        h1 { color: #b100ff; text-shadow: 0 0 10px #b100ff; font-size: 26px; margin-bottom: 20px;}
+        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; }
         label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
         input[type="text"], textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
         input[type="file"] { padding: 8px; border: none; flex: 1; color: white; }
         
-        /* Music Preview List CSS */
         .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
         .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; }
-        .play-btn { background: #00ffff; color: #000; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .play-btn:hover { box-shadow: 0 0 10px #00ffff; transform: scale(1.1); }
-        .playing { background: #ff1493; color: white; box-shadow: 0 0 10px #ff1493; }
-
+        .play-btn { background: #b100ff; color: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 16px; cursor: pointer; }
+        
         .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
-        .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .upload-btn { background: #b100ff; color: #fff; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
         
-        .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        .btn:hover:not(:disabled) { box-shadow: 0 0 15px #ff1493; transform: scale(1.02); }
-        .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; }
-        .btn-outline { background: transparent; border: 2px dashed #00ffff; color: #00ffff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;}
+        .btn { background: linear-gradient(45deg, #b100ff, #ff1493); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        .btn-outline { background: transparent; border: 2px dashed #b100ff; color: #b100ff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;}
         
         #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
-        #share-btn { background: #25D366; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        #share-btn { background: #25D366; color: white; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>✨ Create a Magical Wish ✨</h1>
-        <p>Fill details & add photos to generate a surprise link!</p>
+        <h1>✨ Create Magical Wish ✨</h1>
         
         <form id="wish-form">
-            <!-- Basic Details -->
-            <div class="input-group" style="border: 1px solid #00ffff;">
+            <div class="input-group" style="border-color: #b100ff;">
                 <label>Birthday Person's Name *</label>
-                <input type="text" id="bName" required placeholder="e.g. Rahul">
-                
-                <label>Secret Password *</label>
-                <input type="text" id="bPassword" required placeholder="e.g. pet name ya favorite place">
+                <input type="text" id="bName" required placeholder="e.g. Viyan">
                 
                 <label>Special Birthday Message *</label>
-                <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
+                <textarea id="bMessage" rows="3" required placeholder="Write a sweet message..."></textarea>
                 
-                <label style="margin-top: 10px;">Choose Background Music 🎵</label>
+                <label style="margin-top: 10px;">Background Music 🎵</label>
                 <div class="music-list">
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song1.mp3" checked> Birthday Piano</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song1.mp3')">▶️</button>
-                    </div>
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song2.mp3"> Romantic Theme</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song2.mp3')">▶️</button>
-                    </div>
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song3.mp3"> Fun Theme</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song3.mp3')">▶️</button>
-                    </div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="song1.mp3" checked> Birthday Theme</label><button type="button" class="play-btn" onclick="togglePreview(this, 'song1.mp3')">▶️</button></div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="song2.mp3"> Romantic Theme</label><button type="button" class="play-btn" onclick="togglePreview(this, 'song2.mp3')">▶️</button></div>
                 </div>
                 <audio id="preview-audio" style="display: none;"></audio>
             </div>
 
-            <!-- PRO FEATURES DATA -->
-            <div class="input-group">
-                <label>🎁 Hidden Scratch Card Gift</label>
-                <input type="text" id="bScratch" placeholder="e.g. Free Dinner Date!">
-                
-                <label>❤️ Things I Love About You (Comma separated)</label>
-                <textarea id="bReasons" rows="2" placeholder="e.g. Your smile, Your caring nature, Your jokes"></textarea>
-            </div>
-
-            <!-- Memory Timeline (Dynamic Setup) -->
-            <h3 style="color: #00ffff; font-size: 18px;">📸 Memory Timeline (Optional)</h3>
+            <h3 style="color: #b100ff; font-size: 18px;">📸 Add Photos (Slide Show)</h3>
             <div id="dynamic-image-container"></div>
             
-            <button type="button" class="btn-outline" onclick="addImageRow()">➕ Add Another Photo</button>
-            <button type="submit" id="generate-btn" class="btn">🪄 Generate Link Instantly</button>
+            <button type="button" class="btn-outline" onclick="addImageRow()">➕ Add Photo</button>
+            <button type="submit" id="generate-btn" class="btn">🪄 Generate Link</button>
         </form>
 
         <div id="generated-link-box">
@@ -96,13 +64,11 @@
         </div>
     </div>
 
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
         const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
-        
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
@@ -114,7 +80,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let activeUploads = 0; 
         let imageCounter = 0; 
         const generateBtn = document.getElementById("generate-btn");
         const previewAudio = document.getElementById("preview-audio");
@@ -123,50 +88,16 @@
         window.onload = function() { addImageRow(); };
 
         function togglePreview(btnElement, url) {
-            if (currentPlayBtn === btnElement && !previewAudio.paused) {
-                previewAudio.pause();
-                btnElement.innerText = "▶️";
-                btnElement.classList.remove("playing");
-                return;
-            }
-            let allBtns = document.querySelectorAll(".play-btn");
-            allBtns.forEach(btn => { btn.innerText = "▶️"; btn.classList.remove("playing"); });
-
-            previewAudio.src = url;
-            previewAudio.play().catch(e => alert("Please make sure MP3 files are in the folder!"));
-            btnElement.innerText = "⏸️";
-            btnElement.classList.add("playing");
-            currentPlayBtn = btnElement;
-            previewAudio.onended = function() { btnElement.innerText = "▶️"; btnElement.classList.remove("playing"); };
-        }
-
-        function updateButtonState() {
-            if (activeUploads > 0) {
-                generateBtn.disabled = true;
-                generateBtn.innerText = "⏳ Uploading Photos...";
-            } else {
-                generateBtn.disabled = false;
-                generateBtn.innerText = "🪄 Generate Link Instantly";
-            }
+            if (currentPlayBtn === btnElement && !previewAudio.paused) { previewAudio.pause(); btnElement.innerText = "▶️"; return; }
+            document.querySelectorAll(".play-btn").forEach(btn => btn.innerText = "▶️");
+            previewAudio.src = url; previewAudio.play(); btnElement.innerText = "⏸️"; currentPlayBtn = btnElement;
         }
 
         function addImageRow() {
-            imageCounter++;
-            let id = imageCounter;
-            let container = document.getElementById("dynamic-image-container");
-            let div = document.createElement("div");
-            div.className = "input-group";
-            div.innerHTML = `
-                <label>Memory ${id} (Optional)</label>
-                <div class="upload-row">
-                    <input type="file" id="file${id}" accept="image/*">
-                    <button type="button" class="upload-btn" onclick="uploadSingleImage('${id}')">Upload</button>
-                </div>
-                <div id="status${id}" class="status-text" style="color: #ff1493;"></div>
-                <input type="hidden" id="url${id}">
-                <input type="text" id="cap${id}" placeholder="Caption for this memory...">
-            `;
-            container.appendChild(div);
+            imageCounter++; let id = imageCounter;
+            let div = document.createElement("div"); div.className = "input-group";
+            div.innerHTML = `<label>Photo ${id}</label><div class="upload-row"><input type="file" id="file${id}" accept="image/*"><button type="button" class="upload-btn" onclick="uploadSingleImage('${id}')">Upload</button></div><div id="status${id}" class="status-text" style="color: #ff1493;"></div><input type="hidden" id="url${id}"><input type="text" id="cap${id}" placeholder="Caption...">`;
+            document.getElementById("dynamic-image-container").appendChild(div);
         }
 
         function uploadSingleImage(idNumber) {
@@ -174,61 +105,19 @@
             let statusText = document.getElementById('status' + idNumber);
             let urlInput = document.getElementById('url' + idNumber);
             let uploadBtn = fileInput.nextElementSibling;
+            if(fileInput.files.length === 0) return;
 
-            if(fileInput.files.length === 0) { statusText.innerText = "⚠️ Please select a photo!"; return; }
-
-            let file = fileInput.files[0];
-            let formData = new FormData();
-            formData.append("image", file);
-
-            activeUploads++;
-            updateButtonState();
-            uploadBtn.disabled = true;
-            uploadBtn.style.background = "#555";
-
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
-
-            xhr.upload.onprogress = function(event) {
-                if (event.lengthComputable) {
-                    let progress = (event.loaded / event.total) * 100;
-                    statusText.innerText = "Uploading: " + Math.round(progress) + "% ⏳";
-                    statusText.style.color = "#00ffff";
-                }
-            };
-
+            let formData = new FormData(); formData.append("image", fileInput.files[0]);
+            uploadBtn.disabled = true; uploadBtn.style.background = "#555";
+            let xhr = new XMLHttpRequest(); xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
             xhr.onload = function() {
-                activeUploads--;
-                updateButtonState();
-                if (xhr.status === 200) {
-                    let response = JSON.parse(xhr.responseText);
-                    urlInput.value = response.data.url; 
-                    statusText.innerText = "✅ Uploaded Successfully!";
-                    statusText.style.color = "#25D366";
-                    uploadBtn.style.display = "none"; 
-                } else {
-                    statusText.innerText = "❌ Upload failed!";
-                    statusText.style.color = "#ff4444";
-                    uploadBtn.disabled = false;
-                    uploadBtn.style.background = "#00ffff";
-                }
-            };
-            xhr.onerror = function() {
-                activeUploads--;
-                updateButtonState();
-                statusText.innerText = "❌ Internet issue!";
-                statusText.style.color = "#ff4444";
-                uploadBtn.disabled = false;
-                uploadBtn.style.background = "#00ffff";
+                if (xhr.status === 200) { urlInput.value = JSON.parse(xhr.responseText).data.url; statusText.innerText = "✅ Uploaded!"; statusText.style.color = "#25D366"; uploadBtn.style.display = "none"; }
             };
             xhr.send(formData);
         }
 
         document.getElementById("wish-form").addEventListener("submit", function(e) {
-            e.preventDefault(); 
-            this.style.display = "none"; 
-            previewAudio.pause(); 
-
+            e.preventDefault(); this.style.display = "none"; previewAudio.pause(); 
             let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
             let photosArray = [];
             for(let i = 1; i <= imageCounter; i++) {
@@ -236,30 +125,15 @@
                 let capVal = document.getElementById("cap" + i) ? document.getElementById("cap" + i).value : "";
                 if(urlVal !== "") { photosArray.push({ url: urlVal, caption: capVal }); }
             }
-            
             db.collection("wishes").add({
                 name: document.getElementById("bName").value,
-                password: document.getElementById("bPassword").value,
                 message: document.getElementById("bMessage").value,
-                scratch: document.getElementById("bScratch").value, // New Scratch Data
-                reasons: document.getElementById("bReasons").value, // New Reasons Data
-                music: selectedMusic, 
-                photos: photosArray, 
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then((docRef) => {
+                music: selectedMusic, photos: photosArray, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then((docRef) => {
                 document.getElementById("generated-link-box").style.display = "block";
                 let realLink = window.location.origin + "/wish.html?id=" + docRef.id;
                 document.getElementById("final-link").value = realLink;
-                document.getElementById("share-btn").onclick = function() {
-                    let text = `I have a magical surprise for you! ✨ Unlock it here: ${realLink}`;
-                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
-                };
-            })
-            .catch((error) => {
-                console.error("Error: ", error);
-                alert("Data save hone me dikkat aayi!");
-                this.style.display = "block"; 
+                document.getElementById("share-btn").onclick = () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('✨ A special surprise for you! Unlock here: ' + realLink)}`);
             });
         });
     </script>
