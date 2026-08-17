@@ -105,7 +105,6 @@
             document.getElementById("lock-screen").innerHTML = "<h2>Invalid Link! 🚫</h2>";
         }
 
-        // STEP 1: Check Password
         function checkPassword() {
             if(!wishData) return;
             let entered = document.getElementById("entered-password").value.toLowerCase().trim();
@@ -119,26 +118,18 @@
             }
         }
 
-        // STEP 2: Open Gift (Tap karne par)
         function openGift() {
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
             
-            // Smart Audio Play Logic
+            // Audio Playback
             if(wishData.music) {
                 let audio = document.getElementById("bg-audio");
                 audio.src = wishData.music;
-                audio.volume = 0.7; // Volume slightly soft
-                
-                let playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        console.log("Browser ne autoplay block kar diya:", error);
-                    });
-                }
+                audio.volume = 0.8;
+                audio.play().catch(error => console.log("Audio Error:", error));
             }
 
-            // Data Setup
             document.getElementById("display-name").innerText = wishData.name;
             document.getElementById("display-message").innerText = wishData.message;
 
@@ -155,7 +146,7 @@
             }
             document.getElementById("timeline").innerHTML = timelineHTML;
             
-            // Blast Confetti!
+            // Confetti
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
             var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
