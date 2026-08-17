@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Magical Birthday Wish</title>
     <style>
+        /* CSS: Dark Mode aur Neon Theme */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
         .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; margin-top: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; }
         h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 24px; }
@@ -49,9 +50,10 @@
                 
                 <label>Choose Background Music 🎵</label>
                 <select id="bMusic">
-                    <option value="https://upload.wikimedia.org/wikipedia/commons/4/4e/Happy_Birthday_to_You_%28piano%29.ogg">Happy Birthday (Piano)</option>
-                    <option value="https://upload.wikimedia.org/wikipedia/commons/b/b3/Chopin_-_Nocturne_Op_9_No_2_%28E_Flat_Major%29.ogg">Romantic / Soft Theme</option>
-                    <option value="https://upload.wikimedia.org/wikipedia/commons/3/34/Danza_Macabra.ogg">Upbeat / Fun Theme</option>
+                    <!-- High quality .mp3 direct links -->
+                    <option value="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939405fc6.mp3">Happy Birthday (Instrumental)</option>
+                    <option value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3">Romantic / Piano Theme</option>
+                    <option value="https://cdn.pixabay.com/download/audio/2022/03/24/audio_5170d4fcb4.mp3">Fun / Upbeat Theme</option>
                 </select>
             </div>
 
@@ -72,18 +74,23 @@
 
     <div class="ad-space" style="max-width: 500px;">Google AdSense Banner (Bottom)</div>
 
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
+        // ImgBB API Key
         const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
+        
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
             authDomain: "birthday-maker-58e43.firebaseapp.com",
             projectId: "birthday-maker-58e43",
             storageBucket: "birthday-maker-58e43.firebasestorage.app",
             messagingSenderId: "213307256948",
-            appId: "1:213307256948:web:4731c4d0c42ee6e978e121"
+            appId: "1:213307256948:web:4731c4d0c42ee6e978e121",
+            measurementId: "G-Z2PYMXNTXC"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -196,7 +203,7 @@
                 name: document.getElementById("bName").value,
                 password: document.getElementById("bPassword").value,
                 message: document.getElementById("bMessage").value,
-                music: document.getElementById("bMusic").value, // Music DB me save kiya
+                music: document.getElementById("bMusic").value,
                 photos: photosArray, 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
