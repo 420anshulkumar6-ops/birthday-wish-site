@@ -13,7 +13,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden;}
         .container { width: 100%; max-width: 500px; background: rgba(26, 26, 36, 0.9); padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); text-align: center; margin-bottom: 30px; box-sizing: border-box;}
         
-        h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff; font-size: 28px; }
+        h1 { color: #00ffff; text-shadow: 0 0 10px #00ffff; font-size: 28px; margin-bottom: 15px; line-height: 1.4; }
         input { width: 100%; padding: 12px; background: rgba(37, 37, 50, 0.9); border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 15px; text-align: center; }
         .btn { background: linear-gradient(45deg, #00ffff, #0080ff); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .btn:hover { box-shadow: 0 0 15px #00ffff; transform: scale(1.02); }
@@ -46,21 +46,18 @@
 
     <div class="container" id="main-content-area">
         
-        <!-- STEP 1: GIFT SCREEN (Direct Entry Point) -->
         <div id="gift-screen">
             <h1 style="color: #ff1493;">Surprise for you! 🎉</h1>
             <p style="font-size: 18px;">Tap the big gift box to open your surprise...</p>
             <div class="gift-emoji" onclick="openGift()">🎁</div>
         </div>
 
-        <!-- STEP 2: SURPRISE SCREEN -->
         <div id="surprise-screen">
-            <h1 style="font-size: 35px;">🎉 Happy Birthday! 🎉</h1>
-            <h2 id="display-name" style="color: #ff1493; font-size: 32px; margin-bottom: 5px;"></h2>
+            
+            <h1 style="font-size: 35px;">🎉 Happy Birthday <span id="display-name" style="color: #ff1493; text-shadow: 0 0 10px #ff1493;"></span>! 🎉</h1>
             
             <div class="message-box" id="display-message"></div>
 
-            <!-- PRO FEATURE 1: BLOW THE CANDLE -->
             <div class="cake-container">
                 <h3 style="color:#00ffff; margin-top:0;">🎂 Make a Wish!</h3>
                 <p style="font-size:14px; color:#bbb;">Click the button, then blow into your phone's microphone to put out the candle!</p>
@@ -73,7 +70,6 @@
                 <h3 id="cake-success" style="color:#25D366; display:none;">✨ Wish Granted! ✨</h3>
             </div>
 
-            <!-- PRO FEATURE 2: SCRATCH CARD -->
             <div class="scratch-container" id="scratch-area" style="display:none;">
                 <div class="scratch-message" id="scratch-text"></div>
                 <canvas id="scratch-pad"></canvas>
@@ -84,7 +80,6 @@
 
     </div>
 
-    <!-- Hidden Audio Player -->
     <audio id="bg-audio" loop></audio>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -122,12 +117,10 @@
         }
 
         function openGift() {
-            // Fullscreen & Disco
             let elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen().catch(e => console.log(e)); }
             document.body.classList.add("disco-mode");
 
-            // Play Local Music
             if(wishData.music) {
                 let audio = document.getElementById("bg-audio");
                 audio.src = wishData.music; 
@@ -137,10 +130,10 @@
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
             
+            // Name merge ho kar 'display-name' wale span me aayega
             document.getElementById("display-name").innerText = wishData.name;
             document.getElementById("display-message").innerText = wishData.message;
 
-            // Setup Timeline
             let timelineHTML = "";
             if(wishData.photos && wishData.photos.length > 0) {
                 wishData.photos.forEach(photo => {
@@ -149,7 +142,6 @@
             }
             document.getElementById("timeline").innerHTML = timelineHTML;
 
-            // Setup Scratch Card
             if(wishData.scratch && wishData.scratch.trim() !== "") {
                 document.getElementById("scratch-area").style.display = "block";
                 document.getElementById("scratch-text").innerText = wishData.scratch;
@@ -159,7 +151,6 @@
             fireConfetti();
         }
 
-        // --- FEATURE 1: MIC BLOW LOGIC ---
         let audioContext, analyser, microphone, scriptProcessor;
         async function enableMic() {
             try {
@@ -183,10 +174,10 @@
                     const average = values / array.length;
                     
                     if (average > 60) {
-                        document.getElementById('flame').style.display = 'none'; // Bujh gaya!
+                        document.getElementById('flame').style.display = 'none'; 
                         document.getElementById('mic-btn').style.display = 'none';
                         document.getElementById('cake-success').style.display = 'block';
-                        fireConfetti(); // Phir se patakhe
+                        fireConfetti(); 
                         
                         stream.getTracks().forEach(track => track.stop());
                         scriptProcessor.disconnect();
@@ -197,7 +188,6 @@
             }
         }
 
-        // --- FEATURE 2: SCRATCH CARD LOGIC ---
         function initScratchCard() {
             const canvas = document.getElementById('scratch-pad');
             const ctx = canvas.getContext('2d');
@@ -235,9 +225,9 @@
             canvas.addEventListener('mouseup', () => isDrawing = false);
             canvas.addEventListener('mousemove', scratch);
             
-            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
             canvas.addEventListener('touchend', () => isDrawing = false);
-            canvas.addEventListener('touchmove', scratch);
+            canvas.addEventListener('touchmove', scratch, {passive: false});
         }
 
         function fireConfetti() {
