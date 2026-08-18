@@ -8,112 +8,97 @@
         @keyframes djLights { 0% { background-color: #ff00ff; } 100% { background-color: #00ffff; } }
         body.disco-mode { animation: djLights 0.8s infinite alternate; }
         
-        body { font-family: 'Segoe UI', sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; box-sizing: border-box;}
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; box-sizing: border-box;}
         
         .container { width: 100%; height: 100%; max-width: 500px; background: rgba(26, 26, 36, 0.9); padding: 12px; border-radius: 15px; box-shadow: 0 0 15px #00ffff; text-align: center; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
         
-        /* 📸 IMAGE MODULE (20% Bada kiya) */
-        .timeline-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
-        .memory-card { background: #252532; padding: 5px; border-radius: 12px; border: 2px solid #ff1493; width: 100%; height: 35vh; box-sizing: border-box; display: flex; justify-content: center; align-items: center; position: relative;}
+        .memory-card { background: #252532; padding: 5px; border-radius: 12px; border: 2px solid #ff1493; width: 100%; height: 35vh; display: flex; justify-content: center; align-items: center; position: relative;}
         .memory-card img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; }
         
-        /* Navigation Arrows */
-        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); color: #fff; border: none; font-size: 20px; padding: 10px; cursor: pointer; z-index: 10; border-radius: 5px; }
-        .slider-btn.left { left: 10px; }
-        .slider-btn.right { right: 10px; }
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: #fff; border: none; padding: 10px; cursor: pointer; border-radius: 5px; }
+        .slider-btn.left { left: 10px; } .slider-btn.right { right: 10px; }
 
-        /* Message Box */
-        .message-box { width: 100%; background: rgba(37, 37, 50, 0.9); padding: 10px; border: 2px solid #ff1493; border-radius: 8px; font-size: 14px; text-align: center; box-sizing: border-box; height: 10vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .message-box { width: 100%; background: rgba(37, 37, 50, 0.9); padding: 10px; border: 2px solid #ff1493; border-radius: 8px; font-size: 14px; text-align: center; height: 10vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         
-        /* 🎂 CAKE BOX (20% Chota kiya) */
-        .cake-box { width: 100%; background: #252532; border: 2px solid #ff1493; border-radius: 12px; display: flex; justify-content: center; align-items: center; margin: 5px 0; flex: 0.8; min-height: 80px; }
-        .decorative-cake { font-size: 60px; animation: floatCake 3s ease-in-out infinite; }
-        @keyframes floatCake { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        /* SCRATCH CARD */
-        .scratch-container { position: relative; width: 100%; height: 70px; border-radius: 12px; overflow: hidden; border: 2px solid #ff1493; background: #fff; flex-shrink: 0;}
+        .cake-box { width: 100%; background: #252532; border: 2px solid #ff1493; border-radius: 12px; display: flex; justify-content: center; align-items: center; flex: 0.6; }
+        
+        .scratch-container { position: relative; width: 100%; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid #ff1493; background: #fff; flex-shrink: 0;}
         canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
-
-        #gift-screen { display: none; height: 100%; flex-direction: column; justify-content: center; align-items: center; }
-        #surprise-screen { display: none; height: 100%; flex-direction: column; align-items: center; justify-content: space-between; } 
     </style>
 </head>
 <body>
     <div class="container" id="main-content-area">
         <h2 id="loading-text" style="color: #ff1493; margin-top: 50px;">Loading Magic... ✨</h2>
-
+        
         <div id="gift-screen">
-            <h1 style="color: #ff1493; font-size: 28px;">Surprise for you! 🎉</h1>
-            <div style="font-size: 120px; cursor: pointer; animation: bounce 1.2s infinite;" onclick="openGift()">🎁</div>
+            <h1 style="color: #ff1493;">Surprise for you! 🎉</h1>
+            <div style="font-size: 120px; cursor: pointer;" onclick="openGift()">🎁</div>
         </div>
 
-        <div id="surprise-screen">
-            <div style="width: 100%;">
-                <h1 style="font-size: 26px; color: #ff1493; margin: 0;">Happy Birthday <span id="display-name"></span>!</h1>
-                <div style="font-size: 20px;">🎂 🎉 🥳 🎈</div>
-            </div>
-            
-            <div id="timeline" class="timeline-container">
+        <div id="surprise-screen" style="display:none; height:100%; flex-direction:column; justify-content:space-between;">
+            <h1 style="font-size: 24px; color: #ff1493; margin: 0;">Happy Birthday <span id="display-name"></span>!</h1>
+            <div id="timeline" class="timeline-container" style="width:100%;">
                 <div class="memory-card">
                     <button class="slider-btn left" id="prev-btn" onclick="prevSlide()" style="display:none;">❮</button>
                     <img id="slider-img" src="" alt="Memory">
-                    <button class="slider-btn right" id="next-btn" onclick="nextSlide(false)" style="display:none;">❯</button>
+                    <button class="slider-btn right" id="next-btn" onclick="nextSlide()" style="display:none;">❯</button>
                 </div>
             </div>
-
             <div class="message-box" id="display-message"></div>
-
-            <div class="cake-box">
-                <div class="decorative-cake">🎂</div>
-            </div>
-
-            <div class="scratch-container" id="scratch-area" style="display:none;">
-                <canvas id="scratch-pad"></canvas>
-            </div>
+            <div class="cake-box"><div style="font-size:60px;">🎂</div></div>
+            <div class="scratch-container" id="scratch-area" style="display:none;"><canvas id="scratch-pad"></canvas></div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <audio id="bg-audio" loop></audio>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
-        // Firebase & Logic same as before...
         const firebaseConfig = { apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q", authDomain: "birthday-maker-58e43.firebaseapp.com", projectId: "birthday-maker-58e43", storageBucket: "birthday-maker-58e43.firebasestorage.app", messagingSenderId: "213307256948", appId: "1:213307256948:web:4731c4d0c42ee6e978e121" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        
+        let wishData = null; let currentSlide = 0; let photosArray = [];
 
         const urlParams = new URLSearchParams(window.location.search);
-        const docId = urlParams.get('id');
-        let wishData = null;
-        let currentSlide = 0;
-        let photosArray = [];
-
-        db.collection("wishes").doc(docId).get().then((doc) => {
+        db.collection("wishes").doc(urlParams.get('id')).get().then(doc => {
             document.getElementById("loading-text").style.display = "none";
-            if (doc.exists) { wishData = doc.data(); document.getElementById("gift-screen").style.display = "flex"; }
+            if(doc.exists) { wishData = doc.data(); document.getElementById("gift-screen").style.display = "flex"; }
         });
 
         function openGift() {
+            // 1. Fullscreen Request
+            document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen blocked"));
+            
+            // 2. Play Music
+            let audio = document.getElementById("bg-audio");
+            audio.src = wishData.music;
+            audio.play().catch(e => console.log("Audio blocked"));
+
+            // 3. UI Switch
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "flex";
             document.body.classList.add("disco-mode");
+            
             document.getElementById("display-name").innerText = wishData.name;
             document.getElementById("display-message").innerText = wishData.message;
             
+            // 4. Preload & Set Images
             photosArray = wishData.photos;
             document.getElementById('slider-img').src = photosArray[0].url;
             if(photosArray.length > 1) {
                 document.getElementById('prev-btn').style.display = 'block';
                 document.getElementById('next-btn').style.display = 'block';
             }
-            
+
             if(wishData.scratch) {
                 document.getElementById("scratch-area").style.display = "block";
                 initScratchCard();
             }
         }
 
-        function nextSlide(isAuto = false) { currentSlide = (currentSlide + 1) % photosArray.length; document.getElementById('slider-img').src = photosArray[currentSlide].url; }
+        function nextSlide() { currentSlide = (currentSlide + 1) % photosArray.length; document.getElementById('slider-img').src = photosArray[currentSlide].url; }
         function prevSlide() { currentSlide = (currentSlide - 1 + photosArray.length) % photosArray.length; document.getElementById('slider-img').src = photosArray[currentSlide].url; }
 
         function initScratchCard() {
