@@ -14,7 +14,6 @@
         input[type="text"], textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
         input[type="file"] { padding: 8px; border: none; flex: 1; color: white; }
         
-        /* Music Preview List CSS */
         .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
         .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; }
@@ -43,7 +42,6 @@
         <p>Fill details & add photos to generate a surprise link!</p>
         
         <form id="wish-form">
-            <!-- Basic Details -->
             <div class="input-group" style="border: 1px solid #00ffff;">
                 <label>Birthday Person's Name *</label>
                 <input type="text" id="bName" required placeholder="e.g. Rahul">
@@ -69,14 +67,13 @@
                 <audio id="preview-audio" style="display: none;"></audio>
             </div>
 
-            <!-- PRO FEATURES DATA -->
             <div class="input-group">
                 <label>🎁 Hidden Scratch Card Gift</label>
                 <input type="text" id="bScratch" placeholder="e.g. Free Dinner Date!">
             </div>
 
-            <!-- Memory Timeline (Dynamic Setup) -->
-            <h3 style="color: #00ffff; font-size: 18px;">📸 Memory Timeline (Optional)</h3>
+            <h3 style="color: #00ffff; font-size: 18px;">📸 Upload a Photo (Mandatory)</h3>
+            <p style="font-size: 13px; color: #aaa; margin-top:-10px;">At least 1 photo is required for the best layout.</p>
             <div id="dynamic-image-container"></div>
             
             <button type="button" class="btn-outline" onclick="addImageRow()">➕ Add Another Photo</button>
@@ -90,7 +87,6 @@
         </div>
     </div>
 
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
@@ -151,7 +147,7 @@
             let div = document.createElement("div");
             div.className = "input-group";
             div.innerHTML = `
-                <label>Memory ${id} (Optional)</label>
+                <label>Photo ${id}</label>
                 <div class="upload-row">
                     <input type="file" id="file${id}" accept="image/*">
                     <button type="button" class="upload-btn" onclick="uploadSingleImage('${id}')">Upload</button>
@@ -220,16 +216,24 @@
 
         document.getElementById("wish-form").addEventListener("submit", function(e) {
             e.preventDefault(); 
-            this.style.display = "none"; 
-            previewAudio.pause(); 
-
-            let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
+            
             let photosArray = [];
             for(let i = 1; i <= imageCounter; i++) {
                 let urlVal = document.getElementById("url" + i) ? document.getElementById("url" + i).value : "";
                 let capVal = document.getElementById("cap" + i) ? document.getElementById("cap" + i).value : "";
                 if(urlVal !== "") { photosArray.push({ url: urlVal, caption: capVal }); }
             }
+
+            // Image is now Mandatory check
+            if(photosArray.length === 0) {
+                alert("Please upload at least 1 photo! Bina photo ke layout accha nahi lagega.");
+                return; // Stop form submission
+            }
+
+            this.style.display = "none"; 
+            previewAudio.pause(); 
+
+            let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
             
             db.collection("wishes").add({
                 name: document.getElementById("bName").value,
