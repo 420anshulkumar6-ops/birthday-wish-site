@@ -146,6 +146,7 @@
             let container = document.getElementById("dynamic-image-container");
             let div = document.createElement("div");
             div.className = "input-group";
+            // Caption input yahan se remove kar diya gaya hai
             div.innerHTML = `
                 <label>Photo ${id}</label>
                 <div class="upload-row">
@@ -154,7 +155,6 @@
                 </div>
                 <div id="status${id}" class="status-text" style="color: #ff1493;"></div>
                 <input type="hidden" id="url${id}">
-                <input type="text" id="cap${id}" placeholder="Caption for this memory...">
             `;
             container.appendChild(div);
         }
@@ -220,14 +220,12 @@
             let photosArray = [];
             for(let i = 1; i <= imageCounter; i++) {
                 let urlVal = document.getElementById("url" + i) ? document.getElementById("url" + i).value : "";
-                let capVal = document.getElementById("cap" + i) ? document.getElementById("cap" + i).value : "";
-                if(urlVal !== "") { photosArray.push({ url: urlVal, caption: capVal }); }
+                if(urlVal !== "") { photosArray.push({ url: urlVal }); } // Sirf URL push ho raha hai
             }
 
-            // Image is now Mandatory check (Updated Alert)
             if(photosArray.length === 0) {
                 alert("Please upload at least 1 photo!");
-                return; // Stop form submission
+                return; 
             }
 
             this.style.display = "none"; 
