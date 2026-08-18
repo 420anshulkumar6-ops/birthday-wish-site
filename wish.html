@@ -6,123 +6,88 @@
     <title>Birthday Wish</title>
     <style>
         body { 
-            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; 
-            background-color: #eefbff; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; height: 100vh; overflow: hidden; 
+            margin: 0; padding: 0; background-color: #000; 
+            display: flex; align-items: center; justify-content: center; 
+            height: 100vh; overflow: hidden; 
         }
-        
+
         /* Loading & Gift Screen */
-        #loading-text { color: #1a3a5a; margin-top: 50px; }
-        #gift-screen { display: none; height: 100%; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        #loading-text { color: #ff1493; position: absolute; font-family: sans-serif; font-weight: bold;}
+        #gift-screen { 
+            display: none; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; height: 100vh; width: 100vw; background: #0d0d12;
+        }
         .gift-emoji { font-size: 120px; cursor: pointer; animation: bounce 1.2s infinite; margin-top: 20px;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
 
-        /* Main Video Poster Container */
-        #surprise-screen { 
-            display: none; position: relative; width: 100%; height: 100%; max-width: 500px; margin: 0 auto; overflow: hidden;
+        /* Video Wrapper - STRICT 9:16 ASPECT RATIO (No Side Cropping) */
+        .video-wrapper {
+            display: none;
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 56.25vh; /* Prevents zooming/cropping on wide screens */
+            max-height: 177.77vw; /* Keeps it tight on tall screens */
+            margin: 0 auto;
+            background: #000;
         }
 
-        /* 🎬 Background Video */
+        /* Background Video */
         #bg-video {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; /* Ye video ko poori screen par perfectly fit karega */
-            z-index: 1;
+            object-fit: cover; z-index: 1;
         }
 
-        /* 📸 Overlay Elements (Photo, Name, Message) */
-        .overlay-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2; pointer-events: none; /* Taki video ke upar click na ruke */
-        }
-
-        /* Photo Circle Coordinates */
+        /* Big Photo Inside the Circle */
         .user-photo {
             position: absolute;
-            top: 41%; /* Adjust this slightly if it doesn't fit the circle perfectly */
+            top: 41.5%; /* Adjusted up/down slightly to match circle */
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 48%; /* Size of the photo to fit inside the video's circle */
+            width: 62%; /* Size increased considerably */
             aspect-ratio: 1/1;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid transparent; /* Optional */
+            z-index: 2;
         }
 
-        /* Name Ribbon Coordinates */
+        /* Name strictly over the Ribbon */
         .user-name {
             position: absolute;
-            top: 58.5%; /* Adjust to perfectly align on the blue ribbon */
+            top: 61%; /* Moved down to fit on the blue ribbon exactly */
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 22px;
+            font-size: 28px;
             color: #ffffff;
             font-weight: bold;
             text-align: center;
-            width: 70%;
+            width: 75%;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
+            z-index: 2;
         }
-
-        /* Message Coordinates */
-        .user-msg {
-            position: absolute;
-            top: 67%; /* Adjust to sit right below the ribbon */
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 15px;
-            color: #1a3a5a; /* Dark blue text matching the theme */
-            text-align: center;
-            width: 85%;
-            line-height: 1.4;
-            font-style: italic;
-            font-weight: 500;
-        }
-
-        /* Scratch Card (Placed at the bottom) */
-        .scratch-container { 
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 85%; height: 60px; border-radius: 12px; overflow: hidden; 
-            border: 2px solid #5d9bc9; background: #fff; z-index: 10; pointer-events: auto;
-        }
-        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; }
-        .scratch-message { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; color: #5d9bc9; text-align: center; padding: 5px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <!-- Loading Screen -->
     <h2 id="loading-text">Loading Magic... ✨</h2>
 
     <!-- Step 1: Gift Box Screen -->
     <div id="gift-screen">
-        <h1 style="color: #1a3a5a;">Surprise for you! 🎉</h1>
-        <p style="color: #555;">Tap to open</p>
+        <h1 style="color: #ff1493; font-family: sans-serif;">Surprise for you! 🎉</h1>
+        <p style="color: #bbb; font-family: sans-serif;">Tap to open</p>
         <div class="gift-emoji" onclick="openGift()">🎁</div>
     </div>
 
-    <!-- Step 2: Main Video Poster Screen -->
-    <div id="surprise-screen">
-        
-        <!-- Background Video -->
-        <video id="bg-video" muted loop playsinline>
+    <!-- Step 2: Main Video Presentation -->
+    <div class="video-wrapper" id="surprise-screen">
+        <video id="bg-video" loop playsinline>
             <source src="bg_video.mp4" type="video/mp4">
         </video>
-
-        <!-- Overlay Content -->
-        <div class="overlay-container">
-            <img id="user-img" class="user-photo" src="" alt="Photo">
-            <div id="user-name" class="user-name"></div>
-            <div id="user-msg" class="user-msg"></div>
-        </div>
-
-        <!-- Scratch Card -->
-        <div class="scratch-container" id="scratch-area" style="display:none;">
-            <div class="scratch-message" id="scratch-text"></div>
-            <canvas id="scratch-pad"></canvas>
-        </div>
+        
+        <img id="user-img" class="user-photo" src="" alt="Photo">
+        <div id="user-name" class="user-name"></div>
     </div>
-
-    <audio id="bg-audio" loop></audio>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -140,65 +105,25 @@
                 wishData = doc.data(); 
                 document.getElementById("gift-screen").style.display = "flex"; 
             } else {
-                document.body.innerHTML = "<h2 style='color:red;'>Link Expired!</h2>";
+                document.body.innerHTML = "<h2 style='color:red; font-family:sans-serif;'>Link Expired!</h2>";
             }
         });
 
         function openGift() {
-            // Fullscreen & Music
+            // Fullscreen attempt
             document.documentElement.requestFullscreen().catch(e => console.log(e));
             
-            let audio = document.getElementById("bg-audio");
-            audio.src = wishData.music; 
-            audio.play().catch(e => console.log(e));
-
-            // Start Background Video
+            // Start Video
             let bgVideo = document.getElementById("bg-video");
-            bgVideo.play();
+            bgVideo.play().catch(e => console.log(e)); // Ensure autoplay works after user interaction
 
-            // UI Switch
+            // Switch Screen
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
             
-            // Set Data
+            // Assign Data
             document.getElementById("user-img").src = wishData.photos[0].url;
             document.getElementById("user-name").innerText = wishData.name;
-            document.getElementById("user-msg").innerText = wishData.message;
-
-            // Scratch Card
-            if(wishData.scratch && wishData.scratch.trim() !== "") {
-                document.getElementById("scratch-area").style.display = "block";
-                document.getElementById("scratch-text").innerText = wishData.scratch;
-                initScratchCard();
-            }
-        }
-
-        function initScratchCard() {
-            const canvas = document.getElementById('scratch-pad');
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.parentElement.offsetWidth; canvas.height = 60;
-            ctx.fillStyle = '#5d9bc9'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ffffff'; ctx.font = '20px Arial'; ctx.textAlign = "center"; 
-            ctx.fillText('🪙 Scratch Gift!', canvas.width/2, 38);
-
-            let isDrawing = false;
-            function getPos(e) {
-                let r = canvas.getBoundingClientRect();
-                let x = (e.clientX || e.touches[0].clientX) - r.left;
-                let y = (e.clientY || e.touches[0].clientY) - r.top;
-                return {x, y};
-            }
-            function scratch(e) {
-                if(!isDrawing) return; e.preventDefault(); let pos = getPos(e);
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath(); ctx.arc(pos.x, pos.y, 20, 0, Math.PI*2); ctx.fill();
-            }
-            canvas.addEventListener('mousedown', () => isDrawing = true);
-            canvas.addEventListener('mouseup', () => isDrawing = false);
-            canvas.addEventListener('mousemove', scratch);
-            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
-            canvas.addEventListener('touchend', () => isDrawing = false);
-            canvas.addEventListener('touchmove', scratch, {passive: false});
         }
     </script>
 </body>
