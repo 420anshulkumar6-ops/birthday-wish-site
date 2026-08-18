@@ -5,22 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Magical Birthday Wish</title>
     <style>
-        /* CSS: Dark Mode aur Neon Theme */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; }
-        h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493, 0 0 20px #ff1493; font-size: 26px; margin-bottom: 20px;}
-        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; animation: fadeIn 0.5s; }
+        h1 { color: #ff1493; text-shadow: 0 0 10px #ff1493; font-size: 26px; margin-bottom: 20px;}
+        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; }
         label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
-        input[type="text"], textarea { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
-        input[type="file"] { padding: 8px; border: none; flex: 1; color: white; }
+        input[type="text"] { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
+        input[type="file"] { padding: 8px; border: none; flex: 1; color: white; width: 100%; }
         
-        .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
-        .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; }
-        .play-btn { background: #00ffff; color: #000; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .play-btn:hover { box-shadow: 0 0 10px #00ffff; transform: scale(1.1); }
-        .playing { background: #ff1493; color: white; box-shadow: 0 0 10px #ff1493; }
-
         .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
         .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
@@ -28,55 +20,33 @@
         .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
         .btn:hover:not(:disabled) { box-shadow: 0 0 15px #ff1493; transform: scale(1.02); }
         .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; }
-        .btn-outline { background: transparent; border: 2px dashed #00ffff; color: #00ffff; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;}
         
         #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
         #share-btn { background: #25D366; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>✨ Create a Magical Wish ✨</h1>
-        <p>Fill details & add photos to generate a surprise link!</p>
+        <h1>✨ Create Birthday Wish ✨</h1>
+        <p>Sirf naam aur photo add karein!</p>
         
         <form id="wish-form">
             <div class="input-group" style="border: 1px solid #00ffff;">
                 <label>Birthday Person's Name *</label>
                 <input type="text" id="bName" required placeholder="e.g. Rahul">
-                
-                <label>Special Birthday Message *</label>
-                <textarea id="bMessage" rows="3" required placeholder="Write a cute message..."></textarea>
-                
-                <label style="margin-top: 10px;">Choose Background Music 🎵</label>
-                <div class="music-list">
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song1.mp3" checked> Birthday Piano</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song1.mp3')">▶️</button>
-                    </div>
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song2.mp3"> Romantic Theme</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song2.mp3')">▶️</button>
-                    </div>
-                    <div class="music-item">
-                        <label><input type="radio" name="bMusic" value="song3.mp3"> Fun Theme</label>
-                        <button type="button" class="play-btn" onclick="togglePreview(this, 'song3.mp3')">▶️</button>
-                    </div>
-                </div>
-                <audio id="preview-audio" style="display: none;"></audio>
             </div>
 
             <div class="input-group">
-                <label>🎁 Hidden Scratch Card Gift</label>
-                <input type="text" id="bScratch" placeholder="e.g. Free Dinner Date!">
+                <label>📸 Upload a Photo (Mandatory)</label>
+                <div class="upload-row">
+                    <input type="file" id="file1" accept="image/*" required>
+                    <button type="button" class="upload-btn" onclick="uploadSingleImage()">Upload</button>
+                </div>
+                <div id="status1" class="status-text" style="color: #ff1493;"></div>
+                <input type="hidden" id="url1">
             </div>
-
-            <h3 style="color: #00ffff; font-size: 18px;">📸 Upload a Photo (Mandatory)</h3>
-            <p style="font-size: 13px; color: #aaa; margin-top:-10px;">At least 1 photo is required for the best layout.</p>
-            <div id="dynamic-image-container"></div>
             
-            <button type="button" class="btn-outline" onclick="addImageRow()">➕ Add Another Photo</button>
             <button type="submit" id="generate-btn" class="btn">🪄 Generate Link Instantly</button>
         </form>
 
@@ -103,66 +73,12 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-
-        let activeUploads = 0; 
-        let imageCounter = 0; 
         const generateBtn = document.getElementById("generate-btn");
-        const previewAudio = document.getElementById("preview-audio");
-        let currentPlayBtn = null;
 
-        window.onload = function() { addImageRow(); };
-
-        function togglePreview(btnElement, url) {
-            if (currentPlayBtn === btnElement && !previewAudio.paused) {
-                previewAudio.pause();
-                btnElement.innerText = "▶️";
-                btnElement.classList.remove("playing");
-                return;
-            }
-            let allBtns = document.querySelectorAll(".play-btn");
-            allBtns.forEach(btn => { btn.innerText = "▶️"; btn.classList.remove("playing"); });
-
-            previewAudio.src = url;
-            previewAudio.play().catch(e => alert("Please make sure MP3 files are in the folder!"));
-            btnElement.innerText = "⏸️";
-            btnElement.classList.add("playing");
-            currentPlayBtn = btnElement;
-            previewAudio.onended = function() { btnElement.innerText = "▶️"; btnElement.classList.remove("playing"); };
-        }
-
-        function updateButtonState() {
-            if (activeUploads > 0) {
-                generateBtn.disabled = true;
-                generateBtn.innerText = "⏳ Uploading Photos...";
-            } else {
-                generateBtn.disabled = false;
-                generateBtn.innerText = "🪄 Generate Link Instantly";
-            }
-        }
-
-        function addImageRow() {
-            imageCounter++;
-            let id = imageCounter;
-            let container = document.getElementById("dynamic-image-container");
-            let div = document.createElement("div");
-            div.className = "input-group";
-            // Caption input yahan se remove kar diya gaya hai
-            div.innerHTML = `
-                <label>Photo ${id}</label>
-                <div class="upload-row">
-                    <input type="file" id="file${id}" accept="image/*">
-                    <button type="button" class="upload-btn" onclick="uploadSingleImage('${id}')">Upload</button>
-                </div>
-                <div id="status${id}" class="status-text" style="color: #ff1493;"></div>
-                <input type="hidden" id="url${id}">
-            `;
-            container.appendChild(div);
-        }
-
-        function uploadSingleImage(idNumber) {
-            let fileInput = document.getElementById('file' + idNumber);
-            let statusText = document.getElementById('status' + idNumber);
-            let urlInput = document.getElementById('url' + idNumber);
+        function uploadSingleImage() {
+            let fileInput = document.getElementById('file1');
+            let statusText = document.getElementById('status1');
+            let urlInput = document.getElementById('url1');
             let uploadBtn = fileInput.nextElementSibling;
 
             if(fileInput.files.length === 0) { statusText.innerText = "⚠️ Please select a photo!"; return; }
@@ -171,8 +87,8 @@
             let formData = new FormData();
             formData.append("image", file);
 
-            activeUploads++;
-            updateButtonState();
+            generateBtn.disabled = true;
+            generateBtn.innerText = "⏳ Uploading Photo...";
             uploadBtn.disabled = true;
             uploadBtn.style.background = "#555";
 
@@ -188,8 +104,8 @@
             };
 
             xhr.onload = function() {
-                activeUploads--;
-                updateButtonState();
+                generateBtn.disabled = false;
+                generateBtn.innerText = "🪄 Generate Link Instantly";
                 if (xhr.status === 200) {
                     let response = JSON.parse(xhr.responseText);
                     urlInput.value = response.data.url; 
@@ -199,46 +115,31 @@
                 } else {
                     statusText.innerText = "❌ Upload failed!";
                     statusText.style.color = "#ff4444";
-                    uploadBtn.disabled = false;
-                    uploadBtn.style.background = "#00ffff";
+                    uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
                 }
             };
             xhr.onerror = function() {
-                activeUploads--;
-                updateButtonState();
-                statusText.innerText = "❌ Internet issue!";
-                statusText.style.color = "#ff4444";
-                uploadBtn.disabled = false;
-                uploadBtn.style.background = "#00ffff";
+                generateBtn.disabled = false; generateBtn.innerText = "🪄 Generate Link Instantly";
+                statusText.innerText = "❌ Internet issue!"; statusText.style.color = "#ff4444";
+                uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
             };
             xhr.send(formData);
         }
 
         document.getElementById("wish-form").addEventListener("submit", function(e) {
             e.preventDefault(); 
+            let urlVal = document.getElementById("url1").value;
             
-            let photosArray = [];
-            for(let i = 1; i <= imageCounter; i++) {
-                let urlVal = document.getElementById("url" + i) ? document.getElementById("url" + i).value : "";
-                if(urlVal !== "") { photosArray.push({ url: urlVal }); } // Sirf URL push ho raha hai
-            }
-
-            if(photosArray.length === 0) {
-                alert("Please upload at least 1 photo!");
+            if(urlVal === "") {
+                alert("Please upload the photo completely first!");
                 return; 
             }
 
             this.style.display = "none"; 
-            previewAudio.pause(); 
-
-            let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
             
             db.collection("wishes").add({
                 name: document.getElementById("bName").value,
-                message: document.getElementById("bMessage").value,
-                scratch: document.getElementById("bScratch").value, 
-                music: selectedMusic, 
-                photos: photosArray, 
+                photos: [{ url: urlVal }], 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then((docRef) => {
