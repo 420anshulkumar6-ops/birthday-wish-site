@@ -25,13 +25,13 @@
         /* Message Box */
         .message-box { background: rgba(37, 37, 50, 0.9); padding: 20px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 20px; font-size: 18px; line-height: 1.6; text-align: left; font-style: italic; }
         
-        /* 📸 IMAGE MODULE (Swapped Design - Now has Cyan Dashed Border & Pink Caption Button) */
+        /* 📸 IMAGE MODULE */
         .timeline-container { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
         .memory-card { background: #252532; padding: 20px; border-radius: 12px; border: 2px dashed #00ffff; text-align: center; }
         .memory-card img { width: 100%; border-radius: 8px; max-height: 350px; object-fit: cover; }
         .memory-caption { background: #ff1493; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; margin-top: 15px; display: inline-block; font-size: 16px; box-shadow: 0 0 10px rgba(255, 20, 147, 0.5); }
         
-        /* 🎂 CAKE & MIC MODULE (Moved to Bottom - Now has old Image Border style) */
+        /* 🎂 CAKE & MIC MODULE */
         .cake-container { background: rgba(37, 37, 50, 0.9); padding: 20px; border-radius: 12px; border: 1px solid #ff1493; box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3); margin-top: 30px; text-align: center; }
         .cake-emoji { font-size: 80px; position: relative; display: inline-block;}
         .flame { font-size: 40px; position: absolute; top: -35px; left: 20px; animation: flicker 0.5s infinite alternate; }
@@ -146,7 +146,6 @@
             document.getElementById("display-name").innerText = wishData.name;
             document.getElementById("display-message").innerText = wishData.message;
 
-            // Image Box Setup (With Pink Caption Button style)
             let timelineHTML = "";
             if(wishData.photos && wishData.photos.length > 0) {
                 wishData.photos.forEach(photo => {
@@ -167,7 +166,8 @@
                 initScratchCard();
             }
 
-            fireConfetti();
+            // Naya Ruk-Ruk ke chalne wala Confetti Loop Start
+            startConfettiLoop();
         }
 
         let audioContext, analyser, microphone, scriptProcessor;
@@ -196,7 +196,9 @@
                         document.getElementById('flame').style.display = 'none'; 
                         document.getElementById('mic-btn').style.display = 'none';
                         document.getElementById('cake-success').style.display = 'block';
-                        fireConfetti(); 
+                        
+                        // Ek bada dhamaka jab candle bujhe!
+                        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, zIndex: 1000 });
                         
                         stream.getTracks().forEach(track => track.stop());
                         scriptProcessor.disconnect();
@@ -249,14 +251,22 @@
             canvas.addEventListener('touchmove', scratch, {passive: false});
         }
 
-        function fireConfetti() {
-            var duration = 2 * 1000;
-            var end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+        // --- NAYA RUK-RUK KE CHALNE WALA CONFETTI LOOP ---
+        function startConfettiLoop() {
+            function shoot() {
+                var duration = 1500; // 1.5 second tak confetti girenge
+                var end = Date.now() + duration;
+                (function frame() {
+                    confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, zIndex: 1000 });
+                    confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, zIndex: 1000 });
+                    if (Date.now() < end) requestAnimationFrame(frame);
+                }());
+            }
+            
+            shoot(); // Box khulte hi pehli baar girenge
+            
+            // Uske baad har 3.5 second me loop chalega (1.5s girna + 2s shanti)
+            setInterval(shoot, 3500); 
         }
     </script>
 </body>
