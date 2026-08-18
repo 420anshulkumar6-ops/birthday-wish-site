@@ -19,22 +19,23 @@
         .gift-emoji { font-size: 150px; cursor: pointer; display: inline-block; animation: bounce 1.2s infinite; text-shadow: 0 0 30px #ff1493; margin: 40px 0;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
         
-        /* 📸 IMAGE MODULE */
+        /* 📸 IMAGE MODULE (Solid Pink Border) */
         .timeline-container { display: flex; flex-direction: column; align-items: center; margin-top: 10px; width: 100%; }
-        .memory-card { background: #252532; padding: 12px; border-radius: 12px; border: 2px dashed #00ffff; text-align: center; width: 100%; box-sizing: border-box;}
+        .memory-card { background: #252532; padding: 12px; border-radius: 12px; border: 2px solid #ff1493; text-align: center; width: 100%; box-sizing: border-box;}
         .memory-card img { width: 100%; border-radius: 8px; max-height: 25vh; object-fit: cover; }
         .memory-caption { background: #ff1493; color: white; padding: 6px 15px; border-radius: 8px; font-weight: bold; margin-top: 8px; display: inline-block; font-size: 14px; box-shadow: 0 0 10px rgba(255, 20, 147, 0.5); }
         
-        /* Message Box */
-        .message-box { width: 100%; background: rgba(37, 37, 50, 0.9); padding: 15px; border-left: 5px solid #ff1493; border-radius: 8px; margin-top: 15px; margin-bottom: 5px; font-size: 15px; line-height: 1.4; text-align: left; font-style: italic; box-sizing: border-box; max-height: 20vh; overflow-y: auto; }
+        /* Message Box (Solid Pink Border) */
+        .message-box { width: 100%; background: rgba(37, 37, 50, 0.9); padding: 15px; border: 2px solid #ff1493; border-radius: 8px; margin-top: 15px; margin-bottom: 5px; font-size: 15px; line-height: 1.4; text-align: left; font-style: italic; box-sizing: border-box; max-height: 22vh; overflow-y: auto; }
         
-        /* 🎂 DECORATIVE FLOATING CAKE MODULE */
-        .decorative-cake { font-size: 75px; position: relative; margin: 10px auto; animation: floatCake 3s ease-in-out infinite; filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.7)); }
-        .decorative-cake .flame { font-size: 35px; position: absolute; top: -30px; left: 18px; animation: flicker 0.5s infinite alternate; }
-        @keyframes floatCake { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        /* 🎂 CAKE BOX (Solid Pink Border so it's always visible) */
+        .cake-box { width: 100%; background: #252532; border: 2px solid #ff1493; border-radius: 12px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; margin-top: 10px; height: 85px; }
+        .decorative-cake { font-size: 50px; position: relative; animation: floatCake 3s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.7)); margin-top: 15px; }
+        .decorative-cake .flame { font-size: 25px; position: absolute; top: -25px; left: 12px; animation: flicker 0.5s infinite alternate; }
+        @keyframes floatCake { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes flicker { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.7; transform: scale(1.1); } }
 
-        /* SCRATCH CARD MODULE (Ek dum niche) */
+        /* SCRATCH CARD MODULE (Solid Pink Border) */
         .scratch-container { position: relative; width: 100%; height: 85px; margin-top: auto; border-radius: 12px; overflow: hidden; border: 2px solid #ff1493; background: #fff;}
         .scratch-message { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: #ff1493; text-align: center; padding: 5px; box-sizing: border-box; }
         canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
@@ -69,9 +70,11 @@
 
             <div class="message-box" id="display-message"></div>
 
-            <div class="decorative-cake">
-                <span class="flame">🔥</span>
-                🎂
+            <div class="cake-box">
+                <div class="decorative-cake">
+                    <span class="flame">🔥</span>
+                    🎂
+                </div>
             </div>
 
             <div class="scratch-container" id="scratch-area" style="display:none;">
