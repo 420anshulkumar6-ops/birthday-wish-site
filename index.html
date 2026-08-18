@@ -224,9 +224,9 @@
                 if(urlVal !== "") { photosArray.push({ url: urlVal, caption: capVal }); }
             }
 
-            // Image is now Mandatory check
+            // Image is now Mandatory check (Updated Alert)
             if(photosArray.length === 0) {
-                alert("Please upload at least 1 photo! Bina photo ke layout accha nahi lagega.");
+                alert("Please upload at least 1 photo!");
                 return; // Stop form submission
             }
 
