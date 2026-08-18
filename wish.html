@@ -5,46 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Birthday Wish</title>
     <style>
-        body { margin: 0; padding: 0; font-family: 'Georgia', serif; background-color: #eefbff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        .poster { width: 100%; max-width: 400px; height: 100vh; position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 50px; box-sizing: border-box; }
+        body { 
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; 
+            background-color: #eefbff; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; height: 100vh; overflow: hidden; 
+        }
         
-        /* Bunting Flags */
-        .flags { width: 100%; height: 50px; position: absolute; top: 0; background: url('https://www.transparenttextures.com/patterns/cubes.png'); }
+        /* Loading & Gift Screen */
+        #loading-text { color: #1a3a5a; margin-top: 50px; }
+        #gift-screen { display: none; height: 100%; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .gift-emoji { font-size: 120px; cursor: pointer; animation: bounce 1.2s infinite; margin-top: 20px;}
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
 
-        /* Typography */
-        .h-title { font-size: 45px; color: #1a3a5a; margin: 0; }
-        
-        /* Photo Frame */
-        .photo-circle { width: 180px; height: 180px; border-radius: 50%; border: 6px solid #a3d5ea; margin: 20px 0; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        /* Main Video Poster Container */
+        #surprise-screen { 
+            display: none; position: relative; width: 100%; height: 100%; max-width: 500px; margin: 0 auto; overflow: hidden;
+        }
 
-        /* Name Ribbon */
-        .ribbon { background: #5d9bc9; color: white; padding: 10px 40px; font-size: 30px; transform: skewX(-10deg); margin: 10px 0; box-shadow: 5px 5px 0 #3a7aab; }
+        /* 🎬 Background Video */
+        #bg-video {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; /* Ye video ko poori screen par perfectly fit karega */
+            z-index: 1;
+        }
 
-        /* Message */
-        .message { color: #333; font-size: 16px; text-align: center; padding: 0 20px; line-height: 1.4; }
+        /* 📸 Overlay Elements (Photo, Name, Message) */
+        .overlay-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none; /* Taki video ke upar click na ruke */
+        }
 
-        /* Bottom Cake */
-        .cake { font-size: 80px; margin-top: auto; margin-bottom: 20px; }
+        /* Photo Circle Coordinates */
+        .user-photo {
+            position: absolute;
+            top: 41%; /* Adjust this slightly if it doesn't fit the circle perfectly */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48%; /* Size of the photo to fit inside the video's circle */
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid transparent; /* Optional */
+        }
 
-        /* Balloons (Positioned using absolute) */
-        .balloon { position: absolute; font-size: 50px; }
+        /* Name Ribbon Coordinates */
+        .user-name {
+            position: absolute;
+            top: 58.5%; /* Adjust to perfectly align on the blue ribbon */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: center;
+            width: 70%;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+        }
+
+        /* Message Coordinates */
+        .user-msg {
+            position: absolute;
+            top: 67%; /* Adjust to sit right below the ribbon */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 15px;
+            color: #1a3a5a; /* Dark blue text matching the theme */
+            text-align: center;
+            width: 85%;
+            line-height: 1.4;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* Scratch Card (Placed at the bottom) */
+        .scratch-container { 
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 85%; height: 60px; border-radius: 12px; overflow: hidden; 
+            border: 2px solid #5d9bc9; background: #fff; z-index: 10; pointer-events: auto;
+        }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; }
+        .scratch-message { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; color: #5d9bc9; text-align: center; padding: 5px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <div class="poster">
-        <div class="flags"></div>
-        <h1 class="h-title">Happy<br>Birthday</h1>
-        
-        <div class="photo-circle"><img id="user-img" src=""></div>
-        
-        <div class="ribbon" id="user-name">Name</div>
-        
-        <div class="message" id="user-msg"></div>
-        
-        <div class="cake">🎂</div>
+    <!-- Loading Screen -->
+    <h2 id="loading-text">Loading Magic... ✨</h2>
+
+    <!-- Step 1: Gift Box Screen -->
+    <div id="gift-screen">
+        <h1 style="color: #1a3a5a;">Surprise for you! 🎉</h1>
+        <p style="color: #555;">Tap to open</p>
+        <div class="gift-emoji" onclick="openGift()">🎁</div>
     </div>
+
+    <!-- Step 2: Main Video Poster Screen -->
+    <div id="surprise-screen">
+        
+        <!-- Background Video -->
+        <video id="bg-video" muted loop playsinline>
+            <source src="bg_video.mp4" type="video/mp4">
+        </video>
+
+        <!-- Overlay Content -->
+        <div class="overlay-container">
+            <img id="user-img" class="user-photo" src="" alt="Photo">
+            <div id="user-name" class="user-name"></div>
+            <div id="user-msg" class="user-msg"></div>
+        </div>
+
+        <!-- Scratch Card -->
+        <div class="scratch-container" id="scratch-area" style="display:none;">
+            <div class="scratch-message" id="scratch-text"></div>
+            <canvas id="scratch-pad"></canvas>
+        </div>
+    </div>
+
+    <audio id="bg-audio" loop></audio>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -53,15 +131,75 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        let wishData = null;
+
         const urlParams = new URLSearchParams(window.location.search);
         db.collection("wishes").doc(urlParams.get('id')).get().then(doc => {
-            if(doc.exists) {
-                let data = doc.data();
-                document.getElementById('user-img').src = data.photos[0].url;
-                document.getElementById('user-name').innerText = data.name;
-                document.getElementById('user-msg').innerText = data.message;
+            document.getElementById("loading-text").style.display = "none";
+            if(doc.exists) { 
+                wishData = doc.data(); 
+                document.getElementById("gift-screen").style.display = "flex"; 
+            } else {
+                document.body.innerHTML = "<h2 style='color:red;'>Link Expired!</h2>";
             }
         });
+
+        function openGift() {
+            // Fullscreen & Music
+            document.documentElement.requestFullscreen().catch(e => console.log(e));
+            
+            let audio = document.getElementById("bg-audio");
+            audio.src = wishData.music; 
+            audio.play().catch(e => console.log(e));
+
+            // Start Background Video
+            let bgVideo = document.getElementById("bg-video");
+            bgVideo.play();
+
+            // UI Switch
+            document.getElementById("gift-screen").style.display = "none";
+            document.getElementById("surprise-screen").style.display = "block";
+            
+            // Set Data
+            document.getElementById("user-img").src = wishData.photos[0].url;
+            document.getElementById("user-name").innerText = wishData.name;
+            document.getElementById("user-msg").innerText = wishData.message;
+
+            // Scratch Card
+            if(wishData.scratch && wishData.scratch.trim() !== "") {
+                document.getElementById("scratch-area").style.display = "block";
+                document.getElementById("scratch-text").innerText = wishData.scratch;
+                initScratchCard();
+            }
+        }
+
+        function initScratchCard() {
+            const canvas = document.getElementById('scratch-pad');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.offsetWidth; canvas.height = 60;
+            ctx.fillStyle = '#5d9bc9'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff'; ctx.font = '20px Arial'; ctx.textAlign = "center"; 
+            ctx.fillText('🪙 Scratch Gift!', canvas.width/2, 38);
+
+            let isDrawing = false;
+            function getPos(e) {
+                let r = canvas.getBoundingClientRect();
+                let x = (e.clientX || e.touches[0].clientX) - r.left;
+                let y = (e.clientY || e.touches[0].clientY) - r.top;
+                return {x, y};
+            }
+            function scratch(e) {
+                if(!isDrawing) return; e.preventDefault(); let pos = getPos(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath(); ctx.arc(pos.x, pos.y, 20, 0, Math.PI*2); ctx.fill();
+            }
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+            canvas.addEventListener('touchend', () => isDrawing = false);
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+        }
     </script>
 </body>
 </html>
