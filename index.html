@@ -13,13 +13,15 @@
         input[type="text"] { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
         input[type="file"] { padding: 8px; border: none; flex: 1; color: white; width: 100%; }
         
+        .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; margin-top: 10px; }
+        .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
+        .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; }
+
         .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
         .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
         
         .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        .btn:hover:not(:disabled) { box-shadow: 0 0 15px #ff1493; transform: scale(1.02); }
-        .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; }
         
         #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
         #share-btn { background: #25D366; }
@@ -29,16 +31,23 @@
 
     <div class="container">
         <h1>✨ Create Birthday Wish ✨</h1>
-        <p>Sirf naam aur photo add karein!</p>
+        <p>Naam, photo aur music set karein!</p>
         
         <form id="wish-form">
             <div class="input-group" style="border: 1px solid #00ffff;">
                 <label>Birthday Person's Name *</label>
                 <input type="text" id="bName" required placeholder="e.g. Rahul">
+                
+                <label style="margin-top: 15px;">🎵 Choose Background Music</label>
+                <div class="music-list">
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="song1.mp3" checked> Music 1</label></div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="song2.mp3"> Music 2</label></div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="song3.mp3"> Music 3</label></div>
+                </div>
             </div>
 
             <div class="input-group">
-                <label>📸 Upload a Photo (Mandatory)</label>
+                <label>📸 Upload a Photo</label>
                 <div class="upload-row">
                     <input type="file" id="file1" accept="image/*" required>
                     <button type="button" class="upload-btn" onclick="uploadSingleImage()">Upload</button>
@@ -47,7 +56,7 @@
                 <input type="hidden" id="url1">
             </div>
             
-            <button type="submit" id="generate-btn" class="btn">🪄 Generate Link Instantly</button>
+            <button type="submit" id="generate-btn" class="btn">🪄 Generate Link</button>
         </form>
 
         <div id="generated-link-box">
@@ -62,15 +71,7 @@
 
     <script>
         const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q",
-            authDomain: "birthday-maker-58e43.firebaseapp.com",
-            projectId: "birthday-maker-58e43",
-            storageBucket: "birthday-maker-58e43.firebasestorage.app",
-            messagingSenderId: "213307256948",
-            appId: "1:213307256948:web:4731c4d0c42ee6e978e121"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q", authDomain: "birthday-maker-58e43.firebaseapp.com", projectId: "birthday-maker-58e43", storageBucket: "birthday-maker-58e43.firebasestorage.app", messagingSenderId: "213307256948", appId: "1:213307256948:web:4731c4d0c42ee6e978e121" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const generateBtn = document.getElementById("generate-btn");
@@ -87,25 +88,14 @@
             let formData = new FormData();
             formData.append("image", file);
 
-            generateBtn.disabled = true;
-            generateBtn.innerText = "⏳ Uploading Photo...";
-            uploadBtn.disabled = true;
-            uploadBtn.style.background = "#555";
+            generateBtn.disabled = true; generateBtn.innerText = "⏳ Uploading Photo...";
+            uploadBtn.disabled = true; uploadBtn.style.background = "#555";
 
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
 
-            xhr.upload.onprogress = function(event) {
-                if (event.lengthComputable) {
-                    let progress = (event.loaded / event.total) * 100;
-                    statusText.innerText = "Uploading: " + Math.round(progress) + "% ⏳";
-                    statusText.style.color = "#00ffff";
-                }
-            };
-
             xhr.onload = function() {
-                generateBtn.disabled = false;
-                generateBtn.innerText = "🪄 Generate Link Instantly";
+                generateBtn.disabled = false; generateBtn.innerText = "🪄 Generate Link";
                 if (xhr.status === 200) {
                     let response = JSON.parse(xhr.responseText);
                     urlInput.value = response.data.url; 
@@ -113,15 +103,9 @@
                     statusText.style.color = "#25D366";
                     uploadBtn.style.display = "none"; 
                 } else {
-                    statusText.innerText = "❌ Upload failed!";
-                    statusText.style.color = "#ff4444";
+                    statusText.innerText = "❌ Upload failed!"; statusText.style.color = "#ff4444";
                     uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
                 }
-            };
-            xhr.onerror = function() {
-                generateBtn.disabled = false; generateBtn.innerText = "🪄 Generate Link Instantly";
-                statusText.innerText = "❌ Internet issue!"; statusText.style.color = "#ff4444";
-                uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
             };
             xhr.send(formData);
         }
@@ -129,16 +113,14 @@
         document.getElementById("wish-form").addEventListener("submit", function(e) {
             e.preventDefault(); 
             let urlVal = document.getElementById("url1").value;
-            
-            if(urlVal === "") {
-                alert("Please upload the photo completely first!");
-                return; 
-            }
+            if(urlVal === "") { alert("Please upload the photo completely first!"); return; }
 
             this.style.display = "none"; 
+            let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
             
             db.collection("wishes").add({
                 name: document.getElementById("bName").value,
+                music: selectedMusic,
                 photos: [{ url: urlVal }], 
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
@@ -150,12 +132,7 @@
                     let text = `I have a magical surprise for you! ✨ Unlock it here: ${realLink}`;
                     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
                 };
-            })
-            .catch((error) => {
-                console.error("Error: ", error);
-                alert("Data save hone me dikkat aayi!");
-                this.style.display = "block"; 
-            });
+            }).catch((error) => { alert("Error!"); this.style.display = "block"; });
         });
     </script>
 </body>
