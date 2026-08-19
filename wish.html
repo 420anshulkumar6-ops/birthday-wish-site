@@ -11,7 +11,6 @@
             height: 100vh; overflow: hidden; 
         }
 
-        /* Loading & Gift Screen */
         #loading-text { color: #ff1493; position: absolute; font-family: sans-serif; font-weight: bold;}
         #gift-screen { 
             display: none; flex-direction: column; justify-content: center; 
@@ -20,16 +19,10 @@
         .gift-emoji { font-size: 120px; cursor: pointer; animation: bounce 1.2s infinite; margin-top: 20px;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
 
-        /* Video Wrapper - STRICT 9:16 ASPECT RATIO (No Side Cropping) */
+        /* Video Wrapper - STRICT 9:16 ASPECT RATIO */
         .video-wrapper {
-            display: none;
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            max-width: 56.25vh; /* Prevents zooming/cropping on wide screens */
-            max-height: 177.77vw; /* Keeps it tight on tall screens */
-            margin: 0 auto;
-            background: #000;
+            display: none; position: relative; width: 100vw; height: 100vh;
+            max-width: 56.25vh; max-height: 177.77vw; margin: 0 auto; background: #000;
         }
 
         /* Background Video */
@@ -38,33 +31,33 @@
             object-fit: cover; z-index: 1;
         }
 
-        /* Big Photo Inside the Circle */
+        /* 📸 SMART PHOTO CIRCLE: Automatically cuts any photo into a circle and prevents overlapping */
         .user-photo {
             position: absolute;
-            top: 41.5%; /* Adjusted up/down slightly to match circle */
+            top: 39%; /* Adjusted UP to stay inside the white circle */
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 62%; /* Size increased considerably */
-            aspect-ratio: 1/1;
-            border-radius: 50%;
-            object-fit: cover;
+            width: 53%; /* Reduced size slightly to stop overlap with ribbon */
+            aspect-ratio: 1/1; /* Keeps it perfectly square for border-radius */
+            border-radius: 50%; /* Magic trick: Makes the photo circular */
+            object-fit: cover; /* Prevents stretching */
             z-index: 2;
         }
 
         /* Name strictly over the Ribbon */
         .user-name {
             position: absolute;
-            top: 61%; /* Moved down to fit on the blue ribbon exactly */
+            top: 60%; /* Positioned perfectly on the blue ribbon */
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 28px;
+            font-size: 26px;
             color: #ffffff;
             font-weight: bold;
             text-align: center;
             width: 75%;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
-            z-index: 2;
+            z-index: 3; /* Z-index 3 to always stay on top */
         }
     </style>
 </head>
@@ -72,14 +65,12 @@
 
     <h2 id="loading-text">Loading Magic... ✨</h2>
 
-    <!-- Step 1: Gift Box Screen -->
     <div id="gift-screen">
         <h1 style="color: #ff1493; font-family: sans-serif;">Surprise for you! 🎉</h1>
         <p style="color: #bbb; font-family: sans-serif;">Tap to open</p>
         <div class="gift-emoji" onclick="openGift()">🎁</div>
     </div>
 
-    <!-- Step 2: Main Video Presentation -->
     <div class="video-wrapper" id="surprise-screen">
         <video id="bg-video" loop playsinline>
             <source src="bg_video.mp4" type="video/mp4">
@@ -88,6 +79,8 @@
         <img id="user-img" class="user-photo" src="" alt="Photo">
         <div id="user-name" class="user-name"></div>
     </div>
+
+    <audio id="bg-audio" loop></audio>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -110,14 +103,22 @@
         });
 
         function openGift() {
-            // Fullscreen attempt
             document.documentElement.requestFullscreen().catch(e => console.log(e));
             
-            // Start Video
-            let bgVideo = document.getElementById("bg-video");
-            bgVideo.play().catch(e => console.log(e)); // Ensure autoplay works after user interaction
+            // 🎵 AUDIO MIXING: 80% User Music, 20% Video Sound
+            let audio = document.getElementById("bg-audio");
+            if(wishData.music) {
+                audio.src = wishData.music;
+                audio.volume = 0.8; // Set BGM volume to 80%
+                audio.play().catch(e => console.log(e));
+            }
 
-            // Switch Screen
+            let bgVideo = document.getElementById("bg-video");
+            bgVideo.muted = false; // Unmute the background video
+            bgVideo.volume = 0.2; // Set Video volume to 20%
+            bgVideo.play().catch(e => console.log(e)); 
+
+            // UI Switch
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
             
