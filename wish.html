@@ -31,17 +31,27 @@
             object-fit: cover; z-index: 1;
         }
 
-        /* 📸 SMART PHOTO CIRCLE: Adjusted to perfectly cover the placeholder */
+        /* Premium Pop-in Animation */
+        @keyframes popIn {
+            0% { opacity: 0; transform: translate(-50%, -40%) scale(0.85); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* 📸 SMART PHOTO CIRCLE: Illusions it's inside the frame */
         .user-photo {
             position: absolute;
-            top: 36.5%; /* Upar shift kiya taaki badal wala hissa cover ho jaye */
+            top: 36.5%; 
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 55.5%; /* Size thoda badhaya taaki frame puri tarah bhar jaye */
+            width: 53.5%; /* Perfect size to sit inside the drawn frame */
             aspect-ratio: 1/1; 
             border-radius: 50%; 
             object-fit: cover; 
+            object-position: center 20%; /* Keeps faces from getting cropped at the top */
+            border: 3px solid #183c5e; /* Matches the video's dark blue frame */
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.3); /* Adds depth */
             z-index: 2;
+            opacity: 0;
+            animation: popIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards; /* Smooth entry */
         }
 
         /* Name strictly over the Ribbon */
@@ -49,7 +59,6 @@
             position: absolute;
             top: 60%; 
             left: 50%;
-            transform: translate(-50%, -50%);
             font-size: 26px;
             color: #ffffff;
             font-weight: bold;
@@ -57,7 +66,10 @@
             width: 75%;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.4); /* Text readability enhance */
             z-index: 3; 
+            opacity: 0;
+            animation: popIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards; /* Slight delay after photo */
         }
     </style>
 </head>
@@ -103,26 +115,26 @@
         });
 
         function openGift() {
-            document.documentElement.requestFullscreen().catch(e => console.log(e));
+            // Fullscreen & Audio Start
+            document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen ignored"));
             
-            // Audio Mixing
             let audio = document.getElementById("bg-audio");
             if(wishData.music) {
                 audio.src = wishData.music;
                 audio.volume = 0.8; 
-                audio.play().catch(e => console.log(e));
+                audio.play().catch(e => console.log("Audio play blocked"));
             }
 
             let bgVideo = document.getElementById("bg-video");
             bgVideo.muted = false; 
             bgVideo.volume = 0.2; 
-            bgVideo.play().catch(e => console.log(e)); 
+            bgVideo.play().catch(e => console.log("Video play blocked")); 
 
-            // UI Switch
+            // Switch Screen
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
             
-            // Assign Data
+            // Set Dynamic Values
             document.getElementById("user-img").src = wishData.photos[0].url;
             document.getElementById("user-name").innerText = wishData.name;
         }
