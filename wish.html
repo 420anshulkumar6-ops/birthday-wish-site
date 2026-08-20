@@ -31,23 +31,23 @@
             object-fit: cover; z-index: 1;
         }
 
-        /* 📸 SMART PHOTO CIRCLE: Automatically cuts any photo into a circle and prevents overlapping */
+        /* 📸 SMART PHOTO CIRCLE: Adjusted to perfectly cover the placeholder */
         .user-photo {
             position: absolute;
-            top: 39%; /* Adjusted UP to stay inside the white circle */
+            top: 36.5%; /* Upar shift kiya taaki badal wala hissa cover ho jaye */
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 53%; /* Reduced size slightly to stop overlap with ribbon */
-            aspect-ratio: 1/1; /* Keeps it perfectly square for border-radius */
-            border-radius: 50%; /* Magic trick: Makes the photo circular */
-            object-fit: cover; /* Prevents stretching */
+            width: 55.5%; /* Size thoda badhaya taaki frame puri tarah bhar jaye */
+            aspect-ratio: 1/1; 
+            border-radius: 50%; 
+            object-fit: cover; 
             z-index: 2;
         }
 
         /* Name strictly over the Ribbon */
         .user-name {
             position: absolute;
-            top: 60%; /* Positioned perfectly on the blue ribbon */
+            top: 60%; 
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 26px;
@@ -57,7 +57,7 @@
             width: 75%;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
-            z-index: 3; /* Z-index 3 to always stay on top */
+            z-index: 3; 
         }
     </style>
 </head>
@@ -105,17 +105,17 @@
         function openGift() {
             document.documentElement.requestFullscreen().catch(e => console.log(e));
             
-            // 🎵 AUDIO MIXING: 80% User Music, 20% Video Sound
+            // Audio Mixing
             let audio = document.getElementById("bg-audio");
             if(wishData.music) {
                 audio.src = wishData.music;
-                audio.volume = 0.8; // Set BGM volume to 80%
+                audio.volume = 0.8; 
                 audio.play().catch(e => console.log(e));
             }
 
             let bgVideo = document.getElementById("bg-video");
-            bgVideo.muted = false; // Unmute the background video
-            bgVideo.volume = 0.2; // Set Video volume to 20%
+            bgVideo.muted = false; 
+            bgVideo.volume = 0.2; 
             bgVideo.play().catch(e => console.log(e)); 
 
             // UI Switch
