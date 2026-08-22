@@ -84,6 +84,11 @@
             aside { position: fixed; top: 110px; left: -100%; height: calc(100vh - 110px); width: 260px; z-index: 99; transition: left 0.3s ease; }
             aside.active { left: 0; }
         }
+
+        /* 🚫 HIDE NETLIFY BADGE FOREVER */
+        a[href*="netlify.com"], div[id*="netlify"], .netlify-badge { 
+            display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; z-index: -9999 !important;
+        }
     </style>
 </head>
 <body>
@@ -154,7 +159,7 @@
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Royal Blue Cake Theme</h4>
-                        <a href="create.html?theme=bday_blue" class="btn-use">🚀 Use This Card</a>
+                        <a href="create.html?theme=birthday" class="btn-use">🚀 Use This Card</a>
                         <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
                     </div>
                 </div>
@@ -169,7 +174,7 @@
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Romantic Couple Frames</h4>
-                        <a href="create.html?theme=anniv_romantic" class="btn-use">🚀 Use This Card</a>
+                        <a href="create.html?theme=birthday" class="btn-use">🚀 Use This Card</a>
                         <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
                     </div>
                 </div>
@@ -185,16 +190,7 @@
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Raksha Bandhan Special</h4>
-                        <a href="create1.html" class="btn-use">🚀 Use This Card</a>
-                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-                    </div>
-
-                    <div class="theme-card">
-                        <div class="theme-preview" onclick="openPreview('bg_video.mp4')">
-                            <div class="play-btn">▶</div>
-                        </div>
-                        <h4 class="theme-title">Shri Krishna Janmashtami</h4>
-                        <a href="create.html?theme=janmashtami" class="btn-use">🚀 Use This Card</a>
+                        <a href="create.html?theme=rakhi" class="btn-use">🚀 Use This Card</a>
                         <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
                     </div>
 
@@ -210,7 +206,7 @@
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Respectful Shradhanjali</h4>
-                        <a href="create.html?theme=rip_standard" class="btn-use">🚀 Use This Card</a>
+                        <a href="create.html?theme=birthday" class="btn-use">🚀 Use This Card</a>
                         <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
                     </div>
                 </div>
@@ -264,14 +260,13 @@
             document.getElementById('how-to-use').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Modal Logic (Now Dynamic for different videos)
+        // Modal Logic
         function openPreview(videoFile) {
             const videoElement = document.getElementById('sample-video');
             const videoSource = document.getElementById('modal-video-src');
             
-            // Set the dynamic video source
             videoSource.src = videoFile;
-            videoElement.load(); // Reload video with new source
+            videoElement.load();
 
             document.getElementById('video-modal').style.display = 'flex';
             videoElement.play();
