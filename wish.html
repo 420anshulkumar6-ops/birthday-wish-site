@@ -3,96 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Birthday Wish</title>
+    <title>Magical Video Wish ✨</title>
     <style>
-        body { 
-            margin: 0; padding: 0; background-color: #000; 
-            display: flex; align-items: center; justify-content: center; 
-            height: 100vh; overflow: hidden; 
-        }
-
-        #loading-text { color: #ff1493; position: absolute; font-family: sans-serif; font-weight: bold;}
-        #gift-screen { 
-            display: none; flex-direction: column; justify-content: center; 
-            align-items: center; text-align: center; height: 100vh; width: 100vw; background: #0d0d12;
-        }
+        body { margin: 0; padding: 0; background-color: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif;}
+        #loading-text { color: #ff1493; position: absolute; font-weight: bold; top: 40%; z-index: 10;}
+        #gift-screen { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100vh; width: 100vw; background: #0d0d12; z-index: 50; position: absolute; top:0; left:0;}
         .gift-emoji { font-size: 120px; cursor: pointer; animation: bounce 1.2s infinite; margin-top: 20px;}
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
+        
+        .video-wrapper { display: none; position: relative; width: 100vw; height: 100vh; max-width: 56.25vh; margin: 0 auto; background: #000; overflow: hidden;}
+        #bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;}
+        
+        /* Photo element (Values will be set dynamically via JS) */
+        .user-photo { position: absolute; transform: translate(-50%, -50%); object-fit: cover; object-position: center; z-index: 2; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+        
+        /* Name element (For Birthday) */
+        .name-box { position: absolute; top: 64.7%; left: 49.3%; width: 56%; height: 6.4%; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; z-index: 3;}
+        .user-name { color: #ffffff; font-weight: bold; text-align: center; font-family: 'Georgia', serif; text-shadow: 1px 2px 4px rgba(0,0,0,0.5); word-wrap: break-word; max-width: 100%;}
 
-        .video-wrapper {
-            display: none; position: relative; width: 100vw; height: 100vh;
-            max-width: 56.25vh; max-height: 177.77vw; margin: 0 auto; background: #000;
-        }
-
-        #bg-video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: 1;
-        }
-
-        /* 📸 PERFECT CIRCLE PHOTO */
-        .user-photo {
-            position: absolute;
-            top: 45.1%; 
-            left: 49.3%;
-            transform: translate(-50%, -50%);
-            width: 58.2%; 
-            aspect-ratio: 1/1; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            object-position: center 20%; 
-            border: 4px solid #183c5e; 
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.3); 
-            z-index: 2;
-        }
-
-        /* 🟦 INVISIBLE FLEXBOX FOR PERFECT CENTERING */
-        .name-box {
-            position: absolute;
-            top: 64.7%;     
-            left: 49.3%;    
-            width: 56%;     
-            height: 6.4%;   
-            transform: translate(-50%, -50%);
-            
-            display: flex;
-            align-items: center; 
-            justify-content: center; 
-            z-index: 3;
-        }
-
-        /* The text inside the box */
-        .user-name {
-            color: #ffffff;
-            font-weight: bold;
-            text-align: center;
-            font-family: 'Georgia', serif;
-            letter-spacing: 1px;
-            text-shadow: 1px 2px 4px rgba(0,0,0,0.5); 
-            line-height: 1.1;
-            word-wrap: break-word; 
-            max-width: 100%;
-            /* Note: marginTop will be handled dynamically by JavaScript */
-        }
+        /* 🚫 HIDE NETLIFY */
+        a[href*="netlify.com"], div[id*="netlify"] { display: none !important; opacity: 0 !important; visibility: hidden !important; }
     </style>
 </head>
 <body>
 
-    <h2 id="loading-text">Loading Magic... ✨</h2>
+    <h2 id="loading-text">Loading Magic... ✨⏳</h2>
 
     <div id="gift-screen">
-        <h1 style="color: #ff1493; font-family: sans-serif;">Surprise for you! 🎉</h1>
+        <h1 style="color: #00ffff; font-family: sans-serif;">Surprise for you! 🎉</h1>
         <p style="color: #bbb; font-family: sans-serif;">Tap to open</p>
         <div class="gift-emoji" onclick="openGift()">🎁</div>
     </div>
 
     <div class="video-wrapper" id="surprise-screen">
         <video id="bg-video" loop playsinline>
-            <source src="bg_video.mp4" type="video/mp4">
+            <source src="bg_video.mp4" type="video/mp4" id="video-source">
         </video>
-        
         <img id="user-img" class="user-photo" src="" alt="Photo">
         
-        <div class="name-box">
+        <div class="name-box" id="name-box-container" style="display: none;">
             <div id="user-name" class="user-name"></div>
         </div>
     </div>
@@ -106,16 +55,67 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let wishData = null;
+        // 🔥 THE MASTER CONFIGURATION (Saare Tyohar yahan setup honge)
+        const themeSettings = {
+            "birthday": {
+                videoFile: "bg_video.mp4",
+                showName: true,
+                photoCSS: { top: "45.1%", left: "49.3%", width: "58.2%", borderRadius: "50%" }
+            },
+            "rakhi": {
+                videoFile: "bg_video1.mp4", // Rakhi Video
+                showName: false,
+                photoCSS: { top: "50.7%", left: "50%", width: "68.5%", borderRadius: "50%" } // Rakhi Exact settings
+            }
+        };
 
+        let wishData = null;
         const urlParams = new URLSearchParams(window.location.search);
+
         db.collection("wishes").doc(urlParams.get('id')).get().then(doc => {
-            document.getElementById("loading-text").style.display = "none";
             if(doc.exists) { 
                 wishData = doc.data(); 
-                document.getElementById("gift-screen").style.display = "flex"; 
+                let currentTheme = wishData.theme || "birthday"; 
+                let config = themeSettings[currentTheme];
+
+                // 1. Set Video Background Dynamically
+                document.getElementById("video-source").src = config.videoFile;
+                document.getElementById("bg-video").load();
+
+                // 2. Setup Name (if birthday)
+                if(config.showName && wishData.name) {
+                    let nameEl = document.getElementById("user-name");
+                    nameEl.innerText = wishData.name;
+                    if(wishData.name.length <= 11) { nameEl.style.fontSize = "26px"; } 
+                    else { nameEl.style.fontSize = (26 - ((wishData.name.length - 11) * 0.85)) + "px"; }
+                    if(wishData.name.length <= 6) { nameEl.style.marginTop = "3px"; }
+                    document.getElementById("name-box-container").style.display = "flex";
+                }
+
+                // 3. Setup Photo Styling
+                let imgEl = document.getElementById("user-img");
+                imgEl.style.top = config.photoCSS.top;
+                imgEl.style.left = config.photoCSS.left;
+                imgEl.style.width = config.photoCSS.width;
+                imgEl.style.borderRadius = config.photoCSS.borderRadius;
+
+                // 4. 🔥 PRELOADER LOGIC
+                if(wishData.photos && wishData.photos.length > 0) {
+                    let preloader = new Image();
+                    preloader.src = wishData.photos[0].url;
+                    preloader.onload = () => {
+                        imgEl.src = wishData.photos[0].url; 
+                        document.getElementById("loading-text").style.display = "none";
+                        document.getElementById("gift-screen").style.display = "flex"; 
+                    };
+                    preloader.onerror = () => {
+                        document.getElementById("loading-text").style.display = "none";
+                        document.getElementById("gift-screen").style.display = "flex";
+                    };
+                }
             } else {
-                document.body.innerHTML = "<h2 style='color:red; font-family:sans-serif;'>Link Expired!</h2>";
+                document.getElementById("loading-text").style.display = "none";
+                document.body.innerHTML = "<h2 style='color:red; text-align:center; width:100%; margin-top:50px;'>Link Expired!</h2>";
             }
         });
 
@@ -123,43 +123,22 @@
             document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen ignored"));
             
             let audio = document.getElementById("bg-audio");
-            if(wishData.music) {
-                audio.src = wishData.music;
-                audio.volume = 0.8; 
-                audio.play().catch(e => console.log("Audio play blocked"));
+            if(wishData && wishData.music) { 
+                audio.src = wishData.music; 
             }
+            audio.volume = 0.8; 
+            audio.play().catch(e => console.log("Audio block"));
 
             let bgVideo = document.getElementById("bg-video");
             bgVideo.muted = false; 
             bgVideo.volume = 0.2; 
-            bgVideo.play().catch(e => console.log("Video play blocked")); 
+            bgVideo.play().catch(e => console.log("Video block")); 
 
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
-            
-            document.getElementById("user-img").src = wishData.photos[0].url;
-            
-            // 🔥 SMART FONT SIZING & ALIGNMENT LOGIC
-            let bName = wishData.name || "Unknown";
-            let nameEl = document.getElementById("user-name");
-            nameEl.innerText = bName;
-
-            // FONT SIZE LOGIC
-            if(bName.length <= 11) {
-                nameEl.style.fontSize = "26px"; 
-            } else {
-                let shrinkFactor = (bName.length - 11) * 0.85; 
-                let newSize = 26 - shrinkFactor; 
-                nameEl.style.fontSize = newSize + "px"; 
-            }
-
-            // ALIGNMENT LOGIC (For 6 chars or less)
-            if(bName.length <= 6) {
-                nameEl.style.marginTop = "3px"; // Chhote naam ko halka sa niche shift karega
-            } else {
-                nameEl.style.marginTop = "0px"; // Normal naam wahi rahega
-            }
         }
+
+        setInterval(() => { document.querySelectorAll('a').forEach(link => { if (link.href && link.href.includes('netlify.com')) link.remove(); }); }, 500); 
     </script>
 </body>
 </html>
