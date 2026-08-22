@@ -29,6 +29,7 @@
             object-fit: cover; z-index: 1;
         }
 
+        /* 📸 PERFECT CIRCLE PHOTO */
         .user-photo {
             position: absolute;
             top: 45.1%; 
@@ -44,22 +45,19 @@
             z-index: 2;
         }
 
-        /* 🟦 THE VIRTUAL BOX FOR NAME (Flexbox for perfect centering) */
+        /* 🟦 INVISIBLE FLEXBOX FOR PERFECT CENTERING */
         .name-box {
             position: absolute;
-            top: 65.2%;     /* Ise slider se set karna hai */
-            left: 48.5%;    /* Ise slider se set karna hai */
-            width: 65%;     /* Ise slider se set karna hai */
-            height: 6%;     /* Ise slider se set karna hai */
+            top: 64.7%;     /* User set value */
+            left: 49.3%;    /* User set value */
+            width: 56%;     /* User set value */
+            height: 6.4%;   /* User set value */
             transform: translate(-50%, -50%);
             
-            /* DUMMY BORDER AND BACKGROUND (Sirf testing ke liye) */
-            border: 2px dashed #00ffff; 
-            background: rgba(0, 255, 255, 0.2); 
-            
+            /* Box background aur border hata diya hai taaki invisible rahe */
             display: flex;
-            align-items: center; /* Upar-niche se center */
-            justify-content: center; /* Left-Right se center */
+            align-items: center; /* Hamesha Upar-Niche se center rakhega */
+            justify-content: center; /* Hamesha Left-Right se center rakhega */
             z-index: 3;
         }
 
@@ -70,9 +68,10 @@
             text-align: center;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
-            text-shadow: 1px 2px 4px rgba(0,0,0,0.4); 
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.5); 
             line-height: 1.1;
-            word-wrap: break-word; /* Lambe word ko break karega */
+            word-wrap: break-word; /* Lambe word ho toh break karega */
+            max-width: 100%;
         }
     </style>
 </head>
@@ -93,6 +92,7 @@
         
         <img id="user-img" class="user-photo" src="" alt="Photo">
         
+        <!-- Virtual Box ke andar naam -->
         <div class="name-box">
             <div id="user-name" class="user-name"></div>
         </div>
@@ -140,47 +140,20 @@
             
             document.getElementById("user-img").src = wishData.photos[0].url;
             
-            // 🔥 ADVANCE FONT SIZING LOGIC
+            // 🔥 SMART FONT SIZING LOGIC
             let bName = wishData.name || "Unknown";
             let nameEl = document.getElementById("user-name");
             nameEl.innerText = bName;
 
             if(bName.length <= 11) {
-                nameEl.style.fontSize = "26px"; // Default mast bada font
+                nameEl.style.fontSize = "26px"; // Default bada font 11 letters tak
             } else {
-                // Jaise-jaise character badhenge, font size dheere-dheere kam hoga
+                // Jaise-jaise naam lamba hoga, font size automatically chhota hoga taaki box me fit rahe
                 let shrinkFactor = (bName.length - 11) * 0.75; 
                 let newSize = 26 - shrinkFactor; 
-                nameEl.style.fontSize = newSize + "px"; // 25 chars hone par automatically ~15px ho jayega
+                nameEl.style.fontSize = newSize + "px"; 
             }
         }
     </script>
-
-    <div style="position: fixed; bottom: 0; left: 0; width: 100%; height: 32vh; overflow-y: auto; background: rgba(0,0,0,0.95); padding: 15px; z-index: 9999; color: white; font-family: sans-serif; box-sizing: border-box; border-top: 2px solid #00ffff;">
-        <h4 style="margin: 0 0 10px 0; color: #00ffff; font-size: 14px;">Virtual Box Adjuster 🛠️</h4>
-        
-        <div style="margin-bottom: 10px;">
-            
-            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-top: 5px;">
-                <label>Top (Upar/Niche): <span id="nb-top-val" style="color: #00ffff;">65.2%</span></label>
-            </div>
-            <input type="range" min="55" max="75" step="0.1" value="65.2" oninput="document.querySelector('.name-box').style.top = this.value + '%'; document.getElementById('nb-top-val').innerText = this.value + '%';" style="width: 100%; margin-bottom: 6px;">
-            
-            <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                <label>Left (Left/Right): <span id="nb-left-val" style="color: #00ffff;">48.5%</span></label>
-            </div>
-            <input type="range" min="30" max="70" step="0.1" value="48.5" oninput="document.querySelector('.name-box').style.left = this.value + '%'; document.getElementById('nb-left-val').innerText = this.value + '%';" style="width: 100%; margin-bottom: 6px;">
-            
-            <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                <label>Width (Chaudai): <span id="nb-wid-val" style="color: #00ffff;">65%</span></label>
-            </div>
-            <input type="range" min="40" max="90" step="0.1" value="65" oninput="document.querySelector('.name-box').style.width = this.value + '%'; document.getElementById('nb-wid-val').innerText = this.value + '%';" style="width: 100%; margin-bottom: 6px;">
-
-            <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                <label>Height (Lambai): <span id="nb-hei-val" style="color: #00ffff;">6%</span></label>
-            </div>
-            <input type="range" min="2" max="15" step="0.1" value="6" oninput="document.querySelector('.name-box').style.height = this.value + '%'; document.getElementById('nb-hei-val').innerText = this.value + '%';" style="width: 100%;">
-        </div>
-    </div>
-    </body>
+</body>
 </html>
