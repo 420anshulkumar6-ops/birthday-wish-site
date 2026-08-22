@@ -38,7 +38,7 @@
             object-fit: cover; 
             object-position: center; 
             z-index: 2;
-            border: 2px dashed rgba(255, 20, 147, 0.8); /* Adjust karte waqt pink border dikhega */
+            border: 2px dashed rgba(255, 20, 147, 0.8); 
             border-radius: 50%;
         }
 
@@ -56,7 +56,7 @@
         
         .sliders-container {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 Column layout taaki jagah kam lage */
+            grid-template-columns: 1fr 1fr; 
             gap: 15px;
         }
 
@@ -74,18 +74,30 @@
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%; height: 4px; cursor: pointer; background: #555; border-radius: 2px;
         }
+
+        /* 🚫 HIDE NETLIFY BADGE (Isse Watermark hat jayega) */
+        div[id^="netlify"], 
+        a[href*="netlify.com"], 
+        iframe[src*="netlify"] { 
+            display: none !important; 
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
     </style>
 </head>
 <body>
 
     <h2 id="loading-text">Loading Magic... ✨</h2>
 
+    <!-- Gift Box Screen -->
     <div id="gift-screen">
         <h1 style="color: #ff1493; font-family: sans-serif;">Surprise for you! 🎉</h1>
         <p style="color: #bbb; font-family: sans-serif;">Tap to open</p>
         <div class="gift-emoji" onclick="openGift()">🎁</div>
     </div>
 
+    <!-- Main Video Screen -->
     <div class="video-wrapper" id="surprise-screen">
         <video id="bg-video" loop playsinline>
             <source src="bg_video1.mp4" type="video/mp4">
@@ -93,25 +105,30 @@
         <img id="user-img" class="user-photo" src="https://via.placeholder.com/300" alt="Photo">
     </div>
 
+    <!-- 🛠️ COMPACT LIVE ADJUSTER -->
     <div id="adjuster-panel">
         <h3>Photo Adjuster 🛠️</h3>
         
         <div class="sliders-container">
+            <!-- Top / Bottom -->
             <div class="slider-row">
                 <label>Top (Up/Down): <span id="val-top">50%</span></label>
                 <input type="range" id="slider-top" min="0" max="100" step="0.1" value="50">
             </div>
             
+            <!-- Left / Right -->
             <div class="slider-row">
                 <label>Left (Left/Right): <span id="val-left">50%</span></label>
                 <input type="range" id="slider-left" min="0" max="100" step="0.1" value="50">
             </div>
             
+            <!-- Zoom / Size -->
             <div class="slider-row">
                 <label>Zoom (Size): <span id="val-size">55%</span></label>
                 <input type="range" id="slider-size" min="0" max="100" step="0.1" value="55">
             </div>
 
+            <!-- Roundness -->
             <div class="slider-row">
                 <label>Roundness: <span id="val-round">50%</span></label>
                 <input type="range" id="slider-round" min="0" max="50" step="1" value="50">
@@ -119,11 +136,13 @@
         </div>
     </div>
 
+    <!-- Background Audio -->
     <audio id="bg-audio" loop>
         <source src="music4.mp4" type="audio/mp4">
         <source src="music4.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
@@ -211,4 +230,3 @@
     </script>
 </body>
 </html>
-
