@@ -3,84 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Magical Birthday Wish</title>
+    <title>Create Magical Wish</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; }
-        h1 { color: #ff1493; text-shadow: 0 0 10px rgba(255,20,147,0.5); font-size: 26px; margin-bottom: 20px;}
+        .container { width: 100%; max-width: 450px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); text-align: center; margin-bottom: 20px; border: 1px solid #252532; }
+        h1 { color: #00ffff; text-shadow: 0 0 10px rgba(0,255,255,0.5); font-size: 26px; margin-bottom: 10px;}
+        p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
         
-        .input-group { margin-bottom: 15px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; }
-        label { font-size: 14px; color: #b3b3b3; margin-bottom: 8px; display: block; font-weight: bold; }
-        input[type="text"] { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #00ffff; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
-        input[type="file"] { padding: 8px; border: none; flex: 1; color: white; width: 100%; background: #1a1a24; border-radius: 5px; outline: none;}
+        .input-group { margin-bottom: 20px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #ff1493; }
+        label { font-size: 14px; color: #ff1493; margin-bottom: 8px; display: block; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 12px; background: #1a1a24; border: 1px solid #ff1493; border-radius: 8px; color: white; font-size: 16px; box-sizing: border-box; outline: none; margin-bottom: 10px; }
+        input[type="file"] { padding: 8px; border: none; flex: 1; color: white; width: 100%; background: #1a1a24; border-radius: 5px; outline: none; }
         
         .music-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; margin-top: 10px; }
         .music-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a24; padding: 10px; border-radius: 8px; border: 1px solid #555; }
         .music-item label { margin: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; color: white; font-size: 15px; flex: 1; }
 
-        .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; }
-        .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; margin-top: 10px;}
+        .upload-btn { background: #ff1493; color: #fff; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
         
-        /* 3 Buttons Style (Neeli Patti) */
-        .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .btn-action { background: linear-gradient(90deg, #00ffff, #0088ff); color: #000; border: none; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-action:hover:not(:disabled) { box-shadow: 0 0 15px rgba(0,255,255,0.5); transform: scale(1.02); color: #fff;}
-        .btn-action:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none;}
+        .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .btn { background: linear-gradient(90deg, #00ffff, #0088ff); color: #000; border: none; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:hover:not(:disabled) { box-shadow: 0 0 15px rgba(0,255,255,0.5); transform: scale(1.02); color: #fff;}
+        .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none;}
         
-        #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #ff1493; text-align: left;}
-
-        /* 🚫 HIDE NETLIFY BADGE */
-        a[href*="netlify.com"], div[id*="netlify"], .netlify-badge { 
-            display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; z-index: -9999 !important;
-        }
+        #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; text-align: left;}
+        
+        /* 🚫 HIDE NETLIFY */
+        a[href*="netlify.com"], div[id*="netlify"] { display: none !important; opacity: 0 !important; visibility: hidden !important; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>✨ Create Birthday Wish ✨</h1>
-        <p style="color: #aaa; font-size: 14px; margin-bottom: 25px;">Naam, photo aur music set karein!</p>
+        <h1 id="page-title">✨ Create Wish ✨</h1>
+        <p id="page-desc">Naam, photo aur music set karein!</p>
         
         <form id="wish-form" onsubmit="event.preventDefault();">
-            <div class="input-group" style="border: 1px solid #00ffff;">
-                <label style="color:#00ffff;">Birthday Person's Name *</label>
-                <input type="text" id="bName" required placeholder="e.g. Rahul" maxlength="15">
-                
-                <label style="margin-top: 15px; color:#00ffff;">🎵 Choose Background Music</label>
-                <div class="music-list">
-                    <div class="music-item"><label><input type="radio" name="bMusic" value="song1.mp3" checked> Music 1</label></div>
-                    <div class="music-item"><label><input type="radio" name="bMusic" value="song2.mp3"> Music 2</label></div>
-                    <div class="music-item"><label><input type="radio" name="bMusic" value="song3.mp3"> Music 3</label></div>
-                </div>
+            <div class="input-group" id="name-section">
+                <label>Name of the Person *</label>
+                <input type="text" id="bName" placeholder="e.g. Rahul" maxlength="15">
             </div>
 
             <div class="input-group">
-                <label>📸 Upload a Photo (Mandatory)</label>
+                <label>🎵 Choose Background Music</label>
+                <div class="music-list" id="music-container">
+                    </div>
+            </div>
+
+            <div class="input-group">
+                <label style="color:#00ffff;">📸 Upload a Photo (Mandatory)</label>
                 <div class="upload-row">
                     <input type="file" id="file1" accept="image/*" required>
                     <button type="button" class="upload-btn" onclick="uploadSingleImage()">Upload</button>
                 </div>
-                <div id="status1" class="status-text" style="color: #ff1493;">Note: Please click 'Upload' before generating link.</div>
+                <div id="status1" class="status-text" style="color: #00ffff;">Note: Please click 'Upload' before generating link.</div>
                 <input type="hidden" id="url1">
             </div>
             
-            <!-- Yahan 3 Options Hain -->
             <div class="action-buttons">
-                <button type="button" class="btn-action" onclick="handleAction('whatsapp')">📲 Share to WhatsApp Status</button>
-                <button type="button" class="btn-action" onclick="handleAction('download')">⬇️ Download in Gallery</button>
-                <button type="button" class="btn-action" onclick="handleAction('link')">🔗 Generate Link</button>
+                <button type="button" class="btn" onclick="handleAction('whatsapp')">📲 Share to WhatsApp</button>
+                <button type="button" class="btn" onclick="handleAction('download')">⬇️ Download in Gallery</button>
+                <button type="button" class="btn" onclick="handleAction('link')">🔗 Generate Link</button>
             </div>
         </form>
 
         <div id="generated-link-box">
             <p style="color: #00ffff; font-weight: bold; margin-top:0; margin-bottom: 8px;">Your unique link is ready!</p>
-            <input type="text" id="final-link" readonly style="width: 100%; padding: 10px; border-radius: 5px; border: none; background: #0d0d12; color: #fff; margin-bottom: 10px; outline: none; box-sizing: border-box;">
-            <button class="btn-action" onclick="copyMyLink()" style="background: #ff1493; color: #fff;">📋 Copy Link</button>
+            <input type="text" id="final-link" readonly style="width: 100%; padding: 10px; border-radius: 5px; border: none; background: #0d0d12; color: #fff; margin-bottom: 10px; outline: none;">
+            <button class="btn" onclick="copyMyLink()" style="background: #ff1493; color: #fff;">📋 Copy Link</button>
         </div>
     </div>
 
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
@@ -91,7 +86,47 @@
         const db = firebase.firestore();
         
         let generatedDocId = null;
+        let currentTheme = "birthday"; // Default
 
+        // 🔥 SMART THEME LOGIC
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('theme')) {
+                currentTheme = urlParams.get('theme');
+            }
+
+            const titleEl = document.getElementById("page-title");
+            const descEl = document.getElementById("page-desc");
+            const nameSection = document.getElementById("name-section");
+            const nameInput = document.getElementById("bName");
+            const musicContainer = document.getElementById("music-container");
+
+            if(currentTheme === "rakhi") {
+                titleEl.innerText = "✨ Raksha Bandhan Card ✨";
+                descEl.innerText = "Photo upload karein aur magic dekhein!";
+                nameSection.style.display = "none"; // Hide name box
+                nameInput.removeAttribute("required"); // Remove required validation
+                
+                // Rakhi Music Options
+                musicContainer.innerHTML = `
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="music4.mp3" checked> Rakhi Special Music 1</label></div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="music5.mp3"> Rakhi Special Music 2</label></div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="music6.mp3"> Rakhi Special Music 3</label></div>
+                `;
+            } else {
+                titleEl.innerText = "✨ Birthday Card ✨";
+                nameInput.setAttribute("required", "true");
+                
+                // Birthday Music Options
+                musicContainer.innerHTML = `
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="music1.mp3" checked> Birthday Song 1</label></div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="music2.mp3"> Birthday Song 2</label></div>
+                    <div class="music-item"><label><input type="radio" name="bMusic" value="music3.mp3"> Birthday Song 3</label></div>
+                `;
+            }
+        };
+
+        // Photo Upload Function (Same as before)
         function uploadSingleImage() {
             let fileInput = document.getElementById('file1');
             let statusText = document.getElementById('status1');
@@ -100,9 +135,8 @@
 
             if(fileInput.files.length === 0) { statusText.innerText = "⚠️ Please select a photo!"; return; }
 
-            let file = fileInput.files[0];
             let formData = new FormData();
-            formData.append("image", file);
+            formData.append("image", fileInput.files[0]);
 
             uploadBtn.disabled = true; uploadBtn.style.background = "#555"; uploadBtn.innerText = "⏳";
 
@@ -111,12 +145,9 @@
 
             xhr.upload.onprogress = function(event) {
                 if (event.lengthComputable) {
-                    let progress = (event.loaded / event.total) * 100;
-                    statusText.innerText = "Uploading: " + Math.round(progress) + "% ⏳";
-                    statusText.style.color = "#00ffff";
+                    statusText.innerText = "Uploading: " + Math.round((event.loaded / event.total) * 100) + "% ⏳";
                 }
             };
-
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     let response = JSON.parse(xhr.responseText);
@@ -126,35 +157,27 @@
                     uploadBtn.style.display = "none"; 
                 } else {
                     statusText.innerText = "❌ Upload failed!"; statusText.style.color = "#ff4444";
-                    uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff"; uploadBtn.innerText = "Upload";
+                    uploadBtn.disabled = false; uploadBtn.style.background = "#ff1493"; uploadBtn.innerText = "Upload";
                 }
-            };
-            xhr.onerror = function() {
-                statusText.innerText = "❌ Internet issue!"; statusText.style.color = "#ff4444";
-                uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff"; uploadBtn.innerText = "Upload";
             };
             xhr.send(formData);
         }
 
+        // Handle Action (Save to DB & Redirect)
         async function handleAction(actionType) {
             let form = document.getElementById("wish-form");
-            
-            // Check HTML5 Validation (Name is required)
-            if(!form.reportValidity()) return;
+            if(currentTheme !== "rakhi" && !form.reportValidity()) return;
 
             let urlVal = document.getElementById("url1").value;
-            if(urlVal === "") { 
-                alert("Please select a photo and click 'Upload' first!"); 
-                return; 
-            }
+            if(urlVal === "") { alert("Please click 'Upload' first!"); return; }
 
-            // Save to Firebase only once
             if (!generatedDocId) {
-                let bName = document.getElementById("bName").value;
+                let bName = currentTheme === "rakhi" ? "" : document.getElementById("bName").value;
                 let selectedMusic = document.querySelector('input[name="bMusic"]:checked').value;
 
                 try {
                     let docRef = await db.collection("wishes").add({
+                        theme: currentTheme, // 🔥 SAVING THE THEME FOR WISH.HTML
                         name: bName,
                         music: selectedMusic,
                         photos: [{ url: urlVal }], 
@@ -162,45 +185,30 @@
                     });
                     generatedDocId = docRef.id;
                 } catch (error) {
-                    alert("Error saving data! Check internet connection.");
-                    return;
+                    alert("Error saving data! Check internet connection."); return;
                 }
             }
 
-            // Generate correct link for Birthday (wish.html)
+            // Always redirect to Master wish.html
             let realLink = window.location.origin + "/wish.html?id=" + generatedDocId;
 
-            // Handle Button Actions
             if (actionType === 'whatsapp') {
-                let text = `I have a magical birthday surprise for you! ✨ Unlock it here: ${realLink}`;
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
-            
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("I have a magical surprise for you! ✨ Unlock it here: " + realLink)}`);
             } else if (actionType === 'download') {
-                alert("Please generate the link and open it. You can use a screen recorder to save it to your gallery for now!");
-            
+                alert("Please generate the link and open it. Use a screen recorder to save it to your gallery!");
             } else if (actionType === 'link') {
                 document.getElementById("generated-link-box").style.display = "block";
                 document.getElementById("final-link").value = realLink;
             }
         }
 
-        // Link copy logic
         function copyMyLink() {
             let copyText = document.getElementById("final-link");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            alert("Link Copied! Paste it anywhere.");
+            copyText.select(); navigator.clipboard.writeText(copyText.value);
+            alert("Link Copied!");
         }
-        
-        /* 🚫 JS FORCE KILLER: NETLIFY BADGE REMOVER */
-        setInterval(() => {
-            document.querySelectorAll('a').forEach(link => {
-                if (link.href && link.href.includes('netlify.com')) {
-                    link.remove(); 
-                }
-            });
-        }, 500);
+
+        setInterval(() => { document.querySelectorAll('a').forEach(link => { if (link.href && link.href.includes('netlify.com')) link.remove(); }); }, 500);
     </script>
 </body>
 </html>
