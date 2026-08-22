@@ -3,70 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WishCraft ✨ - Create Magical Video Status & Wishes</title>
+    <title>Free Birthday & Festival Video Status Maker | WhatsApp Wish Generator</title>
+    <meta name="description" content="Create stunning custom birthday wishes, anniversary videos, and festival WhatsApp statuses with name and photo in 10 seconds. Free video status maker!">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0d0d12; color: #ffffff; line-height: 1.6; }
+        body { background-color: #0d0d12; color: #ffffff; line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
 
         /* Header / Navbar */
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #1a1a24; border-bottom: 1px solid #252532; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 22px; font-weight: bold; color: #ff1493; text-shadow: 0 0 10px rgba(255,20,147,0.4); }
-        nav ul { display: flex; list-style: none; gap: 20px; }
-        nav ul li a { color: #b3b3b3; text-decoration: none; font-size: 15px; transition: 0.3s; }
-        nav ul li a:hover { color: #00ffff; }
-        .menu-toggle { display: none; font-size: 24px; cursor: pointer; color: white; }
+        .logo { font-size: 22px; font-weight: bold; color: #ff1493; text-shadow: 0 0 10px rgba(255,20,147,0.4); cursor: pointer; }
+        .search-box { flex: 1; max-width: 350px; margin: 0 20px; position: relative; }
+        .search-box input { width: 100%; padding: 8px 15px; background: #0d0d12; border: 1px solid #00ffff; border-radius: 20px; color: white; font-size: 14px; outline: none; }
+        .menu-toggle { font-size: 24px; cursor: pointer; color: white; display: none; }
+
+        /* Layout with Sidebar */
+        .main-layout { display: flex; flex: 1; max-width: 1400px; width: 100%; margin: 0 auto; }
+        
+        /* Sidebar */
+        aside { width: 260px; background: #14141c; border-right: 1px solid #252532; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+        .aside-section h4 { color: #00ffff; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .aside-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .aside-links li a { color: #b3b3b3; text-decoration: none; font-size: 14px; transition: 0.3s; display: block; padding: 6px 10px; border-radius: 6px; }
+        .aside-links li a:hover { background: #1a1a24; color: #ff1493; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag { background: #1a1a24; border: 1px solid #333; padding: 4px 10px; font-size: 12px; border-radius: 15px; color: #aaa; cursor: pointer; }
+        .tag:hover { border-color: #00ffff; color: #fff; }
+
+        /* Content Area */
+        .content-area { flex: 1; padding: 30px; overflow-y: auto; }
+
+        /* Views (Pages simulation) */
+        .view-section { display: none; }
+        .view-section.active { display: block; }
 
         /* Hero Section */
-        .hero { text-align: center; padding: 60px 20px; background: radial-gradient(circle at center, #1a1a24 0%, #0d0d12 70%); }
-        .hero h1 { font-size: 36px; color: #fff; margin-bottom: 15px; }
+        .hero { text-align: center; padding: 40px 20px; background: radial-gradient(circle at center, #1a1a24 0%, #0d0d12 70%); border-radius: 15px; margin-bottom: 30px; border: 1px solid #252532; }
+        .hero h1 { font-size: 32px; color: #fff; margin-bottom: 15px; }
         .hero h1 span { color: #00ffff; text-shadow: 0 0 15px rgba(0,255,255,0.4); }
-        .hero p { font-size: 16px; color: #b3b3b3; max-width: 600px; margin: 0 auto 25px auto; }
-        .cta-btn { display: inline-block; background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 30px; text-decoration: none; box-shadow: 0 0 15px rgba(255,20,147,0.4); transition: 0.3s; }
-        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255,20,147,0.7); }
-
-        /* Ad Banner Space */
-        .ad-container { width: 90%; max-width: 728px; height: 90px; background: #1a1a24; border: 1px dashed #555; margin: 20px auto; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; border-radius: 8px; }
-
-        /* Section Styling */
-        .section { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
-        .section-title { font-size: 24px; margin-bottom: 25px; color: #fff; border-left: 4px solid #ff1493; padding-left: 10px; }
-
+        .hero p { font-size: 15px; color: #b3b3b3; max-width: 600px; margin: 0 auto 20px auto; }
+        
         /* Categories Grid */
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .category-card { background: #1a1a24; border: 1px solid #252532; border-radius: 12px; padding: 25px; text-align: center; transition: 0.3s; cursor: pointer; }
-        .category-card:hover { transform: translateY(-5px); border-color: #00ffff; box-shadow: 0 5px 15px rgba(0,255,255,0.1); }
-        .category-card .icon { font-size: 40px; margin-bottom: 15px; }
-        .category-card h3 { font-size: 18px; color: #fff; margin-bottom: 8px; }
-        .category-card p { font-size: 13px; color: #b3b3b3; }
+        .section-title { font-size: 22px; margin-bottom: 20px; color: #fff; border-left: 4px solid #ff1493; padding-left: 10px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .category-card { background: #1a1a24; border: 1px solid #252532; border-radius: 12px; padding: 20px; text-align: center; transition: 0.3s; cursor: pointer; }
+        .category-card:hover { transform: translateY(-4px); border-color: #00ffff; box-shadow: 0 5px 15px rgba(0,255,255,0.1); }
+        .category-card .icon { font-size: 35px; margin-bottom: 10px; }
+        .category-card h3 { font-size: 16px; color: #fff; margin-bottom: 5px; }
+        .category-card p { font-size: 12px; color: #b3b3b3; }
 
-        /* Trending Themes */
-        .theme-card { background: #1a1a24; border-radius: 12px; overflow: hidden; border: 1px solid #252532; transition: 0.3s; }
-        .theme-card:hover { border-color: #ff1493; }
-        .theme-img { width: 100%; height: 180px; background: #252532; display: flex; align-items: center; justify-content: center; color: #555; font-weight: bold; }
-        .theme-content { padding: 15px; }
-        .theme-content h4 { font-size: 16px; margin-bottom: 10px; color: white; }
-        .theme-btn { display: block; width: 100%; background: #00ffff; color: #000; text-align: center; padding: 10px; font-weight: bold; border-radius: 6px; text-decoration: none; transition: 0.3s; }
-        .theme-btn:hover { background: #00cccc; }
+        /* Theme Cards inside Category View */
+        .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .theme-card { background: #1a1a24; border-radius: 12px; overflow: hidden; border: 1px solid #252532; }
+        .theme-preview { height: 160px; background: #252532; display: flex; align-items: center; justify-content: center; color: #666; font-weight: bold; font-size: 14px; }
+        .theme-info { padding: 15px; }
+        .theme-info h4 { font-size: 15px; margin-bottom: 12px; color: white; }
+        .btn-use { display: block; width: 100%; background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; text-align: center; padding: 10px; font-weight: bold; border-radius: 6px; text-decoration: none; margin-bottom: 8px; transition: 0.3s; }
+        .btn-use:hover { box-shadow: 0 0 10px #ff1493; }
+        .link-article { display: block; text-align: center; font-size: 12px; color: #00ffff; text-decoration: none; }
+        .link-article:hover { text-decoration: underline; }
 
-        /* How it works */
-        .steps-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; text-align: center; }
-        .step-box { background: #1a1a24; padding: 25px; border-radius: 10px; border: 1px solid #252532; }
-        .step-num { width: 40px; height: 40px; background: #ff1493; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin: 0 auto 15px auto; }
-        .step-box h4 { margin-bottom: 8px; font-size: 16px; }
-        .step-box p { font-size: 13px; color: #b3b3b3; }
+        /* Article / Guide View Styling */
+        .article-box { background: #1a1a24; padding: 30px; border-radius: 12px; border: 1px solid #252532; }
+        .article-box h2 { color: #00ffff; margin-bottom: 15px; font-size: 24px; }
+        .article-box h3 { color: #ff1493; margin: 20px 0 10px 0; font-size: 18px; }
+        .article-box p, .article-box li { color: #b3b3b3; font-size: 14px; margin-bottom: 10px; }
+        .article-box ul { padding-left: 20px; }
 
         /* Footer */
-        footer { background: #121218; padding: 30px 5%; text-align: center; border-top: 1px solid #252532; margin-top: 40px; color: #777; font-size: 14px; }
-        footer .footer-links { margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; }
-        footer .footer-links a { color: #b3b3b3; text-decoration: none; }
-        footer .footer-links a:hover { color: #ff1493; }
+        footer { background: #121218; padding: 25px 5%; text-align: center; border-top: 1px solid #252532; color: #777; font-size: 13px; margin-top: auto; }
+        .footer-links { margin-bottom: 10px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .footer-links a { color: #b3b3b3; text-decoration: none; cursor: pointer; }
+        .footer-links a:hover { color: #ff1493; }
 
-        /* Responsive design for Mobile */
-        @media(max-width: 768px) {
-            nav ul { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; width: 100%; background: #1a1a24; padding: 20px; border-bottom: 1px solid #333; }
-            nav ul.active { display: flex; }
+        /* Responsive */
+        @media(max-width: 900px) {
+            aside { display: none; } /* Mobile par sidebar hide */
             .menu-toggle { display: block; }
-            .hero h1 { font-size: 28px; }
+            .search-box { max-width: 180px; }
         }
     </style>
 </head>
@@ -74,132 +87,173 @@
 
     <!-- Header -->
     <header>
-        <div class="logo">WishCraft ✨</div>
-        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-        <nav>
-            <ul id="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#categories">Categories</a></li>
-                <li><a href="#trending">Trending</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-            </ul>
-        </nav>
+        <div class="logo" onclick="switchView('home')">WishCraft ✨</div>
+        <div class="search-box">
+            <input type="text" placeholder="Search categories (e.g. Birthday)..." onkeyup="filterCategories(this.value)">
+        </div>
+        <div class="menu-toggle" onclick="alert('Sidebar menu options are active in desktop view!')">☰</div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Create Magical Video Wishes & <span>WhatsApp Status</span></h1>
-        <p>Birthday ho ya Festival, apni photo aur naam ke sath stunning video status banayein. Direct Download karein ya WhatsApp par share karein!</p>
-        <a href="#categories" class="cta-btn">🚀 Browse Categories</a>
-    </section>
+    <div class="main-layout">
+        <!-- Sidebar (Active for Desktop / SEO Navigation) -->
+        <aside>
+            <div class="aside-section">
+                <h4>Quick Categories</h4>
+                <ul class="aside-links">
+                    <li><a href="#" onclick="switchView('category-birthday')">🎂 Birthday Wishes</a></li>
+                    <li><a href="#" onclick="switchView('category-anniversary')">💍 Anniversary Status</a></li>
+                    <li><a href="#" onclick="switchView('category-rakhi')">🛡️ Raksha Bandhan</a></li>
+                    <li><a href="#" onclick="switchView('category-indep')">🇮🇳 Independence Day</a></li>
+                    <li><a href="#" onclick="switchView('category-shradh')">🕯️ Shradhanjali / RIP</a></li>
+                </ul>
+            </div>
+            <div class="aside-section">
+                <h4>Trending Tags</h4>
+                <div class="tag-cloud">
+                    <span class="tag">#BirthdayStatus</span>
+                    <span class="tag">#RakhiSpecial</span>
+                    <span class="tag">#DeshBhakti</span>
+                    <span class="tag">#LoveAnniversary</span>
+                    <span class="tag">#RIPStatus</span>
+                </div>
+            </div>
+        </aside>
 
-    <!-- Ad Banner Space -->
-    <div class="ad-container">
-        [ Advertisement Banner Space (Google AdSense / Sponsor) ]
+        <!-- Dynamic Content Area -->
+        <div class="content-area">
+
+            <!-- 1. HOME VIEW -->
+            <div id="home-view" class="view-section active">
+                <section class="hero">
+                    <h1>Free Birthday & Festival <span>Video Status Maker</span></h1>
+                    <p>Create stunning custom video wishes with name and photo instantly. Download MP4 or share directly on WhatsApp status!</p>
+                </section>
+
+                <h2 class="section-title">Explore Categories (Popularity Wise)</h2>
+                <div class="grid-container" id="cat-grid">
+                    <div class="category-card" onclick="switchView('category-birthday')">
+                        <div class="icon">🎂</div>
+                        <h3>Birthday Wishes</h3>
+                        <p>Trending photo frames & cake themes</p>
+                    </div>
+                    <div class="category-card" onclick="switchView('category-anniversary')">
+                        <div class="icon">💍</div>
+                        <h3>Anniversary Status</h3>
+                        <p>Romantic couple video templates</p>
+                    </div>
+                    <div class="category-card" onclick="switchView('category-rakhi')">
+                        <div class="icon">🛡️</div>
+                        <h3>Raksha Bandhan</h3>
+                        <p>Brother-sister bond statuses</p>
+                    </div>
+                    <div class="category-card" onclick="switchView('category-indep')">
+                        <div class="icon">🇮🇳</div>
+                        <h3>Independence Day</h3>
+                        <p>Tricolor patriotic video greetings</p>
+                    </div>
+                    <div class="category-card" onclick="switchView('category-shradh')">
+                        <div class="icon">🕯️</div>
+                        <h3>Shradhanjali (RIP)</h3>
+                        <p>Respectful memorial video frames</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. BIRTHDAY CATEGORY VIEW -->
+            <div id="category-birthday-view" class="view-section">
+                <h2 class="section-title">🎂 Birthday Video Status Themes</h2>
+                <div class="theme-grid">
+                    <div class="theme-card">
+                        <div class="theme-preview">Theme 1: Blue 2-Layer Cake</div>
+                        <div class="theme-info">
+                            <h4>Blue Birthday Wish Theme</h4>
+                            <a href="#" class="btn-use" onclick="alert('Redirecting to Editor Page...')">🚀 Use This Theme</a>
+                            <a href="#" class="link-article" onclick="switchView('article-birthday-1')">📖 How to use this theme</a>
+                        </div>
+                    </div>
+                    <div class="theme-card">
+                        <div class="theme-preview">Theme 2: Royal Gold</div>
+                        <div class="theme-info">
+                            <h4>Royal Gold Birthday Wish</h4>
+                            <a href="#" class="btn-use" onclick="alert('Redirecting to Editor Page...')">🚀 Use This Theme</a>
+                            <a href="#" class="link-article" onclick="switchView('article-birthday-1')">📖 How to use this theme</a>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="switchView('home')" style="background:#333; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; margin-top:20px;">⬅ Back to Home</button>
+            </div>
+
+            <!-- 3. ARTICLE / GUIDE VIEW (For SEO & AdSense Approval) -->
+            <div id="article-birthday-1-view" class="view-section">
+                <div class="article-box">
+                    <h2>How to Create a Custom Birthday Video Status with Name and Photo</h2>
+                    <p>Published for SEO & AdSense compliance | Updated for 2026</p>
+                    
+                    <h3>Introduction</h3>
+                    <p>Sending simple text messages on birthdays is outdated. Today, high-resolution video statuses on WhatsApp and Instagram are trending. With WishCraft, you can create a professional video status in less than 10 seconds without any video editing skills!</p>
+
+                    <h3>Step-by-Step Guide:</h3>
+                    <ul>
+                        <li><strong>Step 1:</strong> Select the "Blue Birthday Wish Theme" from our birthday category.</li>
+                        <li><strong>Step 2:</strong> Enter the birthday person's name in the input box (up to 15 characters).</li>
+                        <li><strong>Step 3:</strong> Upload a clear square photo from your gallery.</li>
+                        <li><strong>Step 4:</strong> Click on "Generate Video" to preview, then download the MP4 file or share it directly to WhatsApp status.</li>
+                    </ul>
+
+                    <h3>Why Use Our Free Birthday Status Maker?</h3>
+                    <p>Our platform is 100% free, fast-loading, and optimized for mobile devices. No watermarks from third-party tools, just pure high-quality video generation.</p>
+                </div>
+                <button onclick="switchView('category-birthday')" style="background:#333; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; margin-top:20px;">⬅ Back to Category</button>
+            </div>
+
+            <!-- Placeholder views for other categories/pages can be routed similarly -->
+            <div id="generic-view" class="view-section">
+                <h2 id="generic-title" class="section-title">Category Page</h2>
+                <p style="color: #aaa; margin-bottom: 20px;">Dummy themes are loading for this category...</p>
+                <button onclick="switchView('home')" style="background:#333; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">⬅ Back to Home</button>
+            </div>
+
+        </div>
     </div>
 
-    <!-- Categories Section -->
-    <section class="section" id="categories">
-        <h2 class="section-title">Explore Categories</h2>
-        <div class="grid-container">
-            <div class="category-card">
-                <div class="icon">🎂</div>
-                <h3>Birthday Wishes</h3>
-                <p>Trending 2-layer cake & photo frames</p>
-            </div>
-            <div class="category-card">
-                <div class="icon">💍</div>
-                <h3>Anniversary</h3>
-                <p>Romantic couple video themes</p>
-            </div>
-            <div class="category-card">
-                <div class="icon">🛡️</div>
-                <h3>Raksha Bandhan</h3>
-                <p>Special brother-sister bond statuses</p>
-            </div>
-            <div class="category-card">
-                <div class="icon">🇮🇳</div>
-                <h3>Independence Day</h3>
-                <p>Deshbhakti status & tricolor frames</p>
-            </div>
-            <div class="category-card">
-                <div class="icon">🕯️</div>
-                <h3>Condolence / Shradhanjali</h3>
-                <p>Respectful memorial video frames</p>
-            </div>
-            <div class="category-card">
-                <div class="icon">🎉</div>
-                <h3>Festivals (Diwali/Holi)</h3>
-                <p>All Indian festival greeting templates</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trending Themes Section -->
-    <section class="section" id="trending">
-        <h2 class="section-title">Trending Themes</h2>
-        <div class="grid-container">
-            <div class="theme-card">
-                <div class="theme-img">Video Preview 1</div>
-                <div class="theme-content">
-                    <h4>Blue Birthday Cake Theme</h4>
-                    <a href="#" class="theme-btn">Customize Now 🪄</a>
-                </div>
-            </div>
-            <div class="theme-card">
-                <div class="theme-img">Video Preview 2</div>
-                <div class="theme-content">
-                    <h4>Royal Gold Birthday Wish</h4>
-                    <a href="#" class="theme-btn">Customize Now 🪄</a>
-                </div>
-            </div>
-            <div class="theme-card">
-                <div class="theme-img">Video Preview 3</div>
-                <div class="theme-content">
-                    <h4>Independence Day Tricolor</h4>
-                    <a href="#" class="theme-btn">Customize Now 🪄</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section class="section" id="how-it-works">
-        <h2 class="section-title">How It Works</h2>
-        <div class="steps-container">
-            <div class="step-box">
-                <div class="step-num">1</div>
-                <h4>Choose Theme</h4>
-                <p>Apni pasand ki category se best video template select karein.</p>
-            </div>
-            <div class="step-box">
-                <div class="step-num">2</div>
-                <h4>Add Details</h4>
-                <p>Jiska wish karna hai uska naam likhein aur photo upload karein.</p>
-            </div>
-            <div class="step-box">
-                <div class="step-num">3</div>
-                <h4>Download or Share</h4>
-                <p>Ek click me MP4 video download karein ya WhatsApp status lagayein!</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
+    <!-- Footer with Mandatory Legal Pages -->
     <footer>
         <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Contact Us</a>
+            <a onclick="alert('Privacy Policy Page')">Privacy Policy</a>
+            <a onclick="alert('Terms & Conditions Page')">Terms & Conditions</a>
+            <a onclick="alert('Disclaimer Page')">Disclaimer</a>
+            <a onclick="alert('About Us Page')">About Us</a>
+            <a onclick="alert('Contact Us Page')">Contact Us</a>
         </div>
-        <p>&copy; 2026 WishCraft ✨. All rights reserved.</p>
+        <p>&copy; 2026 WishCraft ✨. All rights reserved. Free Video Status Generator.</p>
     </footer>
 
-    <!-- JavaScript for Mobile Menu Toggle -->
+    <!-- JavaScript Router Simulation -->
     <script>
-        function toggleMenu() {
-            const navLinks = document.getElementById('nav-links');
-            navLinks.classList.toggle('active');
+        function switchView(viewId) {
+            // Hide all views
+            const views = document.querySelectorAll('.view-section');
+            views.forEach(v => v.classList.remove('active'));
+
+            // Show target view or fallback to generic
+            const target = document.getElementById(viewId + '-view') || document.getElementById('home-view');
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function filterCategories(query) {
+            let cards = document.querySelectorAll('.category-card');
+            query = query.toLowerCase();
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                if(text.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
         }
     </script>
 </body>
