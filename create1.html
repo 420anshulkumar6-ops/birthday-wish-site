@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Raksha Bandhan Video Card</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0d0d12; color: #ffffff; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+
+        .form-container { background: #15151e; padding: 30px; border-radius: 15px; border: 1px solid #252532; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); text-align: center; }
+        .form-container h2 { color: #ff1493; margin-bottom: 10px; font-size: 24px; text-shadow: 0 0 10px rgba(255,20,147,0.3); }
+        .form-container p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
+
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; color: #00ffff; font-weight: bold; font-size: 14px; }
+        .input-group input[type="file"] { width: 100%; padding: 10px; background: #0d0d12; border: 1px solid #252532; border-radius: 8px; color: #fff; outline: none; }
+        
+        .btn-submit { width: 100%; background: linear-gradient(90deg, #00ffff, #0088ff); color: #000; padding: 14px; font-size: 16px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-submit:hover { box-shadow: 0 0 15px rgba(0,255,255,0.5); transform: translateY(-2px); color: #fff; }
+        .btn-submit:disabled { background: #555; color: #888; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        #loading-msg { display: none; color: #ff1493; margin-top: 15px; font-weight: bold; font-size: 14px; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>✨ Raksha Bandhan Card</h2>
+        <p>Upload a square photo to create your magical video status instantly!</p>
+
+        <!-- Photo Upload -->
+        <div class="input-group">
+            <label>📸 Upload Photo (Required)</label>
+            <input type="file" id="user-photo" accept="image/*" required>
+        </div>
+
+        <!-- Music Upload (Optional) -->
+        <div class="input-group">
+            <label>🎵 Upload Custom Music (Optional)</label>
+            <input type="file" id="user-music" accept="audio/*">
+        </div>
+
+        <button class="btn-submit" id="submit-btn" onclick="generateVideo()">🚀 Generate Video</button>
+        <div id="loading-msg">Uploading your photo... Please wait! ⏳</div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Aapka Same Firebase Config
+        const firebaseConfig = { 
+            apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q", 
+            authDomain: "birthday-maker-58e43.firebaseapp.com", 
+            projectId: "birthday-maker-58e43", 
+            storageBucket: "birthday-maker-58e43.firebasestorage.app", 
+            messagingSenderId: "213307256948", 
+            appId: "1:213307256948:web:4731c4d0c42ee6e978e121" 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        async function generateVideo() {
+            const photoFile = document.getElementById('user-photo').files[0];
+            const musicFile = document.getElementById('user-music').files[0];
+            const submitBtn = document.getElementById('submit-btn');
+            const loadingMsg = document.getElementById('loading-msg');
+
+            if (!photoFile) {
+                alert("Bhai, photo toh select kar lo!");
+                return;
+            }
+
+            // UI change while loading
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Processing...";
+            loadingMsg.style.display = "block";
+
+            try {
+                // 1. Upload Photo to Firebase Storage
+                const photoRef = storage.ref('uploads/photos/' + Date.now() + '_' + photoFile.name);
+                await photoRef.put(photoFile);
+                const photoUrl = await photoRef.getDownloadURL();
+
+                let musicUrl = null;
+
+                // 2. Upload Music if selected
+                if (musicFile) {
+                    loadingMsg.innerText = "Uploading music... Please wait! 🎵";
+                    const musicRef = storage.ref('uploads/music/' + Date.now() + '_' + musicFile.name);
+                    await musicRef.put(musicFile);
+                    musicUrl = await musicRef.getDownloadURL();
+                }
+
+                loadingMsg.innerText = "Creating your magic link... ✨";
+
+                // 3. Save to Firestore (Same structure as wish1.html expects)
+                const docRef = await db.collection("wishes").add({
+                    photos: [{ url: photoUrl }],
+                    music: musicUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // 4. Redirect to wish1.html with the new ID
+                window.location.href = `wish1.html?id=${docRef.id}`;
+
+            } catch (error) {
+                console.error("Error generating video: ", error);
+                alert("Kuch gadbad ho gayi bhai. Net connection check karo.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "🚀 Generate Video";
+                loadingMsg.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+
