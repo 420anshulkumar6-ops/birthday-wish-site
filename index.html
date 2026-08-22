@@ -4,65 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wishmaker.in - Make Wishing Video Card for WhatsApp Status</title>
-    <meta name="description" content="Make Wishing Video Card for WhatsApp Status in 10 seconds. Create custom birthday and festival wishes for free.">
+    <meta name="description" content="Make Wishing Video Card for WhatsApp Status in 10 seconds.">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0d0d12; color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
 
         /* Header & Search Bar */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #1a1a24; border-bottom: 1px solid #252532; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5); gap: 20px;}
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #15151e; border-bottom: 1px solid #252532; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5); gap: 20px;}
         .logo { font-size: 24px; font-weight: bold; color: #ff1493; text-shadow: 0 0 10px rgba(255,20,147,0.5); text-decoration: none; min-width: 150px;}
         
         .search-container { flex: 1; max-width: 500px; position: relative; }
         .search-container input { width: 100%; padding: 10px 20px; border-radius: 25px; border: 1px solid #00ffff; background: #0d0d12; color: #fff; font-size: 15px; outline: none; transition: 0.3s; }
         .search-container input:focus { box-shadow: 0 0 15px rgba(0,255,255,0.3); }
-        
         .menu-toggle { font-size: 28px; cursor: pointer; color: #00ffff; display: none; }
 
         /* Layout & Sidebar */
         .main-layout { display: flex; flex: 1; max-width: 1400px; width: 100%; margin: 0 auto; position: relative; }
-        aside { width: 260px; background: #14141c; border-right: 1px solid #252532; padding: 20px; transition: 0.3s; }
+        aside { width: 260px; background: #15151e; border-right: 1px solid #252532; padding: 20px; transition: 0.3s; }
         .aside-links { list-style: none; display: flex; flex-direction: column; gap: 15px; }
         .aside-links li a { color: #b3b3b3; text-decoration: none; font-size: 15px; font-weight: bold; display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 8px; transition: 0.3s; background: #1a1a24; border: 1px solid #252532; }
-        .aside-links li a:hover { background: #ff1493; color: #fff; border-color: #ff1493; }
+        .aside-links li a:hover { background: #00ffff; color: #000; border-color: #00ffff; }
 
         /* Content Area */
         .content-area { flex: 1; padding: 30px 5%; overflow-y: auto; }
-        
-        .section-title { font-size: 22px; margin-bottom: 20px; color: #fff; border-left: 4px solid #ff1493; padding-left: 10px; display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+        .section-title { font-size: 22px; margin-bottom: 25px; color: #fff; border-left: 4px solid #00ffff; padding-left: 10px; display: flex; align-items: center; gap: 10px; }
 
-        /* Theme Grid */
-        .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-        .theme-card { background: #1a1a24; border-radius: 12px; overflow: hidden; border: 1px solid #252532; text-align: center; padding-bottom: 15px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .theme-card:hover { transform: translateY(-5px); border-color: #00ffff; }
-        
-        .theme-preview { height: 180px; background: #252532; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; background-image: linear-gradient(45deg, #1a1a24, #252532); border-bottom: 2px solid #ff1493; }
-        .play-btn { font-size: 35px; background: rgba(0,0,0,0.6); padding: 8px 18px; border-radius: 50%; color: #00ffff; transition: 0.3s; }
-        .theme-preview:hover .play-btn { background: #ff1493; color: white; transform: scale(1.1); }
-        
-        .theme-info { padding: 15px; }
-        .theme-info h4 { font-size: 16px; margin-bottom: 15px; color: white; }
-        
-        .btn-use { display: block; width: 90%; margin: 0 auto; background: linear-gradient(45deg, #00ffff, #0088ff); color: #000; padding: 10px; font-size: 15px; font-weight: bold; border-radius: 6px; text-decoration: none; transition: 0.3s; }
-        .btn-use:hover { box-shadow: 0 0 15px rgba(0,255,255,0.5); color: #fff; }
+        /* VIEW 1: Category Boxes (Homepage) */
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .category-box { background: #15151e; border: 1px solid #252532; padding: 30px 20px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .category-box:hover { border-color: #00ffff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,255,255,0.15); }
+        .category-box .icon { font-size: 45px; margin-bottom: 15px; }
+        .category-box h3 { font-size: 18px; color: #fff; }
 
-        /* Pagination Button */
-        .pagination { text-align: center; margin: 40px 0; }
-        .btn-next { background: #ff1493; color: #fff; padding: 12px 30px; font-size: 16px; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px rgba(255,20,147,0.4); }
-        .btn-next:hover { transform: scale(1.05); background: #ff4500; }
+        /* VIEW 2: Theme Cards (Inside Category) */
+        .view-section { display: none; } /* Hidden by default */
+        .view-section.active { display: block; } /* Active view */
+        
+        .btn-back { background: #252532; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 15px; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-back:hover { background: #ff1493; }
 
-        /* Footer */
-        footer { background: #0a0a0f; padding: 20px 5%; text-align: center; border-top: 1px solid #252532; margin-top: auto; }
-        .footer-links { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
-        .footer-links a { color: #aaa; text-decoration: none; font-size: 13px; transition: 0.3s; }
-        .footer-links a:hover { color: #00ffff; }
+        .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .theme-card { background: #15151e; border-radius: 15px; padding: 20px; border: 1px solid #252532; text-align: center; transition: 0.3s; }
+        .theme-card:hover { border-color: #00ffff; box-shadow: 0 5px 20px rgba(0,255,255,0.1); }
+        
+        /* Video Preview inside Theme Card */
+        .theme-preview { height: 180px; background: #0d0d12; border-radius: 10px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px solid #252532; }
+        .play-btn { font-size: 45px; color: #00ffff; transition: 0.3s; text-shadow: 0 0 15px rgba(0,255,255,0.5); }
+        .theme-preview:hover .play-btn { transform: scale(1.1); color: #ff1493; text-shadow: 0 0 15px rgba(255,20,147,0.5); }
+        
+        .theme-title { font-size: 16px; margin-bottom: 15px; color: white; }
+        
+        /* Royal Blue Gradient Button */
+        .btn-use { display: block; width: 100%; background: linear-gradient(90deg, #00ffff, #0088ff); color: #000; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 8px; text-decoration: none; margin-bottom: 12px; transition: 0.3s; }
+        .btn-use:hover { box-shadow: 0 0 15px rgba(0,255,255,0.5); transform: scale(1.02); color: #fff; }
+        
+        .guide-link { font-size: 13px; color: #b3b3b3; text-decoration: underline; cursor: pointer; transition: 0.3s; }
+        .guide-link:hover { color: #ff1493; }
 
-        /* Mobile Responsiveness */
+        /* Video Modal */
+        #video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; }
+        #video-modal video { max-width: 90%; max-height: 80vh; border: 2px solid #00ffff; border-radius: 10px; }
+        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer; font-weight: bold; }
+        .close-btn:hover { color: #ff1493; }
+
         @media(max-width: 900px) {
             .menu-toggle { display: block; }
             .search-container { order: 3; width: 100%; max-width: 100%; margin-top: 10px; }
             header { flex-wrap: wrap; }
-            aside { position: fixed; top: 110px; left: -100%; height: calc(100vh - 110px); width: 260px; z-index: 99; transition: left 0.3s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.8); }
+            aside { position: fixed; top: 110px; left: -100%; height: calc(100vh - 110px); width: 260px; z-index: 99; transition: left 0.3s ease; }
             aside.active { left: 0; }
         }
     </style>
@@ -72,7 +81,7 @@
     <header>
         <a href="index.html" class="logo">wishmaker.in</a>
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="searchCards()" placeholder="Search (e.g., Birthday, Janmashtami, Shradhanjali)...">
+            <input type="text" id="searchInput" placeholder="Search categories...">
         </div>
         <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
     </header>
@@ -81,7 +90,7 @@
         <!-- Sidebar -->
         <aside id="sidebar">
             <ul class="aside-links">
-                <li><a href="#">🏠 Homepage</a></li>
+                <li><a href="#" onclick="showHome()">🏠 Homepage</a></li>
                 <li><a href="#">✨ Latest Video Cards</a></li>
                 <li><a href="#">🔥 Trending Cards</a></li>
                 <li><a href="#">📱 Our Social Media</a></li>
@@ -91,151 +100,157 @@
 
         <!-- Main Content -->
         <div class="content-area">
+
+            <!-- ================= VIEW 1: CATEGORIES (HOMEPAGE) ================= -->
+            <div id="home-view" class="view-section active">
+                <h2 class="section-title">Select a Category</h2>
+                
+                <div class="category-grid">
+                    <div class="category-box" onclick="openCategory('birthday')">
+                        <div class="icon">🎂</div>
+                        <h3>Birthday Video Cards</h3>
+                    </div>
+                    <div class="category-box" onclick="openCategory('anniversary')">
+                        <div class="icon">💍</div>
+                        <h3>Anniversary Special</h3>
+                    </div>
+                    <div class="category-box" onclick="openCategory('festivals')">
+                        <div class="icon">🎆</div>
+                        <h3>Trending Festivals</h3>
+                    </div>
+                    <div class="category-box" onclick="openCategory('shradhanjali')">
+                        <div class="icon">🕊️</div>
+                        <h3>Shradhanjali (RIP)</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= VIEW 2: THEMES (INSIDE CATEGORY) ================= -->
             
-            <div id="no-results" style="display: none; text-align: center; padding: 50px; color: #aaa;">
-                <h3>No video cards found for your search.</h3>
-                <p>Try searching for Birthday, Love, or Festivals.</p>
-            </div>
-
-            <!-- UPCOMING FESTIVALS (Trending right now) -->
-            <div class="category-wrapper">
-                <h2 class="section-title">🎆 Trending Tyohar (Festivals)</h2>
+            <!-- Birthday Themes -->
+            <div id="cat-birthday" class="view-section">
+                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
+                <h2 class="section-title">🎂 Birthday Video Cards</h2>
+                
                 <div class="theme-grid">
-                    <div class="theme-card" data-title="Janmashtami Krishna Festival Card">
-                        <div class="theme-preview" onclick="alert('Demo video play hogi')">
+                    <!-- Royal Blue Theme Card -->
+                    <div class="theme-card">
+                        <div class="theme-preview" onclick="openPreview()">
                             <div class="play-btn">▶</div>
                         </div>
-                        <div class="theme-info">
-                            <h4>Shri Krishna Janmashtami</h4>
-                            <a href="create.html?theme=janmashtami_01" class="btn-use">🚀 Use This Card</a>
-                        </div>
+                        <h4 class="theme-title">Royal Blue Cake Theme</h4>
+                        <a href="create.html?theme=bday_blue" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="alert('Scroll down to read: How to use this card')">📖 How to use this card</span>
                     </div>
 
-                    <div class="theme-card" data-title="Ganesh Chaturthi Bappa Festival Card">
-                        <div class="theme-preview" onclick="alert('Demo video play hogi')">
+                    <!-- Neon Party Theme Card -->
+                    <div class="theme-card">
+                        <div class="theme-preview" onclick="openPreview()">
                             <div class="play-btn">▶</div>
                         </div>
-                        <div class="theme-info">
-                            <h4>Ganesh Chaturthi Special</h4>
-                            <a href="create.html?theme=ganesh_01" class="btn-use">🚀 Use This Card</a>
-                        </div>
+                        <h4 class="theme-title">Neon Birthday Bash</h4>
+                        <a href="create.html?theme=bday_neon" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="alert('Scroll down to read: How to use this card')">📖 How to use this card</span>
                     </div>
                 </div>
             </div>
 
-            <!-- BIRTHDAY SECTION -->
-            <div class="category-wrapper">
-                <h2 class="section-title">🎂 Popular Birthday Cards</h2>
-                <div class="theme-grid">
-                    <div class="theme-card" data-title="Blue Cake Birthday Wish">
-                        <div class="theme-preview" onclick="alert('Demo video play hogi')">
-                            <div class="play-btn">▶</div>
-                        </div>
-                        <div class="theme-info">
-                            <h4>Royal Blue Cake Theme</h4>
-                            <a href="create.html?theme=bday_blue_cake" class="btn-use">🚀 Use This Card</a>
-                        </div>
-                    </div>
-
-                    <div class="theme-card" data-title="Neon Party Birthday Wish">
-                        <div class="theme-preview" onclick="alert('Demo video play hogi')">
-                            <div class="play-btn">▶</div>
-                        </div>
-                        <div class="theme-info">
-                            <h4>Neon Night Party</h4>
-                            <a href="create.html?theme=bday_neon" class="btn-use">🚀 Use This Card</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ANNIVERSARY SECTION -->
-            <div class="category-wrapper">
+            <!-- Anniversary Themes -->
+            <div id="cat-anniversary" class="view-section">
+                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">💍 Anniversary Special</h2>
+                
                 <div class="theme-grid">
-                    <div class="theme-card" data-title="Romantic Love Anniversary Couple Card">
-                        <div class="theme-preview" onclick="alert('Demo video play hogi')">
+                    <div class="theme-card">
+                        <div class="theme-preview" onclick="openPreview()">
                             <div class="play-btn">▶</div>
                         </div>
-                        <div class="theme-info">
-                            <h4>Romantic Couple Frames</h4>
-                            <a href="create.html?theme=anniv_romantic" class="btn-use">🚀 Use This Card</a>
-                        </div>
+                        <h4 class="theme-title">Romantic Couple Frames</h4>
+                        <a href="create.html?theme=anniv_romantic" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="alert('Scroll down to read: How to use this card')">📖 How to use this card</span>
                     </div>
                 </div>
             </div>
 
-            <!-- SHRADHANJALI SECTION -->
-            <div class="category-wrapper">
+            <!-- Festivals Themes -->
+            <div id="cat-festivals" class="view-section">
+                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
+                <h2 class="section-title">🎆 Trending Festivals</h2>
+                
+                <div class="theme-grid">
+                    <div class="theme-card">
+                        <div class="theme-preview" onclick="openPreview()">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <h4 class="theme-title">Shri Krishna Janmashtami</h4>
+                        <a href="create.html?theme=janmashtami" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="alert('Scroll down to read: How to use this card')">📖 How to use this card</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shradhanjali Themes -->
+            <div id="cat-shradhanjali" class="view-section">
+                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">🕊️ Shradhanjali (Memorial)</h2>
+                
                 <div class="theme-grid">
-                    <div class="theme-card" data-title="Shradhanjali RIP Memorial Card">
-                        <div class="theme-preview" onclick="alert('Demo video play hogi')">
+                    <div class="theme-card">
+                        <div class="theme-preview" onclick="openPreview()">
                             <div class="play-btn">▶</div>
                         </div>
-                        <div class="theme-info">
-                            <h4>Respectful Shradhanjali</h4>
-                            <a href="create.html?theme=rip_standard" class="btn-use">🚀 Use This Card</a>
-                        </div>
+                        <h4 class="theme-title">Respectful Shradhanjali</h4>
+                        <a href="create.html?theme=rip_standard" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="alert('Scroll down to read: How to use this card')">📖 How to use this card</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- PAGINATION / LOAD MORE -->
-            <div class="pagination">
-                <button class="btn-next" onclick="alert('Here we will load more categories like Quotes, Good Morning, etc.')">Load More Categories ⬇️</button>
             </div>
 
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-links">
-            <a href="#">Contact Us</a>
-            <a href="#">About Us</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Disclaimer</a>
-        </div>
-        <p style="color: #555; font-size: 12px;">&copy; 2026 wishmaker.in. All rights reserved.</p>
-    </footer>
+    <!-- Video Preview Modal -->
+    <div id="video-modal">
+        <span class="close-btn" onclick="closePreview()">&times;</span>
+        <video id="sample-video" controls playsinline>
+            <source src="bg_video.mp4" type="video/mp4">
+        </video>
+    </div>
 
-    <!-- JavaScript for Live Search & Sidebar -->
     <script>
         // Sidebar Toggle
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // Live Search Functionality
-        function searchCards() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.querySelectorAll('.theme-card');
-            let wrappers = document.querySelectorAll('.category-wrapper');
-            let hasResults = false;
-
-            cards.forEach(card => {
-                let title = card.getAttribute('data-title').toLowerCase();
-                if (title.includes(input)) {
-                    card.style.display = "block";
-                    hasResults = true;
-                } else {
-                    card.style.display = "none";
-                }
+        // View Switcher (The Magic Trick for App-like Feel)
+        function showHome() {
+            // Sab views ko hide karo
+            document.querySelectorAll('.view-section').forEach(view => {
+                view.classList.remove('active');
             });
+            // Sirf Home (Category) view dikhao
+            document.getElementById('home-view').classList.add('active');
+        }
 
-            // Hide empty category titles if searching
-            wrappers.forEach(wrapper => {
-                let visibleCards = wrapper.querySelectorAll('.theme-card[style="display: block;"]');
-                if (input.length > 0) {
-                    wrapper.querySelector('.section-title').style.display = visibleCards.length > 0 ? "flex" : "none";
-                } else {
-                    wrapper.querySelector('.section-title').style.display = "flex";
-                }
+        function openCategory(categoryId) {
+            // Sab views ko hide karo
+            document.querySelectorAll('.view-section').forEach(view => {
+                view.classList.remove('active');
             });
+            // Jo category click hui hai, usko show karo
+            document.getElementById('cat-' + categoryId).classList.add('active');
+        }
 
-            // Show 'No Results' message
-            document.getElementById('no-results').style.display = hasResults ? "none" : "block";
+        // Modal Logic
+        function openPreview() {
+            document.getElementById('video-modal').style.display = 'flex';
+            document.getElementById('sample-video').play();
+        }
+        function closePreview() {
+            document.getElementById('video-modal').style.display = 'none';
+            document.getElementById('sample-video').pause();
+            document.getElementById('sample-video').currentTime = 0;
         }
     </script>
 </body>
