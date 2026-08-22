@@ -30,15 +30,15 @@
             object-fit: cover; z-index: 1;
         }
 
-        /* 📸 FINAL PHOTO SETTINGS (Locked by Anshul Bhai) */
+        /* 📸 FINAL PHOTO SETTINGS */
         .user-photo {
             position: absolute;
-            top: 50.7%;       /* Upar/Niche Set */
-            left: 50%;        /* Left/Right Set */
+            top: 50.7%;       
+            left: 50%;        
             transform: translate(-50%, -50%);
-            width: 68.5%;     /* Zoom Set */
+            width: 68.5%;     
             aspect-ratio: 1/1; 
-            border-radius: 50%; /* 100% Round Set */
+            border-radius: 50%; 
             object-fit: cover; 
             object-position: center; 
             z-index: 2;
@@ -56,16 +56,14 @@
 </head>
 <body>
 
-    <h2 id="loading-text">Loading Magic... ✨</h2>
+    <h2 id="loading-text">Loading Magic... ✨⏳</h2>
 
-    <!-- Gift Box Screen -->
     <div id="gift-screen">
         <h1 style="color: #ff1493; font-family: sans-serif;">Surprise for you! 🎉</h1>
         <p style="color: #bbb; font-family: sans-serif;">Tap to open</p>
         <div class="gift-emoji" onclick="openGift()">🎁</div>
     </div>
 
-    <!-- Main Video Screen -->
     <div class="video-wrapper" id="surprise-screen">
         <video id="bg-video" loop playsinline>
             <source src="bg_video1.mp4" type="video/mp4">
@@ -73,13 +71,11 @@
         <img id="user-img" class="user-photo" src="" alt="Photo">
     </div>
 
-    <!-- Background Audio -->
     <audio id="bg-audio" loop>
         <source src="music4.mp4" type="audio/mp4">
         <source src="music4.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
@@ -95,24 +91,45 @@
         const db = firebase.firestore();
 
         let wishData = null;
-
         const urlParams = new URLSearchParams(window.location.search);
+
+        // Fetch Data from Firebase
         db.collection("wishes").doc(urlParams.get('id')).get().then(doc => {
-            document.getElementById("loading-text").style.display = "none";
             if(doc.exists) { 
                 wishData = doc.data(); 
-                document.getElementById("gift-screen").style.display = "flex"; 
+                
+                if(wishData && wishData.photos && wishData.photos.length > 0) {
+                    // 🔥 IMAGE PRELOADING LOGIC START
+                    let preloader = new Image();
+                    preloader.src = wishData.photos[0].url;
+                    
+                    // Jab photo 100% load ho jaye, tabhi Gift screen dikhao
+                    preloader.onload = () => {
+                        document.getElementById("user-img").src = wishData.photos[0].url; // Photo pehle hi set kardi
+                        document.getElementById("loading-text").style.display = "none";
+                        document.getElementById("gift-screen").style.display = "flex"; 
+                    };
+
+                    // Agar photo load hone me koi error aaye, toh bhi screen atakni nahi chahiye
+                    preloader.onerror = () => {
+                        document.getElementById("loading-text").style.display = "none";
+                        document.getElementById("gift-screen").style.display = "flex";
+                    };
+                } else {
+                    document.getElementById("loading-text").style.display = "none";
+                    document.getElementById("gift-screen").style.display = "flex";
+                }
             } else {
+                document.getElementById("loading-text").style.display = "none";
                 document.body.innerHTML = "<h2 style='color:red; text-align:center; width:100%; margin-top:50px;'>Link Expired!</h2>";
             }
         });
 
         function openGift() {
-            // Fullscreen attempt for better mobile experience
+            // Fullscreen attempt
             document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen ignored"));
 
             let audio = document.getElementById("bg-audio");
-            // Play custom music if uploaded, else default music4
             if(wishData && wishData.music && wishData.music !== "music4.mp3" && wishData.music !== "music4.mp4") { 
                 audio.src = wishData.music; 
             }
@@ -124,13 +141,9 @@
             bgVideo.volume = 0.2; 
             bgVideo.play().catch(e => console.log("Video play blocked")); 
 
+            // Ab user click karega toh photo aur video ekdum sath aayenge!
             document.getElementById("gift-screen").style.display = "none";
             document.getElementById("surprise-screen").style.display = "block";
-            
-            // Set user image
-            if(wishData && wishData.photos && wishData.photos.length > 0) {
-                document.getElementById("user-img").src = wishData.photos[0].url;
-            }
         }
 
         /* 🚫 JS FORCE KILLER: NETLIFY BADGE REMOVER */
