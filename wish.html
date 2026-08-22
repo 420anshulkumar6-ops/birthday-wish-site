@@ -31,13 +31,13 @@
             object-fit: cover; z-index: 1;
         }
 
-        /* 📸 PERFECT CIRCLE PHOTO */
+        /* 📸 PERFECT CIRCLE PHOTO (Final Settings) */
         .user-photo {
             position: absolute;
-            top: 44.6%; 
-            left: 50%;
+            top: 45.1%; 
+            left: 49.3%;
             transform: translate(-50%, -50%);
-            width: 52.8%; 
+            width: 58.2%; 
             aspect-ratio: 1/1; 
             border-radius: 50%; 
             object-fit: cover; 
@@ -47,16 +47,16 @@
             z-index: 2;
         }
 
-        /* Name on the Ribbon */
+        /* Name on the Ribbon (Always Center Aligned) */
         .user-name {
             position: absolute;
-            top: 65.1%; 
-            left: 50%;
+            top: 65.2%; 
+            left: 48.5%;
             transform: translate(-50%, -50%);
             font-size: 26px;
             color: #ffffff;
             font-weight: bold;
-            text-align: center;
+            text-align: center; /* Ye ensure karega ki text hamesha center me rahe */
             width: 75%;
             font-family: 'Georgia', serif;
             letter-spacing: 1px;
@@ -128,44 +128,5 @@
             document.getElementById("user-name").innerText = wishData.name;
         }
     </script>
-
-    <!-- MOBILE LIVE EDITING PANEL START -->
-    <div style="position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); padding: 10px; z-index: 9999; color: white; font-family: sans-serif; box-sizing: border-box; border-top: 2px solid #00ffff; max-height: 45vh; overflow-y: auto;">
-        <h4 style="margin: 0 0 5px 0; color: #00ffff; font-size: 14px;">Live Adjuster 🛠️</h4>
-        
-        <div style="margin-bottom: 10px;">
-            <label style="color: #ff1493; font-size: 11px; font-weight: bold;">--- PHOTO SETTINGS ---</label><br>
-            
-            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">
-                <label>Top (Upar/Niche): <span id="p-top-val" style="color: #00ffff;">44.6%</span></label>
-            </div>
-            <input type="range" min="20" max="60" step="0.1" value="44.6" oninput="document.querySelector('.user-photo').style.top = this.value + '%'; document.getElementById('p-top-val').innerText = this.value + '%';" style="width: 100%; margin-bottom: 2px;">
-            
-            <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                <label>Left (Left/Right): <span id="p-left-val" style="color: #00ffff;">50%</span></label>
-            </div>
-            <input type="range" min="30" max="70" step="0.1" value="50" oninput="document.querySelector('.user-photo').style.left = this.value + '%'; document.getElementById('p-left-val').innerText = this.value + '%';" style="width: 100%; margin-bottom: 2px;">
-            
-            <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                <label>Size (Width): <span id="p-wid-val" style="color: #00ffff;">52.8%</span></label>
-            </div>
-            <input type="range" min="30" max="80" step="0.1" value="52.8" oninput="document.querySelector('.user-photo').style.width = this.value + '%'; document.getElementById('p-wid-val').innerText = this.value + '%';" style="width: 100%;">
-        </div>
-
-        <div>
-            <label style="color: #ff1493; font-size: 11px; font-weight: bold;">--- NAME SETTINGS ---</label><br>
-            
-            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">
-                <label>Top (Upar/Niche): <span id="n-top-val" style="color: #00ffff;">65.1%</span></label>
-            </div>
-            <input type="range" min="50" max="85" step="0.1" value="65.1" oninput="document.querySelector('.user-name').style.top = this.value + '%'; document.getElementById('n-top-val').innerText = this.value + '%';" style="width: 100%; margin-bottom: 2px;">
-            
-            <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                <label>Left (Left/Right): <span id="n-left-val" style="color: #00ffff;">50%</span></label>
-            </div>
-            <input type="range" min="30" max="70" step="0.1" value="50" oninput="document.querySelector('.user-name').style.left = this.value + '%'; document.getElementById('n-left-val').innerText = this.value + '%';" style="width: 100%;">
-        </div>
-    </div>
-    <!-- MOBILE LIVE EDITING PANEL END -->
 </body>
 </html>
