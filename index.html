@@ -22,6 +22,8 @@
         .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
         
         .btn { background: linear-gradient(45deg, #ff1493, #8a2be2); color: white; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn:hover:not(:disabled) { box-shadow: 0 0 15px #ff1493; transform: scale(1.02); }
+        .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; }
         
         #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #00ffff; }
         #share-btn { background: #25D366; }
@@ -36,7 +38,8 @@
         <form id="wish-form">
             <div class="input-group" style="border: 1px solid #00ffff;">
                 <label>Birthday Person's Name *</label>
-                <input type="text" id="bName" required placeholder="e.g. Rahul">
+                <!-- Yahan maxlength="25" set kiya gaya hai -->
+                <input type="text" id="bName" required placeholder="e.g. Rahul" maxlength="25">
                 
                 <label style="margin-top: 15px;">🎵 Choose Background Music</label>
                 <div class="music-list">
@@ -47,7 +50,7 @@
             </div>
 
             <div class="input-group">
-                <label>📸 Upload a Photo</label>
+                <label>📸 Upload a Photo (Mandatory)</label>
                 <div class="upload-row">
                     <input type="file" id="file1" accept="image/*" required>
                     <button type="button" class="upload-btn" onclick="uploadSingleImage()">Upload</button>
@@ -94,6 +97,14 @@
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
 
+            xhr.upload.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    let progress = (event.loaded / event.total) * 100;
+                    statusText.innerText = "Uploading: " + Math.round(progress) + "% ⏳";
+                    statusText.style.color = "#00ffff";
+                }
+            };
+
             xhr.onload = function() {
                 generateBtn.disabled = false; generateBtn.innerText = "🪄 Generate Link";
                 if (xhr.status === 200) {
@@ -106,6 +117,11 @@
                     statusText.innerText = "❌ Upload failed!"; statusText.style.color = "#ff4444";
                     uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
                 }
+            };
+            xhr.onerror = function() {
+                generateBtn.disabled = false; generateBtn.innerText = "🪄 Generate Link";
+                statusText.innerText = "❌ Internet issue!"; statusText.style.color = "#ff4444";
+                uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
             };
             xhr.send(formData);
         }
