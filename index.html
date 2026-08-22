@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wishmaker.in - Make Wishing Video Card for WhatsApp Status</title>
-    <meta name="description" content="Make Wishing Video Card for WhatsApp Status in 10 seconds. 30+ categories, professionally designed themes.">
+    <meta name="description" content="Make Wishing Video Card for WhatsApp Status in 10 seconds.">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0d0d12; color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
@@ -12,7 +12,7 @@
         /* Header & Search Bar */
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #15151e; border-bottom: 1px solid #252532; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5); gap: 20px;}
         .logo { font-size: 24px; font-weight: bold; color: #ff1493; text-shadow: 0 0 10px rgba(255,20,147,0.5); text-decoration: none; min-width: 150px;}
-
+        
         .search-container { flex: 1; max-width: 500px; position: relative; }
         .search-container input { width: 100%; padding: 10px 20px; border-radius: 25px; border: 1px solid #00ffff; background: #0d0d12; color: #fff; font-size: 15px; outline: none; transition: 0.3s; }
         .search-container input:focus { box-shadow: 0 0 15px rgba(0,255,255,0.3); }
@@ -30,40 +30,32 @@
         .section-title { font-size: 22px; margin-bottom: 25px; color: #fff; border-left: 4px solid #00ffff; padding-left: 10px; display: flex; align-items: center; gap: 10px; }
 
         /* VIEW 1: Category Boxes (Homepage) */
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
         .category-box { background: #15151e; border: 1px solid #252532; padding: 30px 20px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .category-box:hover { border-color: #00ffff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,255,255,0.15); }
         .category-box .icon { font-size: 45px; margin-bottom: 15px; }
         .category-box h3 { font-size: 18px; color: #fff; }
 
-        /* Pagination */
-        .pagination { display: flex; justify-content: center; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
-        .page-btn { min-width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #252532; background: #15151e; color: #b3b3b3; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .page-btn:hover { border-color: #00ffff; color: #fff; }
-        .page-btn.active { background: #00ffff; color: #000; border-color: #00ffff; }
-        .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-        .page-btn:disabled:hover { border-color: #252532; color: #b3b3b3; }
-
         /* VIEW 2: Theme Cards */
-        .view-section { display: none; }
-        .view-section.active { display: block; }
-
+        .view-section { display: none; } 
+        .view-section.active { display: block; } 
+        
         .btn-back { background: #252532; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 15px; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
         .btn-back:hover { background: #ff1493; }
 
         .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
         .theme-card { background: #15151e; border-radius: 15px; padding: 20px; border: 1px solid #252532; text-align: center; transition: 0.3s; }
         .theme-card:hover { border-color: #00ffff; box-shadow: 0 5px 20px rgba(0,255,255,0.1); }
-
+        
         .theme-preview { height: 180px; background: #0d0d12; border-radius: 10px; position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px solid #252532; }
         .play-btn { font-size: 45px; color: #00ffff; transition: 0.3s; text-shadow: 0 0 15px rgba(0,255,255,0.5); }
         .theme-preview:hover .play-btn { transform: scale(1.1); color: #ff1493; text-shadow: 0 0 15px rgba(255,20,147,0.5); }
-
+        
         .theme-title { font-size: 16px; margin-bottom: 15px; color: white; }
-
+        
         .btn-use { display: block; width: 100%; background: linear-gradient(90deg, #00ffff, #0088ff); color: #000; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 8px; text-decoration: none; margin-bottom: 12px; transition: 0.3s; }
         .btn-use:hover { box-shadow: 0 0 15px rgba(0,255,255,0.5); transform: scale(1.02); color: #fff; }
-
+        
         .guide-link { font-size: 13px; color: #b3b3b3; text-decoration: underline; cursor: pointer; transition: 0.3s; display: inline-block; padding: 5px;}
         .guide-link:hover { color: #ff1493; }
 
@@ -85,13 +77,11 @@
         .close-btn { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer; font-weight: bold; }
         .close-btn:hover { color: #ff1493; }
 
-        .no-results { text-align: center; color: #b3b3b3; padding: 40px 0; font-size: 15px; }
-
         @media(max-width: 900px) {
             .menu-toggle { display: block; }
             .search-container { order: 3; width: 100%; max-width: 100%; margin-top: 10px; }
             header { flex-wrap: wrap; }
-            aside { position: fixed; top: 110px; left: -100%; height: calc(100vh - 110px); width: 260px; z-index: 99; transition: left 0.3s ease; overflow-y: auto; }
+            aside { position: fixed; top: 110px; left: -100%; height: calc(100vh - 110px); width: 260px; z-index: 99; transition: left 0.3s ease; }
             aside.active { left: 0; }
         }
     </style>
@@ -99,9 +89,9 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo" onclick="return false;">wishmaker.in</a>
+        <a href="index.html" class="logo">wishmaker.in</a>
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search categories..." oninput="filterCategories()">
+            <input type="text" id="searchInput" placeholder="Search categories...">
         </div>
         <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
     </header>
@@ -110,7 +100,7 @@
         <!-- Sidebar -->
         <aside id="sidebar">
             <ul class="aside-links">
-                <li><a href="#" onclick="showHome(); return false;">🏠 Homepage</a></li>
+                <li><a href="#" onclick="showHome()">🏠 Homepage</a></li>
                 <li><a href="#">✨ Latest Video Cards</a></li>
                 <li><a href="#">🔥 Trending Cards</a></li>
                 <li><a href="#">📱 Our Social Media</a></li>
@@ -124,13 +114,24 @@
             <!-- ================= VIEW 1: CATEGORIES (HOMEPAGE) ================= -->
             <div id="home-view" class="view-section active">
                 <h2 class="section-title">Select a Category</h2>
-
-                <div class="category-grid" id="category-grid">
-                    <!-- Category boxes injected by JS (paginated) -->
-                </div>
-
-                <div class="pagination" id="pagination">
-                    <!-- Page buttons injected by JS -->
+                
+                <div class="category-grid">
+                    <div class="category-box" onclick="openCategory('birthday')">
+                        <div class="icon">🎂</div>
+                        <h3>Birthday Video Cards</h3>
+                    </div>
+                    <div class="category-box" onclick="openCategory('anniversary')">
+                        <div class="icon">💍</div>
+                        <h3>Anniversary Special</h3>
+                    </div>
+                    <div class="category-box" onclick="openCategory('festivals')">
+                        <div class="icon">🎆</div>
+                        <h3>Trending Festivals</h3>
+                    </div>
+                    <div class="category-box" onclick="openCategory('shradhanjali')">
+                        <div class="icon">🕊️</div>
+                        <h3>Shradhanjali (RIP)</h3>
+                    </div>
                 </div>
 
                 <!-- SEO Article Section Restored Here -->
@@ -148,1174 +149,76 @@
             </div>
 
             <!-- ================= VIEW 2: THEMES (INSIDE CATEGORY) ================= -->
-
+            
+            <!-- Birthday Themes -->
             <div id="cat-birthday" class="view-section">
                 <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">🎂 Birthday Video Cards</h2>
+                
                 <div class="theme-grid">
                     <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=birthday_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
+                        <div class="theme-preview" onclick="openPreview()">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <h4 class="theme-title">Royal Blue Cake Theme</h4>
+                        <a href="create.html?theme=bday_blue" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
+                    </div>
+
                     <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=birthday_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=birthday_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=birthday_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
+                        <div class="theme-preview" onclick="openPreview()">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <h4 class="theme-title">Neon Birthday Bash</h4>
+                        <a href="create.html?theme=bday_neon" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
+                    </div>
                 </div>
             </div>
 
+            <!-- Add other categories (anniversary, festivals, etc.) similarly below here as we did previously -->
             <div id="cat-anniversary" class="view-section">
                 <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">💍 Anniversary Special</h2>
                 <div class="theme-grid">
                     <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=anniversary_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=anniversary_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=anniversary_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=anniversary_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
+                        <div class="theme-preview" onclick="openPreview()">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <h4 class="theme-title">Romantic Couple Frames</h4>
+                        <a href="create.html?theme=anniv_romantic" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
+                    </div>
                 </div>
             </div>
-
+            
             <div id="cat-festivals" class="view-section">
                 <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">🎆 Trending Festivals</h2>
                 <div class="theme-grid">
                     <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=festivals_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=festivals_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=festivals_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=festivals_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
+                        <div class="theme-preview" onclick="openPreview()">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <h4 class="theme-title">Shri Krishna Janmashtami</h4>
+                        <a href="create.html?theme=janmashtami" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
+                    </div>
                 </div>
             </div>
-
+            
             <div id="cat-shradhanjali" class="view-section">
                 <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🕊️ Shradhanjali (RIP)</h2>
+                <h2 class="section-title">🕊️ Shradhanjali (Memorial)</h2>
                 <div class="theme-grid">
                     <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=shradhanjali_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=shradhanjali_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=shradhanjali_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=shradhanjali_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-wedding" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">👑 Wedding Invitation</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=wedding_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=wedding_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=wedding_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=wedding_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-engagement" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">💎 Engagement Announcement</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=engagement_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=engagement_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=engagement_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=engagement_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-newyear" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🎇 New Year Countdown</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=newyear_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=newyear_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=newyear_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=newyear_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-babyshower" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🍼 Baby Shower Reveal</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=babyshower_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=babyshower_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=babyshower_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=babyshower_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-farewell" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🎓 Farewell Memories</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=farewell_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=farewell_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=farewell_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=farewell_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-graduation" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🎓 Graduation Day</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=graduation_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=graduation_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=graduation_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=graduation_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-retirement" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🏆 Retirement Tribute</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=retirement_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=retirement_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=retirement_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=retirement_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-housewarming" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🏠 Housewarming Invite</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=housewarming_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=housewarming_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=housewarming_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=housewarming_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-mothersday" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🌷 Mother's Day Special</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=mothersday_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=mothersday_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=mothersday_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=mothersday_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-fathersday" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🎩 Father's Day Special</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=fathersday_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=fathersday_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=fathersday_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=fathersday_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-valentine" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">❤️ Valentine's Day</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=valentine_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=valentine_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=valentine_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=valentine_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-rakhi" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🧵 Rakhi / Raksha Bandhan</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=rakhi_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=rakhi_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=rakhi_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=rakhi_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-businesspromo" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">💼 Business Promo</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=businesspromo_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=businesspromo_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=businesspromo_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=businesspromo_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-independenceday" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🇮🇳 Independence Day</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=independenceday_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=independenceday_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=independenceday_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=independenceday_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-republicday" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🏛️ Republic Day</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=republicday_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=republicday_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=republicday_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=republicday_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-christmas" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🎄 Christmas Special</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=christmas_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=christmas_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=christmas_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=christmas_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-eid" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🌙 Eid Mubarak</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=eid_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=eid_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=eid_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=eid_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-navratri" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🪅 Navratri / Durga Puja</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=navratri_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=navratri_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=navratri_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=navratri_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-getwellsoon" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🌼 Get Well Soon</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=getwellsoon_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=getwellsoon_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=getwellsoon_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=getwellsoon_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-thankyou" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🙏 Thank You Card</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=thankyou_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=thankyou_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=thankyou_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=thankyou_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-congratulations" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🎉 Congratulations</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=congratulations_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=congratulations_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=congratulations_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=congratulations_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-condolence" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🕯️ Condolence Message</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=condolence_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=condolence_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=condolence_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=condolence_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-puja" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🛕 Puja Ceremony</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=puja_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=puja_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=puja_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=puja_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-corporateevent" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🏢 Corporate Event</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=corporateevent_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=corporateevent_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=corporateevent_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=corporateevent_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-kidsbirthday" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">🎈 Kids Birthday</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=kidsbirthday_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=kidsbirthday_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=kidsbirthday_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=kidsbirthday_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                </div>
-            </div>
-
-            <div id="cat-naming" class="view-section">
-                <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
-                <h2 class="section-title">👶 Naming Ceremony</h2>
-                <div class="theme-grid">
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Royal Blue Cake Theme</h4>
-    <a href="create.html?theme=naming_blue" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Neon Bash Theme</h4>
-    <a href="create.html?theme=naming_neon" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Golden Glow Theme</h4>
-    <a href="create.html?theme=naming_gold" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
-                    <div class="theme-card">
-    <div class="theme-preview" onclick="openPreview()">
-        <div class="play-btn">▶</div>
-    </div>
-    <h4 class="theme-title">Pastel Dream Theme</h4>
-    <a href="create.html?theme=naming_pastel" class="btn-use">🚀 Use This Card</a>
-    <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-</div>
+                        <div class="theme-preview" onclick="openPreview()">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <h4 class="theme-title">Respectful Shradhanjali</h4>
+                        <a href="create.html?theme=rip_standard" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
+                    </div>
                 </div>
             </div>
 
@@ -1325,10 +228,10 @@
     <!-- Global Footer -->
     <footer>
         <div class="footer-links">
-            <a href="pages/contact-us.html">Contact Us</a>
-            <a href="pages/about-us.html">About Us</a>
-            <a href="pages/privacy-policy.html">Privacy Policy</a>
-            <a href="pages/disclaimer.html">Disclaimer</a>
+            <a href="#">Contact Us</a>
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Disclaimer</a>
         </div>
         <p style="color: #555; font-size: 12px;">&copy; 2026 wishmaker.in. All rights reserved.</p>
     </footer>
@@ -1342,99 +245,12 @@
     </div>
 
     <script>
-        // ===================== CATEGORY DATA (30 categories) =====================
-        const CATEGORIES = [
-            { id: "birthday", icon: "🎂", title: "Birthday Video Cards" },
-            { id: "anniversary", icon: "💍", title: "Anniversary Special" },
-            { id: "festivals", icon: "🎆", title: "Trending Festivals" },
-            { id: "shradhanjali", icon: "🕊️", title: "Shradhanjali (RIP)" },
-            { id: "wedding", icon: "👑", title: "Wedding Invitation" },
-            { id: "engagement", icon: "💎", title: "Engagement Announcement" },
-            { id: "newyear", icon: "🎇", title: "New Year Countdown" },
-            { id: "babyshower", icon: "🍼", title: "Baby Shower Reveal" },
-            { id: "farewell", icon: "🎓", title: "Farewell Memories" },
-            { id: "graduation", icon: "🎓", title: "Graduation Day" },
-            { id: "retirement", icon: "🏆", title: "Retirement Tribute" },
-            { id: "housewarming", icon: "🏠", title: "Housewarming Invite" },
-            { id: "mothersday", icon: "🌷", title: "Mother's Day Special" },
-            { id: "fathersday", icon: "🎩", title: "Father's Day Special" },
-            { id: "valentine", icon: "❤️", title: "Valentine's Day" },
-            { id: "rakhi", icon: "🧵", title: "Rakhi / Raksha Bandhan" },
-            { id: "businesspromo", icon: "💼", title: "Business Promo" },
-            { id: "independenceday", icon: "🇮🇳", title: "Independence Day" },
-            { id: "republicday", icon: "🏛️", title: "Republic Day" },
-            { id: "christmas", icon: "🎄", title: "Christmas Special" },
-            { id: "eid", icon: "🌙", title: "Eid Mubarak" },
-            { id: "navratri", icon: "🪅", title: "Navratri / Durga Puja" },
-            { id: "getwellsoon", icon: "🌼", title: "Get Well Soon" },
-            { id: "thankyou", icon: "🙏", title: "Thank You Card" },
-            { id: "congratulations", icon: "🎉", title: "Congratulations" },
-            { id: "condolence", icon: "🕯️", title: "Condolence Message" },
-            { id: "puja", icon: "🛕", title: "Puja Ceremony" },
-            { id: "corporateevent", icon: "🏢", title: "Corporate Event" },
-            { id: "kidsbirthday", icon: "🎈", title: "Kids Birthday" },
-            { id: "naming", icon: "👶", title: "Naming Ceremony" }
-        ];
-        const PER_PAGE = 10;
-        let currentPage = 1;
-        let filteredCategories = CATEGORIES;
-
         // Sidebar Toggle
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // ===================== HOME GRID RENDERING (paginated) =====================
-        function renderCategoryGrid() {
-            const grid = document.getElementById('category-grid');
-            const totalPages = Math.max(1, Math.ceil(filteredCategories.length / PER_PAGE));
-            if (currentPage > totalPages) currentPage = totalPages;
-
-            const start = (currentPage - 1) * PER_PAGE;
-            const pageItems = filteredCategories.slice(start, start + PER_PAGE);
-
-            if (pageItems.length === 0) {
-                grid.innerHTML = '<div class="no-results">No categories match your search. Try a different keyword.</div>';
-            } else {
-                grid.innerHTML = pageItems.map(function(cat) {
-                    return '<div class="category-box" onclick="openCategory(\'' + cat.id + '\')">' +
-                           '<div class="icon">' + cat.icon + '</div>' +
-                           '<h3>' + cat.title + '</h3>' +
-                           '</div>';
-                }).join('');
-            }
-
-            renderPagination(totalPages);
-        }
-
-        function renderPagination(totalPages) {
-            const pagination = document.getElementById('pagination');
-            if (filteredCategories.length <= PER_PAGE) {
-                pagination.innerHTML = '';
-                return;
-            }
-            let html = '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>&laquo; Prev</button>';
-            for (let p = 1; p <= totalPages; p++) {
-                html += '<button class="page-btn ' + (p === currentPage ? 'active' : '') + '" onclick="goToPage(' + p + ')">' + p + '</button>';
-            }
-            html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>Next &raquo;</button>';
-            pagination.innerHTML = html;
-        }
-
-        function goToPage(page) {
-            currentPage = page;
-            renderCategoryGrid();
-            document.getElementById('category-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function filterCategories() {
-            const q = document.getElementById('searchInput').value.trim().toLowerCase();
-            filteredCategories = q ? CATEGORIES.filter(c => c.title.toLowerCase().includes(q)) : CATEGORIES;
-            currentPage = 1;
-            renderCategoryGrid();
-        }
-
-        // ===================== VIEW SWITCHER =====================
+        // View Switcher 
         function showHome() {
             document.querySelectorAll('.view-section').forEach(view => {
                 view.classList.remove('active');
@@ -1446,22 +262,18 @@
             document.querySelectorAll('.view-section').forEach(view => {
                 view.classList.remove('active');
             });
-            const target = document.getElementById('cat-' + categoryId);
-            if (!target) { showHome(); return; }
-            target.classList.add('active');
-
+            document.getElementById('cat-' + categoryId).classList.add('active');
+            
             // Bring SEO article inside the active category so it's always visible at bottom
             const seoArticle = document.getElementById('how-to-use');
-            target.appendChild(seoArticle);
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('cat-' + categoryId).appendChild(seoArticle);
         }
 
         function scrollToGuide() {
             document.getElementById('how-to-use').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // ===================== VIDEO MODAL =====================
+        // Modal Logic
         function openPreview() {
             document.getElementById('video-modal').style.display = 'flex';
             document.getElementById('sample-video').play();
@@ -1471,10 +283,10 @@
             document.getElementById('sample-video').pause();
             document.getElementById('sample-video').currentTime = 0;
         }
-
-        // ===================== INIT =====================
-        renderCategoryGrid();
+        
+        // Put SEO Article back to home when on homepage
         document.getElementById('home-view').appendChild(document.getElementById('how-to-use'));
     </script>
 </body>
-</html>
+                                </html>
+                            
