@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Raksha Bandhan Special Wish ✨</title>
+    <style>
+        body { 
+            margin: 0; padding: 0; background-color: #000; 
+            display: flex; align-items: center; justify-content: center; 
+            height: 100vh; overflow: hidden; 
+        }
+
+        #loading-text { color: #ff1493; position: absolute; font-family: sans-serif; font-weight: bold;}
+        #gift-screen { 
+            display: none; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; height: 100vh; width: 100vw; background: #0d0d12;
+        }
+        .gift-emoji { font-size: 120px; cursor: pointer; animation: bounce 1.2s infinite; margin-top: 20px;}
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-30px); } 60% { transform: translateY(-15px); } }
+
+        .video-wrapper {
+            display: none; position: relative; width: 100vw; height: 100vh;
+            max-width: 56.25vh; max-height: 177.77vw; margin: 0 auto; background: #000;
+        }
+
+        #bg-video {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: 1;
+        }
+
+        /* 📸 SQUARE FRAME ALIGNMENT (For Rakhi Video) */
+        .user-photo {
+            position: absolute;
+            top: 35.8%; /* Adjusted for the square frame in the video */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 78%; /* Adjusted to fit inside the golden border */
+            aspect-ratio: 1/1; 
+            border-radius: 0%; /* Frame square hai isliye border-radius 0 rakha hai */
+            object-fit: cover; 
+            object-position: center; 
+            z-index: 2;
+            /* Box shadow hata diya hai kyunki video me apna glow hai */
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: none; /* Appears after gift is opened */
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; flex-direction: column; gap: 10px; z-index: 10;
+        }
+        .action-btn {
+            background: rgba(0, 0, 0, 0.7); color: white; border: 1px solid #ff1493;
+            padding: 12px; border-radius: 8px; font-weight: bold; font-size: 15px;
+            text-align: center; text-decoration: none; cursor: pointer; display: flex;
+            align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-whatsapp { background: #25D366; border: none; }
+    </style>
+</head>
+<body>
+
+    <h2 id="loading-text">Loading Magic... ✨</h2>
+
+    <div id="gift-screen">
+        <h1 style="color: #ff1493; font-family: sans-serif;">Surprise for you! 🎉</h1>
+        <p style="color: #bbb; font-family: sans-serif;">Tap to open</p>
+        <div class="gift-emoji" onclick="openGift()">🎁</div>
+    </div>
+
+    <div class="video-wrapper" id="surprise-screen">
+        <video id="bg-video" loop playsinline>
+            <source src="bg_video1.mp4" type="video/mp4">
+        </video>
+        
+        <img id="user-img" class="user-photo" src="" alt="Photo">
+        
+        <div class="action-buttons" id="action-panel">
+            <button class="action-btn btn-whatsapp" onclick="shareToWhatsApp()">📲 Share to WhatsApp</button>
+            <button class="action-btn" onclick="copyLink()">🔗 Copy Link</button>
+        </div>
+    </div>
+
+    <audio id="bg-audio" loop>
+        <source src="music4.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q", authDomain: "birthday-maker-58e43.firebaseapp.com", projectId: "birthday-maker-58e43", storageBucket: "birthday-maker-58e43.firebasestorage.app", messagingSenderId: "213307256948", appId: "1:213307256948:web:4731c4d0c42ee6e978e121" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let wishData = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        db.collection("wishes").doc(urlParams.get('id')).get().then(doc => {
+            document.getElementById("loading-text").style.display = "none";
+            if(doc.exists) { 
+                wishData = doc.data(); 
+                document.getElementById("gift-screen").style.display = "flex"; 
+            } else {
+                document.body.innerHTML = "<h2 style='color:red; font-family:sans-serif;'>Link Expired!</h2>";
+            }
+        });
+
+        function openGift() {
+            document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen ignored"));
+            
+            let audio = document.getElementById("bg-audio");
+            // If music uploaded by user exists, play that, else default to music4.mp3
+            if(wishData.music) {
+                audio.src = wishData.music;
+            }
+            audio.volume = 0.8; 
+            audio.play().catch(e => console.log("Audio play blocked"));
+
+            let bgVideo = document.getElementById("bg-video");
+            bgVideo.muted = false; 
+            bgVideo.volume = 0.2; 
+            bgVideo.play().catch(e => console.log("Video play blocked")); 
+
+            document.getElementById("gift-screen").style.display = "none";
+            document.getElementById("surprise-screen").style.display = "block";
+            
+            document.getElementById("user-img").src = wishData.photos[0].url;
+            
+            // Show buttons after 1 second
+            setTimeout(() => {
+                document.getElementById("action-panel").style.display = "flex";
+            }, 1000);
+        }
+
+        // Share Functions
+        function shareToWhatsApp() {
+            let currentLink = window.location.href;
+            let text = `✨ I have a special Raksha Bandhan video card for you! Open it here: ${currentLink}`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
+        }
+
+        function copyLink() {
+            let currentLink = window.location.href;
+            navigator.clipboard.writeText(currentLink).then(() => {
+                alert("Link Copied! Paste it anywhere.");
+            });
+        }
+    </script>
+</body>
+</html>
