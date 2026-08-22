@@ -1,86 +1,301 @@
-<!-- CSS me ye naya button box add kijiye -->
-<style>
-    /* ... (Aapka purana style waisa hi rahega) ... */
-    
-    /* Naye Download/Share Buttons ki CSS */
-    .action-buttons {
-        display: none; /* Gift open hone par JS se flex hoga */
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 400px;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 10; /* Video ke upar dikhega */
-    }
-    .action-btn {
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        border: 1px solid #00ffff;
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: bold;
-        font-size: 15px;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-    .btn-download { background: linear-gradient(45deg, #ff1493, #ff4500); border: none; }
-    .btn-whatsapp { background: #25D366; border: none; }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Have a Magical Surprise! 🎁 - wishmaker.in</title>
+    <meta name="description" content="Open your magical video wish card.">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #0d0d12; color: #fff; }
 
-<!-- Body ke andar Video Wrapper ke neeche ye add kijiye -->
-<div class="action-buttons" id="action-panel">
-    <button class="action-btn btn-download" onclick="alert('Processing your video... (Rendering server will be attached here later)')">⬇️ Download Video</button>
-    <button class="action-btn btn-whatsapp" onclick="shareToWhatsApp()">📲 Share to WhatsApp Status</button>
-    <button class="action-btn" onclick="copyLink()">🔗 Copy Link</button>
-</div>
+        /* ===================== LOADING SCREEN ===================== */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d0d12; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 999;
+            gap: 20px;
+        }
+        .loader-ring {
+            width: 60px; height: 60px; border-radius: 50%;
+            border: 4px solid #252532; border-top-color: #00ffff;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #loading-screen p { color: #b3b3b3; font-size: 14px; letter-spacing: 1px; }
 
-<!-- Script me openGift() function me isko dikhane ka logic add karein -->
-<script>
-    function openGift() {
-        document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen ignored"));
-        
-        let audio = document.getElementById("bg-audio");
-        if(wishData.music) {
-            audio.src = wishData.music;
-            audio.volume = 0.8; 
-            audio.play().catch(e => console.log("Audio play blocked"));
+        /* ===================== ERROR SCREEN ===================== */
+        #error-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d0d12; display: none; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 999;
+            text-align: center; padding: 30px; gap: 15px;
+        }
+        #error-screen .icon { font-size: 60px; }
+        #error-screen h2 { color: #ff1493; }
+        #error-screen p { color: #b3b3b3; max-width: 320px; }
+        #error-screen a {
+            margin-top: 15px; background: linear-gradient(90deg, #00ffff, #0088ff);
+            color: #000; font-weight: bold; padding: 12px 26px; border-radius: 8px;
+            text-decoration: none;
         }
 
-        let bgVideo = document.getElementById("bg-video");
-        bgVideo.muted = false; 
-        bgVideo.volume = 0.2; 
-        bgVideo.play().catch(e => console.log("Video play blocked")); 
+        /* ===================== GIFT SCREEN ===================== */
+        #gift-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; align-items: center; justify-content: center;
+            flex-direction: column; gap: 22px; z-index: 500;
+            background: radial-gradient(circle at center, #1a1a24 0%, #0d0d12 80%);
+            text-align: center; padding: 20px;
+        }
+        #gift-screen h2 {
+            font-size: 22px; color: #fff; text-shadow: 0 0 10px rgba(0,255,255,0.4);
+        }
+        #gift-screen .sub-text { color: #b3b3b3; font-size: 14px; }
+        .gift-box {
+            font-size: 110px; cursor: pointer; user-select: none;
+            animation: floatBox 2.4s ease-in-out infinite;
+            filter: drop-shadow(0 0 25px rgba(255,20,147,0.5));
+        }
+        @keyframes floatBox {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-16px) rotate(3deg); }
+        }
+        .tap-hint {
+            font-size: 13px; color: #00ffff; letter-spacing: 1px;
+            animation: pulseHint 1.6s ease-in-out infinite;
+        }
+        @keyframes pulseHint { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        document.getElementById("gift-screen").style.display = "none";
-        document.getElementById("surprise-screen").style.display = "block";
-        
-        // Buttons show karne ka trigger
-        document.getElementById("action-panel").style.display = "flex";
-        
-        document.getElementById("user-img").src = wishData.photos[0].url;
-        
-        // ... (Aapka purana font sizing logic) ...
-    }
+        /* ===================== SURPRISE SCREEN ===================== */
+        #surprise-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; z-index: 400; overflow: hidden;
+            background: #000;
+        }
+        #bg-video {
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+            width: auto; height: auto; transform: translate(-50%, -50%);
+            object-fit: cover; z-index: 1;
+        }
+        .surprise-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; padding: 20px;
+            background: rgba(0,0,0,0.25);
+        }
+        #user-img {
+            width: 160px; height: 160px; border-radius: 50%; object-fit: cover;
+            border: 4px solid #00ffff; box-shadow: 0 0 30px rgba(0,255,255,0.6);
+            margin-bottom: 20px; animation: popIn 0.8s ease;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        #wish-heading {
+            font-size: clamp(22px, 6vw, 40px); font-weight: bold; color: #fff;
+            text-shadow: 0 0 15px rgba(255,20,147,0.8), 0 2px 4px rgba(0,0,0,0.8);
+            margin-bottom: 8px; word-break: break-word; max-width: 90%;
+        }
+        #wish-subheading {
+            font-size: clamp(14px, 3.5vw, 18px); color: #e0e0e0;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
 
-    // Share Functions
-    function shareToWhatsApp() {
-        let currentLink = window.location.href;
-        let text = `✨ I have a magical video card for you! Open it here: ${currentLink}`;
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
-    }
+        /* ===================== ACTION BUTTONS (from patch) ===================== */
+        .action-buttons {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+        }
+        .action-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid #00ffff;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-download { background: linear-gradient(45deg, #ff1493, #ff4500); border: none; }
+        .btn-whatsapp { background: #25D366; border: none; }
 
-    function copyLink() {
-        let currentLink = window.location.href;
-        navigator.clipboard.writeText(currentLink).then(() => {
-            alert("Link Copied! Paste it anywhere.");
-        });
-    }
-</script>
+        .footer-credit {
+            position: fixed; bottom: 6px; left: 0; width: 100%; text-align: center;
+            font-size: 11px; color: rgba(255,255,255,0.35); z-index: 15;
+        }
+        .footer-credit a { color: rgba(0,255,255,0.5); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <!-- LOADING -->
+    <div id="loading-screen">
+        <div class="loader-ring"></div>
+        <p>Preparing your magical surprise...</p>
+    </div>
+
+    <!-- ERROR (invalid / missing wish id) -->
+    <div id="error-screen">
+        <div class="icon">💔</div>
+        <h2>Wish Not Found</h2>
+        <p>This link seems broken or the wish has been removed. Please ask the sender for a fresh link.</p>
+        <a href="index.html">🏠 Go to Homepage</a>
+    </div>
+
+    <!-- GIFT BOX (tap to open) -->
+    <div id="gift-screen">
+        <h2 id="gift-title">Someone sent you a magical wish! ✨</h2>
+        <div class="gift-box" onclick="openGift()">🎁</div>
+        <p class="tap-hint">👆 TAP THE GIFT BOX TO OPEN</p>
+        <p class="sub-text">Best experienced with sound on 🔊</p>
+    </div>
+
+    <!-- SURPRISE VIDEO SCREEN -->
+    <div id="surprise-screen">
+        <video id="bg-video" loop playsinline>
+            <source src="bg_video.mp4" type="video/mp4">
+        </video>
+        <div class="surprise-overlay">
+            <img id="user-img" src="" alt="Photo">
+            <div id="wish-heading">Happy Birthday!</div>
+            <div id="wish-subheading">Wishing you a magical day ✨</div>
+        </div>
+    </div>
+
+    <audio id="bg-audio" loop></audio>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons" id="action-panel">
+        <button class="action-btn btn-download" onclick="alert('Processing your video... (Rendering server will be attached here later)')">⬇️ Download Video</button>
+        <button class="action-btn btn-whatsapp" onclick="shareToWhatsApp()">📲 Share to WhatsApp Status</button>
+        <button class="action-btn" onclick="copyLink()">🔗 Copy Link</button>
+    </div>
+
+    <div class="footer-credit">Made with 💖 on <a href="index.html">wishmaker.in</a></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q", authDomain: "birthday-maker-58e43.firebaseapp.com", projectId: "birthday-maker-58e43", storageBucket: "birthday-maker-58e43.firebasestorage.app", messagingSenderId: "213307256948", appId: "1:213307256948:web:4731c4d0c42ee6e978e121" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let wishData = null;
+
+        // Maps the `music` value saved from create.html to an actual file path.
+        // Update these paths once real audio files are hosted.
+        const MUSIC_MAP = {
+            "song1.mp3": "assets/music/song1.mp3",
+            "song2.mp3": "assets/music/song2.mp3",
+            "song3.mp3": "assets/music/song3.mp3"
+        };
+
+        function getWishId() {
+            let params = new URLSearchParams(window.location.search);
+            return params.get("id");
+        }
+
+        function showScreen(id) {
+            ["loading-screen", "error-screen", "gift-screen", "surprise-screen"].forEach(s => {
+                document.getElementById(s).style.display = "none";
+            });
+            document.getElementById(id).style.display =
+                (id === "surprise-screen") ? "block" : "flex";
+        }
+
+        function loadWish() {
+            let wishId = getWishId();
+            if (!wishId) { showScreen("error-screen"); return; }
+
+            db.collection("wishes").doc(wishId).get()
+                .then((doc) => {
+                    if (!doc.exists) { showScreen("error-screen"); return; }
+                    wishData = doc.data();
+
+                    // Personalise gift screen title with the recipient/sender name if present
+                    if (wishData.name) {
+                        document.getElementById("gift-title").innerText =
+                            "A magical wish for " + wishData.name + "! ✨";
+                        document.getElementById("wish-heading").innerText =
+                            "Happy Birthday, " + wishData.name + "! 🎂";
+                    }
+
+                    showScreen("gift-screen");
+                })
+                .catch((error) => {
+                    console.error("Error loading wish:", error);
+                    showScreen("error-screen");
+                });
+        }
+
+        function openGift() {
+            document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen ignored"));
+
+            let audio = document.getElementById("bg-audio");
+            if (wishData && wishData.music) {
+                let musicSrc = MUSIC_MAP[wishData.music] || wishData.music;
+                audio.src = musicSrc;
+                audio.volume = 0.8;
+                audio.play().catch(e => console.log("Audio play blocked"));
+            }
+
+            let bgVideo = document.getElementById("bg-video");
+            bgVideo.muted = false;
+            bgVideo.volume = 0.2;
+            bgVideo.play().catch(e => console.log("Video play blocked"));
+
+            document.getElementById("gift-screen").style.display = "none";
+            document.getElementById("surprise-screen").style.display = "block";
+
+            // Buttons show karne ka trigger
+            document.getElementById("action-panel").style.display = "flex";
+
+            if (wishData && wishData.photos && wishData.photos.length > 0) {
+                document.getElementById("user-img").src = wishData.photos[0].url;
+            }
+
+            // Fit long names nicely
+            let heading = document.getElementById("wish-heading");
+            if (wishData && wishData.name && wishData.name.length > 10) {
+                heading.style.fontSize = "clamp(18px, 5vw, 32px)";
+            }
+        }
+
+        // Share Functions
+        function shareToWhatsApp() {
+            let currentLink = window.location.href;
+            let text = `✨ I have a magical video card for you! Open it here: ${currentLink}`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
+        }
+
+        function copyLink() {
+            let currentLink = window.location.href;
+            navigator.clipboard.writeText(currentLink).then(() => {
+                alert("Link Copied! Paste it anywhere.");
+            });
+        }
+
+        // Kick off
+        loadWish();
+    </script>
+</body>
+</html>
