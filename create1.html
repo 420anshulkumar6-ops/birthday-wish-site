@@ -6,24 +6,34 @@
     <title>Create Raksha Bandhan Wish</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0d0d12; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 90%; max-width: 500px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; border: 1px solid #252532; }
+        .container { width: 100%; max-width: 450px; background: #1a1a24; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 20, 147, 0.2); text-align: center; margin-bottom: 20px; border: 1px solid #252532; }
         h1 { color: #ff1493; text-shadow: 0 0 10px rgba(255,20,147,0.5); font-size: 26px; margin-bottom: 10px;}
         p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
         
         .input-group { margin-bottom: 20px; text-align: left; background: #252532; padding: 15px; border-radius: 8px; border: 1px dashed #00ffff; }
         label { font-size: 14px; color: #00ffff; margin-bottom: 8px; display: block; font-weight: bold; }
-        input[type="file"] { padding: 8px; border: none; flex: 1; color: white; width: 100%; background: #1a1a24; border-radius: 5px; }
+        input[type="file"] { padding: 8px; border: none; flex: 1; color: white; width: 100%; background: #1a1a24; border-radius: 5px; outline: none; }
         
         .upload-row { display: flex; gap: 10px; align-items: center; margin-bottom: 5px; margin-top: 10px;}
         .upload-btn { background: #00ffff; color: #000; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .status-text { font-size: 13px; margin-bottom: 10px; font-weight: bold; }
         
-        .btn { background: linear-gradient(45deg, #00ffff, #0088ff); color: #000; border: none; padding: 15px; width: 100%; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        /* 3 Buttons Style (Neeli Patti) */
+        .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+        .btn { background: linear-gradient(90deg, #00ffff, #0088ff); color: #000; border: none; padding: 14px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn:hover:not(:disabled) { box-shadow: 0 0 15px rgba(0,255,255,0.5); transform: scale(1.02); color: #fff;}
         .btn:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; transform: none;}
         
-        #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #ff1493; }
-        #share-btn { background: #25D366; color: white; margin-top: 10px;}
+        #generated-link-box { display: none; margin-top: 20px; background: #252532; padding: 15px; border-radius: 8px; border: 1px solid #ff1493; text-align: left;}
+        
+        /* 🚫 HIDE NETLIFY BADGE FOREVER */
+        a[href*="netlify.com"], div[id*="netlify"], .netlify-badge { 
+            display: none !important; 
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            z-index: -9999 !important;
+        }
     </style>
 </head>
 <body>
@@ -32,24 +42,26 @@
         <h1>✨ Raksha Bandhan Card ✨</h1>
         <p>Upload a photo to create your magical video!</p>
         
-        <form id="wish-form">
-            <div class="input-group">
-                <label>📸 Upload a Photo (Mandatory)</label>
-                <div class="upload-row">
-                    <input type="file" id="file1" accept="image/*" required>
-                    <button type="button" class="upload-btn" onclick="uploadSingleImage()">Upload</button>
-                </div>
-                <div id="status1" class="status-text" style="color: #ff1493;">Note: Please click 'Upload' before generating link.</div>
-                <input type="hidden" id="url1">
+        <div class="input-group">
+            <label>📸 Upload a Photo (Mandatory)</label>
+            <div class="upload-row">
+                <input type="file" id="file1" accept="image/*" required>
+                <button type="button" class="upload-btn" onclick="uploadSingleImage()">Upload</button>
             </div>
-            
-            <button type="submit" id="generate-btn" class="btn">🪄 Generate Link</button>
-        </form>
+            <div id="status1" class="status-text" style="color: #ff1493;">Note: Please click 'Upload' before generating link.</div>
+            <input type="hidden" id="url1">
+        </div>
+        
+        <div class="action-buttons">
+            <button type="button" class="btn" id="btn-whatsapp" onclick="handleAction('whatsapp')">📲 Share to WhatsApp Status</button>
+            <button type="button" class="btn" id="btn-download" onclick="handleAction('download')">⬇️ Download in Gallery</button>
+            <button type="button" class="btn" id="btn-link" onclick="handleAction('link')">🔗 Generate Link</button>
+        </div>
 
         <div id="generated-link-box">
-            <p style="color: #00ffff; font-weight: bold;">Your unique link is ready!</p>
-            <input type="text" id="final-link" readonly style="width: 100%; padding: 10px; border-radius: 5px; border: none; background: #0d0d12; color: #fff; margin-bottom: 10px; outline: none;">
-            <button class="btn" id="share-btn">📲 Share on WhatsApp</button>
+            <p style="color: #00ffff; font-weight: bold; margin-top:0; margin-bottom: 8px;">Your unique link is ready!</p>
+            <input type="text" id="final-link" readonly style="width: 100%; padding: 10px; border-radius: 5px; border: none; background: #0d0d12; color: #fff; margin-bottom: 10px; outline: none; box-sizing: border-box;">
+            <button class="btn" onclick="copyMyLink()" style="background: #ff1493; color: #fff;">📋 Copy Link</button>
         </div>
     </div>
 
@@ -57,7 +69,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // Aapki ImgBB API aur Firebase Keys
+        // ImgBB API aur Firebase Keys
         const IMGBB_API_KEY = "1395060aec77631a4a081438a840fddf";
         const firebaseConfig = { 
             apiKey: "AIzaSyDZjTje3kc9n7K1QfMVBFz1pbDw6-AUS8Q", 
@@ -69,7 +81,8 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const generateBtn = document.getElementById("generate-btn");
+        
+        let generatedDocId = null; // Ek baar save hone ke baad ID yahan store hogi
 
         // Photo Upload via ImgBB API
         function uploadSingleImage() {
@@ -84,8 +97,7 @@
             let formData = new FormData();
             formData.append("image", file);
 
-            generateBtn.disabled = true; generateBtn.innerText = "⏳ Uploading Photo...";
-            uploadBtn.disabled = true; uploadBtn.style.background = "#555";
+            uploadBtn.disabled = true; uploadBtn.style.background = "#555"; uploadBtn.innerText = "⏳";
 
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, true);
@@ -99,60 +111,82 @@
             };
 
             xhr.onload = function() {
-                generateBtn.disabled = false; generateBtn.innerText = "🪄 Generate Link";
                 if (xhr.status === 200) {
                     let response = JSON.parse(xhr.responseText);
                     urlInput.value = response.data.url; 
-                    statusText.innerText = "✅ Uploaded Successfully!";
+                    statusText.innerText = "✅ Uploaded Successfully! Now choose an option below.";
                     statusText.style.color = "#25D366";
                     uploadBtn.style.display = "none"; 
                 } else {
                     statusText.innerText = "❌ Upload failed!"; statusText.style.color = "#ff4444";
-                    uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
+                    uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff"; uploadBtn.innerText = "Upload";
                 }
             };
             xhr.onerror = function() {
-                generateBtn.disabled = false; generateBtn.innerText = "🪄 Generate Link";
                 statusText.innerText = "❌ Internet issue!"; statusText.style.color = "#ff4444";
-                uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff";
+                uploadBtn.disabled = false; uploadBtn.style.background = "#00ffff"; uploadBtn.innerText = "Upload";
             };
             xhr.send(formData);
         }
 
-        // Form Submit & Firebase Save
-        document.getElementById("wish-form").addEventListener("submit", function(e) {
-            e.preventDefault(); 
+        // Action Buttons Handler
+        async function handleAction(actionType) {
             let urlVal = document.getElementById("url1").value;
             
             if(urlVal === "") { 
-                alert("Please click the 'Upload' button to upload the photo first!"); 
+                alert("Please select a photo and click 'Upload' first!"); 
                 return; 
             }
 
-            this.style.display = "none"; 
+            // Agar pehle se save nahi hua hai, toh Firebase me save karein
+            if (!generatedDocId) {
+                try {
+                    let docRef = await db.collection("wishes").add({
+                        music: "music4.mp3", // Default music for Raksha Bandhan
+                        photos: [{ url: urlVal }], 
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    generatedDocId = docRef.id;
+                } catch (error) {
+                    alert("Error saving data! Check internet.");
+                    return;
+                }
+            }
+
+            // Link taiyar karna
+            let realLink = window.location.origin + "/wish1.html?id=" + generatedDocId;
+
+            // Alag-alag button ka alag-alag kaam
+            if (actionType === 'whatsapp') {
+                let text = `I have a magical Raksha Bandhan surprise for you! ✨ Unlock it here: ${realLink}`;
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
             
-            // Saving to Firestore (Sirf photo aur music ka naam ja raha hai)
-            db.collection("wishes").add({
-                music: "music4.mp3", // Default music for Raksha Bandhan
-                photos: [{ url: urlVal }], 
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then((docRef) => {
+            } else if (actionType === 'download') {
+                alert("Please generate the link and open it. You can use a screen recorder to save it to your gallery for now!");
+            
+            } else if (actionType === 'link') {
                 document.getElementById("generated-link-box").style.display = "block";
-                
-                // IMPORTANT: Link ab wish1.html par ja raha hai
-                let realLink = window.location.origin + "/wish1.html?id=" + docRef.id;
                 document.getElementById("final-link").value = realLink;
-                
-                document.getElementById("share-btn").onclick = function() {
-                    let text = `I have a magical Raksha Bandhan surprise for you! ✨ Unlock it here: ${realLink}`;
-                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
-                };
-            }).catch((error) => { 
-                alert("Error saving data! Try again."); 
-                this.style.display = "block"; 
+            }
+        }
+
+        // Link copy karne ka function
+        function copyMyLink() {
+            let copyText = document.getElementById("final-link");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            alert("Link Copied! Paste it anywhere.");
+        }
+
+        /* 🚫 JS FORCE KILLER: NETLIFY BADGE REMOVER */
+        setInterval(() => {
+            document.querySelectorAll('a').forEach(link => {
+                if (link.href && link.href.includes('netlify.com')) {
+                    link.remove(); 
+                }
             });
-        });
+        }, 500);
     </script>
 </body>
 </html>
