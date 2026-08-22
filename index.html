@@ -97,7 +97,6 @@
     </header>
 
     <div class="main-layout">
-        <!-- Sidebar -->
         <aside id="sidebar">
             <ul class="aside-links">
                 <li><a href="#" onclick="showHome()">🏠 Homepage</a></li>
@@ -108,10 +107,8 @@
             </ul>
         </aside>
 
-        <!-- Main Content -->
         <div class="content-area">
 
-            <!-- ================= VIEW 1: CATEGORIES (HOMEPAGE) ================= -->
             <div id="home-view" class="view-section active">
                 <h2 class="section-title">Select a Category</h2>
                 
@@ -134,7 +131,6 @@
                     </div>
                 </div>
 
-                <!-- SEO Article Section Restored Here -->
                 <div class="seo-article" id="how-to-use">
                     <h3>📖 How to use our Wishing Video Cards</h3>
                     <p>Creating a beautiful WhatsApp video status on <strong>wishmaker.in</strong> is extremely easy and 100% free. Follow these simple steps to generate your video card:</p>
@@ -148,41 +144,28 @@
                 </div>
             </div>
 
-            <!-- ================= VIEW 2: THEMES (INSIDE CATEGORY) ================= -->
-            
-            <!-- Birthday Themes -->
             <div id="cat-birthday" class="view-section">
                 <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">🎂 Birthday Video Cards</h2>
                 
                 <div class="theme-grid">
                     <div class="theme-card">
-                        <div class="theme-preview" onclick="openPreview()">
+                        <div class="theme-preview" onclick="openPreview('bg_video.mp4')">
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Royal Blue Cake Theme</h4>
                         <a href="create.html?theme=bday_blue" class="btn-use">🚀 Use This Card</a>
                         <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
                     </div>
-
-                    <div class="theme-card">
-                        <div class="theme-preview" onclick="openPreview()">
-                            <div class="play-btn">▶</div>
-                        </div>
-                        <h4 class="theme-title">Neon Birthday Bash</h4>
-                        <a href="create.html?theme=bday_neon" class="btn-use">🚀 Use This Card</a>
-                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
-                    </div>
                 </div>
             </div>
 
-            <!-- Add other categories (anniversary, festivals, etc.) similarly below here as we did previously -->
             <div id="cat-anniversary" class="view-section">
                 <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">💍 Anniversary Special</h2>
                 <div class="theme-grid">
                     <div class="theme-card">
-                        <div class="theme-preview" onclick="openPreview()">
+                        <div class="theme-preview" onclick="openPreview('bg_video.mp4')">
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Romantic Couple Frames</h4>
@@ -196,14 +179,25 @@
                 <button class="btn-back" onclick="showHome()">⬅ Back to Categories</button>
                 <h2 class="section-title">🎆 Trending Festivals</h2>
                 <div class="theme-grid">
+                    
                     <div class="theme-card">
-                        <div class="theme-preview" onclick="openPreview()">
+                        <div class="theme-preview" onclick="openPreview('bg_video1.mp4')">
+                            <div class="play-btn">▶</div>
+                        </div>
+                        <h4 class="theme-title">Raksha Bandhan Special</h4>
+                        <a href="create1.html" class="btn-use">🚀 Use This Card</a>
+                        <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
+                    </div>
+
+                    <div class="theme-card">
+                        <div class="theme-preview" onclick="openPreview('bg_video.mp4')">
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Shri Krishna Janmashtami</h4>
                         <a href="create.html?theme=janmashtami" class="btn-use">🚀 Use This Card</a>
                         <span class="guide-link" onclick="scrollToGuide()">📖 How to use this card</span>
                     </div>
+
                 </div>
             </div>
             
@@ -212,7 +206,7 @@
                 <h2 class="section-title">🕊️ Shradhanjali (Memorial)</h2>
                 <div class="theme-grid">
                     <div class="theme-card">
-                        <div class="theme-preview" onclick="openPreview()">
+                        <div class="theme-preview" onclick="openPreview('bg_video.mp4')">
                             <div class="play-btn">▶</div>
                         </div>
                         <h4 class="theme-title">Respectful Shradhanjali</h4>
@@ -225,7 +219,6 @@
         </div>
     </div>
 
-    <!-- Global Footer -->
     <footer>
         <div class="footer-links">
             <a href="#">Contact Us</a>
@@ -236,11 +229,10 @@
         <p style="color: #555; font-size: 12px;">&copy; 2026 wishmaker.in. All rights reserved.</p>
     </footer>
 
-    <!-- Video Preview Modal -->
     <div id="video-modal">
         <span class="close-btn" onclick="closePreview()">&times;</span>
         <video id="sample-video" controls playsinline>
-            <source src="bg_video.mp4" type="video/mp4">
+            <source src="bg_video.mp4" type="video/mp4" id="modal-video-src">
         </video>
     </div>
 
@@ -264,7 +256,6 @@
             });
             document.getElementById('cat-' + categoryId).classList.add('active');
             
-            // Bring SEO article inside the active category so it's always visible at bottom
             const seoArticle = document.getElementById('how-to-use');
             document.getElementById('cat-' + categoryId).appendChild(seoArticle);
         }
@@ -273,18 +264,25 @@
             document.getElementById('how-to-use').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Modal Logic
-        function openPreview() {
+        // Modal Logic (Now Dynamic for different videos)
+        function openPreview(videoFile) {
+            const videoElement = document.getElementById('sample-video');
+            const videoSource = document.getElementById('modal-video-src');
+            
+            // Set the dynamic video source
+            videoSource.src = videoFile;
+            videoElement.load(); // Reload video with new source
+
             document.getElementById('video-modal').style.display = 'flex';
-            document.getElementById('sample-video').play();
+            videoElement.play();
         }
+        
         function closePreview() {
             document.getElementById('video-modal').style.display = 'none';
             document.getElementById('sample-video').pause();
             document.getElementById('sample-video').currentTime = 0;
         }
         
-        // Put SEO Article back to home when on homepage
         document.getElementById('home-view').appendChild(document.getElementById('how-to-use'));
     </script>
 </body>
