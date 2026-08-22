@@ -48,16 +48,15 @@
         /* 🟦 INVISIBLE FLEXBOX FOR PERFECT CENTERING */
         .name-box {
             position: absolute;
-            top: 64.7%;     /* User set value */
-            left: 49.3%;    /* User set value */
-            width: 56%;     /* User set value */
-            height: 6.4%;   /* User set value */
+            top: 64.7%;     
+            left: 49.3%;    
+            width: 56%;     
+            height: 6.4%;   
             transform: translate(-50%, -50%);
             
-            /* Box background aur border hata diya hai taaki invisible rahe */
             display: flex;
-            align-items: center; /* Hamesha Upar-Niche se center rakhega */
-            justify-content: center; /* Hamesha Left-Right se center rakhega */
+            align-items: center; 
+            justify-content: center; 
             z-index: 3;
         }
 
@@ -70,8 +69,9 @@
             letter-spacing: 1px;
             text-shadow: 1px 2px 4px rgba(0,0,0,0.5); 
             line-height: 1.1;
-            word-wrap: break-word; /* Lambe word ho toh break karega */
+            word-wrap: break-word; 
             max-width: 100%;
+            /* Note: marginTop will be handled dynamically by JavaScript */
         }
     </style>
 </head>
@@ -92,7 +92,6 @@
         
         <img id="user-img" class="user-photo" src="" alt="Photo">
         
-        <!-- Virtual Box ke andar naam -->
         <div class="name-box">
             <div id="user-name" class="user-name"></div>
         </div>
@@ -140,18 +139,25 @@
             
             document.getElementById("user-img").src = wishData.photos[0].url;
             
-            // 🔥 SMART FONT SIZING LOGIC
+            // 🔥 SMART FONT SIZING & ALIGNMENT LOGIC
             let bName = wishData.name || "Unknown";
             let nameEl = document.getElementById("user-name");
             nameEl.innerText = bName;
 
+            // FONT SIZE LOGIC
             if(bName.length <= 11) {
-                nameEl.style.fontSize = "26px"; // Default bada font 11 letters tak
+                nameEl.style.fontSize = "26px"; 
             } else {
-                // Jaise-jaise naam lamba hoga, font size automatically chhota hoga taaki box me fit rahe
-                let shrinkFactor = (bName.length - 11) * 0.75; 
+                let shrinkFactor = (bName.length - 11) * 0.85; 
                 let newSize = 26 - shrinkFactor; 
                 nameEl.style.fontSize = newSize + "px"; 
+            }
+
+            // ALIGNMENT LOGIC (For 6 chars or less)
+            if(bName.length <= 6) {
+                nameEl.style.marginTop = "3px"; // Chhote naam ko halka sa niche shift karega
+            } else {
+                nameEl.style.marginTop = "0px"; // Normal naam wahi rahega
             }
         }
     </script>
